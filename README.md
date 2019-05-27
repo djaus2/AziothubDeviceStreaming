@@ -17,12 +17,12 @@ I am attempting to use Azure IoTHub as the conduit in another project that mimic
 # Links
 - The repository for this project:  [djaus2/AziothubDeviceStreaming](https://github.com/djaus2/AziothubDeviceStreaming) (_this_)
 - The Az IoTHub SDK Device streaming Echo qucikstart sample
-  - [Howto](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-device-streams-echo-csharp)
+  - [How to tutorial](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-device-streams-echo-csharp)
   - [Code](https://github.com/Azure-Samples/azure-iot-samples-csharp/archive/master.zip)
-    - Unzip and navigate to /iot-hub/Quickstarts/device-streams-echo
+   - Unzip and navigate to /iot-hub/Quickstarts/device-streams-echo
 - [Az IoT Hub Device Streams Overview](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview)
 - There is also a Device Streaming Proxy example (not discussed here, _yet_) where an arbitrary port on the client side can be funneled to the IoTHub using SSLs
-  - [Howto](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-device-streams-proxy-csharp)
+  - [How to tutorial](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-device-streams-proxy-csharp)
   - [Code](https://github.com/Azure-Samples/azure-iot-samples-csharp/archive/master.zip)
     - Unzip and navigate to /iot-hub/Quickstarts/device-streams-proxy/
 
