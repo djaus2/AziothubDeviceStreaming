@@ -15,7 +15,7 @@ I’ve developed a GitHub Library project for UWP Sockets:  (djaus2/SocketsUWP)[
 I am attempting to use Azure IoTHub as the conduit in another project that mimics the socket stream functionality.The functionality of the device in this suite of projects is to uppercase the received message.
 
 # Links
-- The repository for this project:  [djaus2/AziothubDeviceStreaming](https://github.com/djaus2/AziothubDeviceStreaming)
+- The repository for this project:  [djaus2/AziothubDeviceStreaming](https://github.com/djaus2/AziothubDeviceStreaming) (_this_)
 - The [Az IoTHub SDK Device streaming Echo qucikstart sample](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-device-streams-echo-csharp)
 - [Az IoT Hub Device Streams Overview](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview)
 
