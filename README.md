@@ -96,6 +96,6 @@ Implements the Service functionality as a UWP Background Task. Runs only on IoT-
 Note that if run from Visual Studio, there are debug messages.
 
 ## Outcomes Thus Far
-**_As per Staus above, it is found that the Device when run as a UWP app does not connect._**
+**_As per Stauts above, it is found that the Device when run as a UWP app does not connect._**
 
 Ideas welcome, thx
