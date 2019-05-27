@@ -1,4 +1,4 @@
-# AziothubDeviceStreaming
+# Azure IoT Hub Device Streaming
 A set of projects examining refactoring of the Azure IoTHub SDK Device Streaming Echo sample functionality as .Net Core and UWP reusable libraries. The aim is to develop a library taht implements the device and service functionality of IoT Hub Device Streaming that can be used in UWP apps.
 
 # NB: Code coming tomorrow
