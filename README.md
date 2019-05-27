@@ -11,8 +11,8 @@ Azure IoT Hub Device Streaming, although in Preview, is a cool technology. It en
 
 The device functionality with the SDK's sample DeviceStreaming app is to just echo back the message received. 
 
-I’ve developed a GitHub Library project for UWP Sockets:  [djaus2/SocketsUWP](https://github.com/djaus2/SocketsUWP)
-I am attempting to use Azure IoTHub as the conduit in another project that mimics the socket stream functionality.The functionality of the device in this suite of projects is to uppercase the received message.
+_I’ve developed a GitHub C# Library project for UWP Sockets:  [djaus2/SocketsUWP](https://github.com/djaus2/SocketsUWP)
+With this repository, I am attempting to use Azure IoTHub as the conduit in another project that mimics the socket stream functionality.The functionality of the device in this suite of projects is to uppercase the received message._
 
 # Links
 - The repository for this project:  [djaus2/AziothubDeviceStreaming](https://github.com/djaus2/AziothubDeviceStreaming) (_this_)
