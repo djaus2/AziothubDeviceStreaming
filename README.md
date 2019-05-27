@@ -26,5 +26,5 @@ I am attempting to use Azure IoTHub as the conduit in another project that mimic
   - [Code](https://github.com/Azure-Samples/azure-iot-samples-csharp/archive/master.zip)
     - Unzip and navigate from the unzip folder to /azure-iot-samples-csharp-master/iot-hub/Quickstarts/device-streams-proxy/
 
-**For my new project I am attempting the refactor the Echo Example into a library that can be used in UWP apps.**
+**For this project I am attempting the refactor the Echo Example into a library that can be used in UWP apps.**
 
