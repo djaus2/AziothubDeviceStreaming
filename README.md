@@ -19,12 +19,12 @@ I am attempting to use Azure IoTHub as the conduit in another project that mimic
 - The Az IoTHub SDK Device streaming Echo qucikstart sample
   - [How to tutorial](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-device-streams-echo-csharp)
   - [Code](https://github.com/Azure-Samples/azure-iot-samples-csharp/archive/master.zip)
-   - Unzip and navigate to /iot-hub/Quickstarts/device-streams-echo
+    - Unzip and navigate to /iot-hub/Quickstarts/device-streams-echo
 - [Az IoT Hub Device Streams Overview](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview)
 - There is also a Device Streaming Proxy example (not discussed here, _yet_) where an arbitrary port on the client side can be funneled to the IoTHub using SSLs
   - [How to tutorial](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-device-streams-proxy-csharp)
   - [Code](https://github.com/Azure-Samples/azure-iot-samples-csharp/archive/master.zip)
     - Unzip and navigate to /iot-hub/Quickstarts/device-streams-proxy/
 
-For my new project I am attempting the refactor the Echo Example into a library that can be used in UWP apps.
+**For my new project I am attempting the refactor the Echo Example into a library that can be used in UWP apps.**
 
