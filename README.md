@@ -97,3 +97,5 @@ Note that if run from Visual Studio, there are debug messages.
 
 ## Outcomes Thus Far
 **_As per Staus above, it is found that the Device when run as a UWP app does not connect._**
+
+Ideas welcome, thx
