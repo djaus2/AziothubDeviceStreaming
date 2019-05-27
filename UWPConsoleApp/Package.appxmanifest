@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  IgnorableNamespaces="uap mp">
+
+  <Identity
+    Name="ff1d9384-3d15-40ea-a938-b7d527494760"
+    Publisher="CN=DavidJones"
+    Version="1.0.0.0" />
+
+  <mp:PhoneIdentity PhoneProductId="ff1d9384-3d15-40ea-a938-b7d527494760" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Properties>
+    <DisplayName>UWPConsoleDeviceApp</DisplayName>
+    <PublisherDisplayName>DavidJones</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="UWPConsoleDeviceApp.Program"
+      desktop4:Subsystem="console"
+      desktop4:SupportsMultipleInstances="true"
+      >
+      <uap:VisualElements
+        DisplayName="UWPConsoleDeviceApp"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        Description="A UWP Console App"
+        BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+      </uap:VisualElements>
+      <Extensions>
+        <uap5:Extension
+            Category="windows.appExecutionAlias"
+            Executable="UWPConsoleDeviceApp.exe"
+            EntryPoint="UWPConsoleDeviceApp.Program">
+          <uap5:AppExecutionAlias desktop4:Subsystem="console">
+            <uap5:ExecutionAlias Alias="UWPConsoleDeviceApp.exe" />
+          </uap5:AppExecutionAlias>
+        </uap5:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+ 
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <Capability Name="internetClientServer"/>
+    <Capability Name="privateNetworkClientServer"/>
+  </Capabilities>
+</Package>
