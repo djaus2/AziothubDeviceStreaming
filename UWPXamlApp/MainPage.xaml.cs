@@ -23,9 +23,9 @@ namespace UWPXamlApp
 
     public sealed partial class MainPage : Page
     {
-        string device_cs = AzureConnections.MyConnections.IoTHubConnectionString;
-        string service_cs = AzureConnections.MyConnections.DeviceId;
-        string device_id = AzureConnections.MyConnections.DeviceConnectionString;
+        string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
+        string device_id = AzureConnections.MyConnections.DeviceId;
+        string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
 
         public MainPage()

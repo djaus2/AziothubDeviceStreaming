@@ -13,9 +13,9 @@ namespace BGAppAzDeviceStream_Device
 {
     public sealed class StartupTask : IBackgroundTask
     {
-        string device_cs = AzureConnections.MyConnections.IoTHubConnectionString;
-        string service_cs = AzureConnections.MyConnections.DeviceId;
-        string device_id = AzureConnections.MyConnections.DeviceConnectionString;
+        string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
+        string device_id = AzureConnections.MyConnections.DeviceId;
+        string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {

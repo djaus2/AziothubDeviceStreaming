@@ -21,7 +21,7 @@ namespace UWPConsoleDeviceApp
     public static class Program
     {
         static string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
-        static string device_id  = AzureConnections.MyConnections.DeviceId;
+        static string  device_id = AzureConnections.MyConnections.DeviceId;
         static string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
         public static int Main()
