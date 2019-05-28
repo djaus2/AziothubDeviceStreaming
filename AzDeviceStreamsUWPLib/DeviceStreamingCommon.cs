@@ -17,9 +17,9 @@ namespace AzIoTHubDeviceStreams
     {
         // Select one of the following transports used by DeviceClient to connect to IoT Hub.
         //private static TransportType s_transportType = TransportType.Amqp;
-        //private static TransportType s_transportType = TransportType.Mqtt;
-        //private static TransportType s_transportType = TransportType.Amqp_WebSocket_Only;
-        //private static TransportType s_transportType = TransportType.Mqtt_WebSocket_Only;
+        //public static TransportType s_transportType = TransportType.Mqtt;
+        //public static TransportType s_transportType = TransportType.Amqp_WebSocket_Only;
+        //public static TransportType s_transportType = TransportType.Mqtt_WebSocket_Only;
         public static TransportType s_transportType = TransportType.Amqp;
 
         public static TimeSpan _Timeout = TimeSpan.FromMilliseconds(1000);
