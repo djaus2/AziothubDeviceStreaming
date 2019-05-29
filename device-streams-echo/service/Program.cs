@@ -5,7 +5,7 @@ using System;
 
 namespace Microsoft.Azure.Devices.Samples
 {
-    public static class Program
+    public static class Program 
     {
         // The IoT Hub connection string. This is available under the "Shared access policies" in the Azure portal.
 
