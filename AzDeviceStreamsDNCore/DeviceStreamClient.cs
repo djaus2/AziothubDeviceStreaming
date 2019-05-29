@@ -12,31 +12,112 @@ using System.Threading.Tasks;
 namespace AzIoTHubDeviceStreams
 {
     
-    public class DeviceStreamClient
+    public class DeviceStream_Device
     {
         private DeviceClient _deviceClient;
-        //public ActionReceivedText OnRecvdText = null;
         public ActionReceivedTextIO OnRecvdTextIO = null;
 
-        //private DeviceClient _deviceClient;
 
-        public DeviceStreamClient()
-        {
-            _deviceClient = null;
-        }
 
-        public DeviceStreamClient(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText)
+
+
+
+
+
+
+
+        public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText)
         {
             _deviceClient = deviceClient;
             OnRecvdTextIO = _OnRecvdText;
         }
 
-        public async Task RunClientAsync()
+        public static async Task RunDevice(string device_cs, ActionReceivedTextIO _OnRecvText)
         {
-            await RunClientAsync(true).ConfigureAwait(false);
+            TransportType device_hubTransportTryp = DeviceStreamingCommon.device_transportType;
+            try
+            {
+                using (DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(device_cs, device_hubTransportTryp))
+                {
+                    if (deviceClient == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Failed to create DeviceClient!");
+                        //return null;
+                    }
+
+                    var sample = new DeviceStream_Device(deviceClient, _OnRecvText);
+                    if (sample == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamClient!");
+                        //return null;
+                    }
+
+                    try
+                    {
+                        await sample.RunDeviceAsync();//.GetAwaiter().GetResult();
+                    }
+                    catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
+                    {
+                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Hub connection failure");
+                    }
+                    catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
+                    {
+                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Device not found");
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Task canceled");
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Operation canceled");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!ex.Message.Contains("Timeout"))
+                            System.Diagnostics.Debug.WriteLine("3 Error RunClient(): " + ex.Message);
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Timeout");
+                        }
+                    }
+
+                }
+                //return null;
+            }
+            catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
+            {
+                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Hub connection failure");
+            }
+            catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
+            {
+                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Device not found");
+            }
+            catch (TaskCanceledException)
+            {
+                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Task canceled");
+            }
+            catch (OperationCanceledException)
+            {
+                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Operation canceled");
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Message.Contains("Timeout"))
+                    System.Diagnostics.Debug.WriteLine("4 Error RunClient(): " + ex.Message);
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Timeout");
+                }
+            }
         }
 
-        public async Task RunClientAsync(bool acceptDeviceStreamingRequest)
+        public async Task RunDeviceAsync()
+        {
+            await RunDeviceAsync(true).ConfigureAwait(false);
+        }
+
+        public async Task RunDeviceAsync(bool acceptDeviceStreamingRequest)
         {
             byte[] buffer = new byte[1024];
 
@@ -135,84 +216,6 @@ namespace AzIoTHubDeviceStreams
             }
         }
 
-        private static TransportType s_transportType = TransportType.Amqp;
-        public static async void RunClient(string device_cs, ActionReceivedTextIO _OnRecvText)
-        {
-            try
-            {
-                using (DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(device_cs, s_transportType))
-                {
-                    if (deviceClient == null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Failed to create DeviceClient!");
-                        //return null;
-                    }
 
-                    var sample = new DeviceStreamClient(deviceClient, _OnRecvText);
-                    if (sample == null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamClient!");
-                        //return null;
-                    }
-
-                    try
-                    {
-                        await sample.RunClientAsync();//.GetAwaiter().GetResult();
-                    }
-                    catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
-                    {
-                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Hub connection failure");
-                    }
-                    catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
-                    {
-                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Device not found");
-                    }
-                    catch (TaskCanceledException)
-                    {
-                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Task canceled");
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Operation canceled");
-                    }
-                    catch (Exception ex)
-                    {
-                        if (!ex.Message.Contains("Timeout"))
-                            System.Diagnostics.Debug.WriteLine("3 Error RunClient(): " + ex.Message);
-                        else
-                        {
-                            System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Timeout");
-                        }
-                    }
-
-                }
-                //return null;
-            }
-            catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
-            {
-                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Hub connection failure");
-            }
-            catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
-            {
-                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Device not found");
-            }
-            catch (TaskCanceledException)
-            {
-                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Task canceled");
-            }
-            catch (OperationCanceledException)
-            {
-                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Operation canceled");
-            }
-            catch (Exception ex)
-            {
-                if (!ex.Message.Contains("Timeout"))
-                    System.Diagnostics.Debug.WriteLine("4 Error RunClient(): " + ex.Message);
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Timeout");
-                }
-            }
-        }
     }
 }

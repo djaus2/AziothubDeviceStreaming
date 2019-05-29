@@ -12,19 +12,20 @@ using Microsoft.Azure.Devices;
 namespace AzIoTHubDeviceStreams
 {
     
-    public class DeviceStreamSvc
+    public class DeviceStream_Svc
     {
 
         //Microsoft.Azure.Devices.ServiceClient ;
         private ServiceClient _serviceClient;
+        public ActionReceivedText OnRecvdText = null;
+
+        public string msgOut { get; set; }
+        public string msgIn { get; set; }
+
         private String _deviceId;
         private string _connectionString;
 
-      
-        public ActionReceivedText OnRecvdText = null;
-        //public ActionReceivedTextIO OnRecvdText = null;
-
-        public DeviceStreamSvc(ServiceClient deviceClient, String deviceId, string _msgOut, ActionReceivedText _OnRecvdText)
+        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string _msgOut, ActionReceivedText _OnRecvdText)
         {
             _serviceClient = deviceClient;
             _deviceId = deviceId;
@@ -32,7 +33,7 @@ namespace AzIoTHubDeviceStreams
             OnRecvdText = _OnRecvdText;
         }
 
-        public static async void RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdText)
+        public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdText)
         {
                 try
                 {
@@ -43,7 +44,7 @@ namespace AzIoTHubDeviceStreams
                             System.Diagnostics.Debug.WriteLine("Failed to create SericeClient!");
                             //return null;
                         }
-                        var sample = new DeviceStreamSvc(serviceClient, deviceId, msgOut, _OnRecvdText);
+                        var sample = new DeviceStream_Svc(serviceClient, deviceId, msgOut, _OnRecvdText);
                         if (sample == null)
                         {
                             System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamSvc!");
@@ -113,8 +114,6 @@ namespace AzIoTHubDeviceStreams
             
         }
         
-        public string msgOut { get; set; }
-        public string msgIn { get; set; }
         public async Task RunSvcAsync()
         {
             try

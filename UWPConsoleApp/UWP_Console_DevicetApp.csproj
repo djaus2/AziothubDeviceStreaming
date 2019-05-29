@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{9AC39175-4B13-442B-82C3-18AFFD2A238B}</ProjectGuid>
+    <ProjectGuid>{6BE9E64C-76C5-4B4F-9BE4-3450D08D25D5}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UWPConsoleSvcApp</RootNamespace>
-    <AssemblyName>UWPConsoleSvcApp</AssemblyName>
+    <RootNamespace>UWPConsoleDeviceApp</RootNamespace>
+    <AssemblyName>UWPConsoleDeviceApp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
@@ -123,6 +123,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="App99_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
@@ -140,13 +141,13 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AzDeviceStreamsUWPLib\AzDeviceStreamsUWPLib.csproj">
+    <ProjectReference Include="..\AzDeviceStreamsUWPLib\UWP_AzDeviceStreamsLib.csproj">
       <Project>{152a618a-bf06-4316-b566-ed5e47f726c0}</Project>
-      <Name>AzDeviceStreamsUWPLib</Name>
+      <Name>UWP_AzDeviceStreamsLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AzureConnections\AzureConnectionsUWP.csproj">
+    <ProjectReference Include="..\AzureConnections\UWP_AzureConnections.csproj">
       <Project>{2459b2de-c604-464d-bd1e-509c7907809e}</Project>
-      <Name>AzureConnectionsUWP</Name>
+      <Name>UWP_AzureConnections</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

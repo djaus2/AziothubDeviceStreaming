@@ -3,30 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzDeviceStreamsDNCore", "AzDeviceStreamsDNCore\AzDeviceStreamsDNCore.csproj", "{1BAA846C-EB8B-4C9E-9C14-89E295B1D393}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNCore_AzDeviceStreamsLib", "AzDeviceStreamsDNCore\DNCore_AzDeviceStreamsLib.csproj", "{1BAA846C-EB8B-4C9E-9C14-89E295B1D393}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPXamlApp", "UWPXamlApp\UWPXamlApp.csproj", "{54396A12-9EB5-4CA1-A82C-2A3970088520}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP_Xaml_App", "UWPXamlApp\UWP_Xaml_App.csproj", "{54396A12-9EB5-4CA1-A82C-2A3970088520}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1BAA846C-EB8B-4C9E-9C14-89E295B1D393} = {1BAA846C-EB8B-4C9E-9C14-89E295B1D393}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeviceClientStreamingSample", "device\DeviceClientStreamingSample.csproj", "{5300F2F9-9930-48BA-9340-ED93726C5D7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNCore_DeviceApp", "device\DNCore_DeviceApp.csproj", "{5300F2F9-9930-48BA-9340-ED93726C5D7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceClientStreamingSample", "service\ServiceClientStreamingSample.csproj", "{F2374E3F-2A46-4F28-A3EC-36A687BC2CD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNCore_ServiceApp", "service\DNCore_ServiceApp.csproj", "{F2374E3F-2A46-4F28-A3EC-36A687BC2CD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzDeviceStreamsUWPLib", "AzDeviceStreamsUWPLib\AzDeviceStreamsUWPLib.csproj", "{152A618A-BF06-4316-B566-ED5E47F726C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP_AzDeviceStreamsLib", "AzDeviceStreamsUWPLib\UWP_AzDeviceStreamsLib.csproj", "{152A618A-BF06-4316-B566-ED5E47F726C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BGAppAzDeviceStream_Device", "BGAppAzDeviceStream_Device\BGAppAzDeviceStream_Device.csproj", "{AC4BA951-F59D-42B6-964B-9B58C17AD8A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP_BGAppAzDeviceStream_Device", "BGAppAzDeviceStream_Device\UWP_BGAppAzDeviceStream_Device.csproj", "{AC4BA951-F59D-42B6-964B-9B58C17AD8A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BGAppAzDeviceStreamSvc2", "BGAppAzDeviceStreamSvc2\BGAppAzDeviceStreamSvc2.csproj", "{A65A081D-38D9-4F87-87CF-B029C32851E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP_BGAppAzDeviceStreamSvc2", "BGAppAzDeviceStreamSvc2\UWP_BGAppAzDeviceStreamSvc2.csproj", "{A65A081D-38D9-4F87-87CF-B029C32851E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPConsoleDevicetApp", "UWPConsoleApp\UWPConsoleDevicetApp.csproj", "{6BE9E64C-76C5-4B4F-9BE4-3450D08D25D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP_Console_DevicetApp", "UWPConsoleApp\UWP_Console_DevicetApp.csproj", "{6BE9E64C-76C5-4B4F-9BE4-3450D08D25D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPConsoleSvcApp", "UWPConsoleSvcApp\UWPConsoleSvcApp.csproj", "{9AC39175-4B13-442B-82C3-18AFFD2A238B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP_Console_SvcApp", "UWPConsoleSvcApp\UWP_Console_SvcApp.csproj", "{9AC39175-4B13-442B-82C3-18AFFD2A238B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureConnectionsUWP", "AzureConnections\AzureConnectionsUWP.csproj", "{2459B2DE-C604-464D-BD1E-509C7907809E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP_AzureConnections", "AzureConnections\UWP_AzureConnections.csproj", "{2459B2DE-C604-464D-BD1E-509C7907809E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureConnectionsDNCore", "AzureConnectionDNC\AzureConnectionsDNCore.csproj", "{4F9A6475-042C-474D-B64B-7AB050CC440C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNCore_AzureConnections", "AzureConnectionDNC\DNCore_AzureConnections.csproj", "{4F9A6475-042C-474D-B64B-7AB050CC440C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNCore_OrigEchoSample_DeviceClientStreaming", "device-streams-echo\device\DNCore_OrigEchoSample_DeviceClientStreaming.csproj", "{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNCore_OrigEchoSample_ServiceClientStreaming", "device-streams-echo\service\DNCore_OrigEchoSample_ServiceClientStreaming.csproj", "{830F143B-59C0-4027-A94B-6D4C05D242B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,7 +127,6 @@ Global
 		{F2374E3F-2A46-4F28-A3EC-36A687BC2CD1}.Release|x86.ActiveCfg = Release|Any CPU
 		{F2374E3F-2A46-4F28-A3EC-36A687BC2CD1}.Release|x86.Build.0 = Release|Any CPU
 		{152A618A-BF06-4316-B566-ED5E47F726C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{152A618A-BF06-4316-B566-ED5E47F726C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{152A618A-BF06-4316-B566-ED5E47F726C0}.Debug|ARM.ActiveCfg = Debug|ARM
 		{152A618A-BF06-4316-B566-ED5E47F726C0}.Debug|ARM.Build.0 = Debug|ARM
 		{152A618A-BF06-4316-B566-ED5E47F726C0}.Debug|ARM64.ActiveCfg = Debug|ARM64
@@ -239,7 +242,6 @@ Global
 		{9AC39175-4B13-442B-82C3-18AFFD2A238B}.Release|x86.Build.0 = Release|x86
 		{9AC39175-4B13-442B-82C3-18AFFD2A238B}.Release|x86.Deploy.0 = Release|x86
 		{2459B2DE-C604-464D-BD1E-509C7907809E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2459B2DE-C604-464D-BD1E-509C7907809E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2459B2DE-C604-464D-BD1E-509C7907809E}.Debug|ARM.ActiveCfg = Debug|ARM
 		{2459B2DE-C604-464D-BD1E-509C7907809E}.Debug|ARM.Build.0 = Debug|ARM
 		{2459B2DE-C604-464D-BD1E-509C7907809E}.Debug|ARM64.ActiveCfg = Debug|ARM64
@@ -276,6 +278,46 @@ Global
 		{4F9A6475-042C-474D-B64B-7AB050CC440C}.Release|x64.Build.0 = Release|Any CPU
 		{4F9A6475-042C-474D-B64B-7AB050CC440C}.Release|x86.ActiveCfg = Release|Any CPU
 		{4F9A6475-042C-474D-B64B-7AB050CC440C}.Release|x86.Build.0 = Release|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Debug|ARM.Build.0 = Debug|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Debug|x64.Build.0 = Debug|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Debug|x86.Build.0 = Debug|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Release|ARM.ActiveCfg = Release|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Release|ARM.Build.0 = Release|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Release|ARM64.Build.0 = Release|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Release|x64.Build.0 = Release|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Release|x86.ActiveCfg = Release|Any CPU
+		{890CCFEF-0DCF-42C0-8A44-DF4166F199B5}.Release|x86.Build.0 = Release|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Debug|ARM.Build.0 = Debug|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Debug|x64.Build.0 = Debug|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Debug|x86.Build.0 = Debug|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Release|ARM.ActiveCfg = Release|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Release|ARM.Build.0 = Release|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Release|ARM64.Build.0 = Release|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Release|x64.ActiveCfg = Release|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Release|x64.Build.0 = Release|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Release|x86.ActiveCfg = Release|Any CPU
+		{830F143B-59C0-4027-A94B-6D4C05D242B1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
