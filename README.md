@@ -3,7 +3,7 @@ A set of projects examining refactoring of the Azure IoTHub SDK Device Streaming
 
 ![Solution Explorer](https://github.com/djaus2/AziothubDeviceStreaming/blob/master/images/Capture001.PNG)<br>
 **The repository projects.** _Nb: Documentation that follows needs to be updated for project name chamges .. 2Do)_<br>
-NB: Th eUnloaded projects now load.
+NB: The Unloaded projects now load.
 
 # Status
 The .Net Core library implements Azure IoT Hub connectivity for the Device and Service sample console apps. 
