@@ -16,6 +16,4 @@
     <ProjectReference Include="..\DNCore_AzDeviceStreamsLib\DNCore_AzDeviceStreamsLib.csproj" />
     <ProjectReference Include="..\DNCore_AzureConnectionsLib\DNCore_AzureConnectionsLib.csproj" />
   </ItemGroup>
-
-
 </Project>

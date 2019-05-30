@@ -23,7 +23,7 @@ namespace AzIoTHubDeviceStreams
         public string msgIn { get; set; }
 
         private String _deviceId;
-        private string _connectionString;
+        //private string _connectionString;
 
         public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string _msgOut, ActionReceivedText _OnRecvdText)
         {
