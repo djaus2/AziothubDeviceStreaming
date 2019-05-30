@@ -12,6 +12,7 @@ When the app is a UWP app though, whether as an XAML or Console app, the service
 This is true whether the library is implemeneted as a .Net Core class library or as a UWP class library.
 ## Latest:
 It seems that if you use MQTT for the device transpoort rather than AMQP, all works when using UWP.
+<br>Also, the UWP XAML App can select the transport from a list.
 
 # Background
 Azure IoT Hub Device Streaming, although in Preview, is a cool technology. It enables an IoT device to receive messages from another system (the service: for example a user app) and for device to respond by sending back a message to the service. An Azure IoT Hub acts as the intermediatary in the communinications. No modules are needed to be instaled in the hub. The functionality is implemented by calls to the IoT Hub SDK by both the device and service apps.
