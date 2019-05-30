@@ -20,19 +20,43 @@ using Windows.UI.Core;
 
 namespace UWPXamlApp
 {
+    public class EnumToStringConverter : IValueConverter
+    {
+        //public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        //{
+        //    return "";
+        //}
 
+        //public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        object IValueConverter.Convert(object value, Type targetType, object parameter, string language)
+        {
+            Microsoft.Azure.Devices.Client.TransportType trans = (Microsoft.Azure.Devices.Client.TransportType)value;
+            if (trans != null)
+                return trans.ToString();
+            else
+                return "vv";
+        }
+
+        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
     public sealed partial class MainPage : Page
     {
         string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
         string device_id = AzureConnections.MyConnections.DeviceId;
         string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
+        public  List<Microsoft.Azure.Devices.Client.TransportType> ListEnum { get { return typeof(Microsoft.Azure.Devices.Client.TransportType).GetEnumValues().Cast<Microsoft.Azure.Devices.Client.TransportType>().ToList(); } }
 
         public MainPage()
         {
             this.InitializeComponent();
-           
-
         }
 
         private void OnrecvText(string recvTxt)
@@ -196,6 +220,20 @@ namespace UWPXamlApp
                 {
                     System.Diagnostics.Debug.WriteLine("00 Error App.RunClient(): Timeout");
                 }
+            }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            xvTransports.ItemsSource = ListEnum;
+        }
+
+        private void XvTransports_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (xvTransports.SelectedIndex != -1)
+            {
+                AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType = (Microsoft.Azure.Devices.Client.TransportType) xvTransports.SelectedItem;
+                System.Diagnostics.Debug.WriteLine(AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType);
             }
         }
     }

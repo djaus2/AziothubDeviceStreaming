@@ -6,7 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <local:EnumToStringConverter  x:Key="EnumToStringConverter"/>
+    </Page.Resources>
 
     <Grid>
         <Button Content="Svc" Height="186" Margin="101,74,0,0" VerticalAlignment="Top" Width="369" Click="Button_Click_Svc"/>
@@ -17,6 +21,15 @@
         <TextBox x:Name="tbSvcMsgIn" HorizontalAlignment="Left" Height="84" Margin="625,368,0,0" Text="MTGG" VerticalAlignment="Top" Width="473"/>
         <TextBox x:Name="tbDeviceMsgIn" HorizontalAlignment="Left" Height="84" Margin="625,635,0,0" Text="In" VerticalAlignment="Top" Width="473"/>
         <TextBox x:Name="tbDeiceMsgOut" HorizontalAlignment="Left" Height="84" Margin="625,784,0,0" Text="Out" VerticalAlignment="Top" Width="473"/>
+        <TextBlock HorizontalAlignment="Left" Height="28" Margin="101,704,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" Text="Device Transport:"/>
+        <ListView   x:Name="xvTransports" Margin="101,889,10,32" ItemsSource="{Binding ListEnum}" Background="Beige" SelectionChanged="XvTransports_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" HorizontalAlignment="Center" FontSize="18" Width="300"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
 
     </Grid>
 </Page>
