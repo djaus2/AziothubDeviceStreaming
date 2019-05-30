@@ -12,6 +12,10 @@
   <ItemGroup>
 	<PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.29.0-preview-002" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\common\DeviceStreamingCommon.cs" Link="DeviceStreamingCommon.cs" />
+  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\AzureConnectionDNC\DNCore_AzureConnections.csproj" />
