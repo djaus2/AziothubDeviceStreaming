@@ -25,7 +25,6 @@ namespace AzIoTHubDeviceStreams
 
 
 
-
         public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText)
         {
             _deviceClient = deviceClient;
