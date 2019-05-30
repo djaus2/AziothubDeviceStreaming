@@ -9,7 +9,7 @@
 *.userosscache
 *.sln.docstates
 
-AzureConnections_Files/AzureConnections.cs
+AzureConnections_Files/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
