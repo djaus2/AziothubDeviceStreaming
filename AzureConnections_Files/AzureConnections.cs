@@ -9,8 +9,8 @@ namespace AzureConnections
     public static class MyConnections
     {
         
-        public static string IoTHubConnectionString = "xxzuuzuucs";
-        public static string DeviceId = "uu";
-        public static string DeviceConnectionString = "yyzzuu";
+        public static string IoTHubConnectionString = "";
+        public static string DeviceId = "";
+        public static string DeviceConnectionString = "";
     }
 }
