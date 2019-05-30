@@ -17,7 +17,7 @@ namespace UWPConsoleSvcApp
 
         public static int Main(string[] args)
         {
-            Console.WriteLine("Svc: Start.\n");
+            Console.WriteLine("Svc: Starting.\n");
 
             RunSvc(service_cs, device_id, "Hello Word", 100000);
 

@@ -14,9 +14,8 @@ namespace DeviceDNCoreApp
         static string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
         public static int Main(string[] args)
         {
-            Console.WriteLine("Device Start.\n");
-            // sample.RunSampleAsync().GetAwaiter().GetResult();
-            //}
+            Console.WriteLine("Device starting.\n");
+
             RunDevice(device_cs, 1000000);
 
             Console.WriteLine("Device Done.\n\nPress any key to finish.\n");
