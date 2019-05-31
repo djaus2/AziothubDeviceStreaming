@@ -6,30 +6,80 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded" SizeChanged="Page_SizeChanged">
 
     <Page.Resources>
         <local:EnumToStringConverter  x:Key="EnumToStringConverter"/>
     </Page.Resources>
 
-    <Grid>
-        <Button Content="Svc" Height="186" Margin="101,74,0,0" VerticalAlignment="Top" Width="369" Click="Button_Click_Svc"/>
-        <Button Content="Device" Height="162" Margin="101,500,0,0" VerticalAlignment="Top" Width="369" Click="Button_Click_Device"/>
-        <TextBox x:Name="tbSvcTimeout" HorizontalAlignment="Left" Height="84" Margin="625,132,0,0" Text="10000" VerticalAlignment="Top" Width="473"/>
-        <TextBox x:Name="tbDeviceTimeout" HorizontalAlignment="Left" Height="84" Margin="625,500,0,0" Text="10000" VerticalAlignment="Top" Width="473"/>
-        <TextBox x:Name="tbSvcMsgOut" HorizontalAlignment="Left" Height="84" Margin="625,250,0,0" Text="The quick brown fox." VerticalAlignment="Top" Width="473"/>
-        <TextBox x:Name="tbSvcMsgIn" HorizontalAlignment="Left" Height="84" Margin="625,368,0,0" Text="MTGG" VerticalAlignment="Top" Width="473"/>
-        <TextBox x:Name="tbDeviceMsgIn" HorizontalAlignment="Left" Height="84" Margin="625,635,0,0" Text="In" VerticalAlignment="Top" Width="473"/>
-        <TextBox x:Name="tbDeiceMsgOut" HorizontalAlignment="Left" Height="84" Margin="625,784,0,0" Text="Out" VerticalAlignment="Top" Width="473"/>
-        <TextBlock HorizontalAlignment="Left" Height="28" Margin="101,704,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" Text="Device Transport:"/>
-        <ListView   x:Name="xvTransports" Margin="101,889,10,32" ItemsSource="{Binding ListEnum}" Background="Beige" SelectionChanged="XvTransports_SelectionChanged">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}" HorizontalAlignment="Center" FontSize="18" Width="300"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+    <StackPanel Height="863" VerticalAlignment="Top">
+        <TextBlock Text="Sportronics: UWP Azure IoT Hub Device Streaming" Margin ="100,20,20,20" Foreground="Blue" FontSize="32" FontWeight="Bold"/>
+        <RelativePanel Background="Beige">
+            <Button x:Name="btnSend" 
+                Content="Send using Service" Height="120" Margin="20" VerticalAlignment="Top" Width="300" Click="Button_Click_Svc"/>
+            <TextBlock x:Name="lblSvcTimeout" RelativePanel.RightOf="btnSend" Width="200" TextAlignment="Right"
+                Text="Service - Timeout (ms):" Margin="20,20,0,0"  />
+
+            <TextBox x:Name="tbSvcTimeout" RelativePanel.RightOf="lblSvcTimeout" RelativePanel.AlignTopWith="lblSvcTimeout"
+                 Margin="20,20,0,0" Height="40" Text="10000" Width="100" />
+            <TextBlock x:Name="lblSend" RelativePanel.RightOf="btnSend" RelativePanel.Below="tbSvcTimeout" RelativePanel.AlignRightWith="lblSvcTimeout"
+                        TextAlignment="Right"
+                Text="Service - Message to be sent:" Margin="20,20,0,0"  />
+            <TextBlock  RelativePanel.Below="lblSend" RelativePanel.AlignRightWith="lblSend"
+                        TextAlignment="Right" FontStyle="Italic"
+                Text="Nb: Can be mulitline." Margin="20,10,0,0"  />
+            <TextBox x:Name="tbSvcMsgOut" RelativePanel.RightOf="lblSend" RelativePanel.AlignTopWith="lblSend"  
+                     AcceptsReturn="True"
+                 HorizontalAlignment="Left" Height="84" Margin="20,20,0,0" Text="Msg Out" VerticalAlignment="Top" MinWidth="200"/>
+            <TextBlock x:Name="lblRecv" RelativePanel.RightOf="btnSend" RelativePanel.Below="tbSvcMsgOut" RelativePanel.AlignRightWith="lblSvcTimeout"
+                        TextAlignment="Right"
+                Text="Service - Message received:" Margin="20,20,0,0"  />
+            <TextBox x:Name="tbSvcMsgIn" RelativePanel.RightOf="lblRecv" RelativePanel.AlignTopWith="lblRecv" RelativePanel.AlignLeftWith="tbSvcMsgOut"
+                     AcceptsReturn="True"
+                     HorizontalAlignment="Left" Height="84" Margin="20,20,0,20" Text="Msg Recv'd" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True"/>
+
+        </RelativePanel>
+        <RelativePanel Background="LightCyan">
+
+            <Button x:Name="btnListen" 
+                Content="Start Listening as Device"  Height="120" Margin="20,20,0,0" VerticalAlignment="Top" Width="300" Click="Button_Click_Device"/>
+            <TextBlock x:Name="lblNb" RelativePanel.Below="btnListen" RelativePanel.AlignLeftWith="btnListen" FontStyle="Italic" FontWeight="Bold"
+                Text="Nb: Only active for one recieved message." Margin="20,20,0,0"  />
+
+            <TextBlock x:Name="lblDeviceTimeout" RelativePanel.RightOf="btnListen" Width="220" TextAlignment="Right" 
+                Text="Device - Timeout (ms):" Margin="20,20,0,0"  />
+            <TextBox x:Name="tbDeviceTimeout" RelativePanel.RightOf="lblDeviceTimeout" RelativePanel.AlignTopWith="lblDeviceTimeout"
+                     HorizontalAlignment="Left" Height="40" Margin="20,20,0,0" Text="10000" VerticalAlignment="Top" Width="100"/>
+            <TextBlock x:Name="lblDeviceRecv" RelativePanel.RightOf="btnListen" RelativePanel.Below="tbDeviceTimeout" RelativePanel.AlignRightWith="lblDeviceTimeout"
+                        TextAlignment="Right"
+                Text="Device - Message received:" Margin="20,20,0,0"  />
+
+            <TextBox x:Name="tbDeviceMsgIn"  RelativePanel.RightOf="lblDeviceRecv" RelativePanel.AlignTopWith="lblDeviceRecv"
+                     AcceptsReturn="True"
+                     HorizontalAlignment="Left" Height="84" Margin="20,20,0,0" Text="Dev In" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True"/>
+            <TextBlock x:Name="lblDeviceSend" RelativePanel.RightOf="btnListen" RelativePanel.Below="tbDeviceMsgIn" RelativePanel.AlignRightWith="lblDeviceTimeout"
+                        TextAlignment="Right"
+                Text="Service - Message received:" Margin="20,20,0,0"  />
+            <TextBox x:Name="tbDeiceMsgOut" RelativePanel.RightOf="lblDeviceSend" RelativePanel.AlignTopWith="lblDeviceSend" RelativePanel.AlignLeftWith="tbDeviceMsgIn"
+                     AcceptsReturn="True"
+                     Height="84" Margin="20,20,0,20" Text="Dev Out" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True" />
+            <TextBlock x:Name="lbTransports" HorizontalAlignment="Left" RelativePanel.Below="tbDeiceMsgOut" RelativePanel.AlignRightWith="lblDeviceSend"
+                       Height="28" Margin="20,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Text="Select Device Transport:"/>
+            <ListView   x:Name="ListviewTransports" RelativePanel.Below="tbDeiceMsgOut" RelativePanel.AlignLeftWith="tbDeiceMsgOut" RelativePanel.AlignTopWith="lbTransports"
+                        Width="300" Height="120" ScrollViewer.IsVerticalRailEnabled="True"
+                        Margin="20,20,0,20" ItemsSource="{Binding ListEnum}" Background="Beige" SelectionChanged="ListviewTransports_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" HorizontalAlignment="Left"  Margin="20,0,0,0" Padding="0"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <TextBlock x:Name="lblNb2" RelativePanel.Below="ListviewTransports" RelativePanel.AlignLeftWith="lblNb" FontStyle="Italic" FontWeight="Bold"
+                Text="Nb2: Run in Visual Studio, Debug mode and note Debug messages in Output Window." Margin="20,20,0,20"  />
+        </RelativePanel>
 
 
-    </Grid>
+
+    </StackPanel>
+
 </Page>

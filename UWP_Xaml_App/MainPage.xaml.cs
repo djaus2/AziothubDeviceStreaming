@@ -34,11 +34,16 @@ namespace UWPXamlApp
 
         object IValueConverter.Convert(object value, Type targetType, object parameter, string language)
         {
-            Microsoft.Azure.Devices.Client.TransportType trans = (Microsoft.Azure.Devices.Client.TransportType)value;
-            if (trans != null)
-                return trans.ToString();
+            if (value is Microsoft.Azure.Devices.Client.TransportType)
+            {
+                Microsoft.Azure.Devices.Client.TransportType trans = (Microsoft.Azure.Devices.Client.TransportType)value;
+                if (trans != null)
+                    return trans.ToString();
+                else
+                    return "vv";
+            }
             else
-                return "vv";
+                return "zz";
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, string language)
@@ -90,7 +95,6 @@ namespace UWPXamlApp
             string msgOut = tbSvcMsgOut.Text;
             try
                 {
-                    //var svc =
                     await Task.Run(() =>
                     {
                         try
@@ -225,15 +229,33 @@ namespace UWPXamlApp
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            xvTransports.ItemsSource = ListEnum;
+            ListviewTransports.ItemsSource = ListEnum;
+            ListviewTransports.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
+            ListviewTransports.ScrollIntoView(ListviewTransports.SelectedItem);
         }
 
-        private void XvTransports_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListviewTransports_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (xvTransports.SelectedIndex != -1)
+            if (ListviewTransports.SelectedIndex != -1)
             {
-                AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType = (Microsoft.Azure.Devices.Client.TransportType) xvTransports.SelectedItem;
+                AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType = (Microsoft.Azure.Devices.Client.TransportType) ListviewTransports.SelectedItem;
                 System.Diagnostics.Debug.WriteLine(AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType);
+            }
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            GeneralTransform gt = tbSvcMsgOut.TransformToVisual(this);
+            Point offset = gt.TransformPoint(new Point(0, 0));
+            double controlTop = offset.Y;
+            double controlLeft = offset.X;
+            double newWidth =  e.NewSize.Width - controlLeft - 20;
+            if (newWidth > tbSvcMsgOut.MinWidth)
+            {
+                tbSvcMsgOut.Width = newWidth;
+                tbDeviceMsgIn.Width = newWidth;
+                tbSvcMsgIn.Width = newWidth;
+                tbDeiceMsgOut.Width = newWidth;
             }
         }
     }
