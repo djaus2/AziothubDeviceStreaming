@@ -137,13 +137,15 @@ namespace AzIoTHubDeviceStreams
                                 {
                                 xx++;
                                     byte[] sendBuffer = Encoding.UTF8.GetBytes(msgOut);
+                                System.ArraySegment<byte> SendBuffer = new ArraySegment<byte>(sendBuffer);
                                     byte[] receiveBuffer = new byte[1024];
+                                System.ArraySegment<byte> ReceiveBuffer = new ArraySegment<byte>(receiveBuffer);
                                 xx++;
-                                    await stream.SendAsync(sendBuffer, WebSocketMessageType.Binary, true, cancellationTokenSource.Token).ConfigureAwait(false);
+                                    await stream.SendAsync(SendBuffer, WebSocketMessageType.Binary, true, cancellationTokenSource.Token).ConfigureAwait(false);
                                 xx++;
                                     System.Diagnostics.Debug.WriteLine(string.Format("Svc Sent stream data: {0}", Encoding.UTF8.GetString(sendBuffer, 0, sendBuffer.Length)));
 
-                                    var receiveResult = await stream.ReceiveAsync(receiveBuffer, cancellationTokenSource.Token).ConfigureAwait(false);
+                                    var receiveResult = await stream.ReceiveAsync(ReceiveBuffer, cancellationTokenSource.Token).ConfigureAwait(false);
                                 xx++;
                                     msgIn = Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count);
 

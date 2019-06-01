@@ -1,0 +1,257 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_Xaml_App\\UWP_Xaml_App.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzDeviceStreamsLib\\UWP_AzDeviceStreamsLib.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzDeviceStreamsLib\\UWP_AzDeviceStreamsLib.csproj",
+        "projectName": "UWP_AzDeviceStreamsLib",
+        "projectPath": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzDeviceStreamsLib\\UWP_AzDeviceStreamsLib.csproj",
+        "packagesPath": "C:\\Users\\DavidJones\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzDeviceStreamsLib\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\DavidJones\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "uap10.0.17763"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nugetized.blob.core.windows.net/live-reload/index.json": {}
+        },
+        "frameworks": {
+          "uap10.0.17763": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "uap10.0.17763": {
+          "dependencies": {
+            "Microsoft.Azure.Devices": {
+              "target": "Package",
+              "version": "[1.27.0-preview-003, )"
+            },
+            "Microsoft.Azure.Devices.Client": {
+              "target": "Package",
+              "version": "[1.29.0-preview-002, )"
+            },
+            "Microsoft.NETCore.UniversalWindowsPlatform": {
+              "target": "Package",
+              "version": "[6.2.8, )"
+            },
+            "System.Net.WebSockets.Client": {
+              "target": "Package",
+              "version": "[4.3.2, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      },
+      "runtimes": {
+        "win10-arm": {
+          "#import": []
+        },
+        "win10-arm-aot": {
+          "#import": []
+        },
+        "win10-arm64-aot": {
+          "#import": []
+        },
+        "win10-x64": {
+          "#import": []
+        },
+        "win10-x64-aot": {
+          "#import": []
+        },
+        "win10-x86": {
+          "#import": []
+        },
+        "win10-x86-aot": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzureConnectionsLib\\UWP_AzureConnectionsLib.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzureConnectionsLib\\UWP_AzureConnectionsLib.csproj",
+        "projectName": "UWP_AzureConnectionsLib",
+        "projectPath": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzureConnectionsLib\\UWP_AzureConnectionsLib.csproj",
+        "packagesPath": "C:\\Users\\DavidJones\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzureConnectionsLib\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\DavidJones\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "uap10.0.17763"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nugetized.blob.core.windows.net/live-reload/index.json": {}
+        },
+        "frameworks": {
+          "uap10.0.17763": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "uap10.0.17763": {
+          "dependencies": {
+            "Microsoft.NETCore.UniversalWindowsPlatform": {
+              "target": "Package",
+              "version": "[6.2.8, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      },
+      "runtimes": {
+        "win10-arm": {
+          "#import": []
+        },
+        "win10-arm-aot": {
+          "#import": []
+        },
+        "win10-arm64-aot": {
+          "#import": []
+        },
+        "win10-x64": {
+          "#import": []
+        },
+        "win10-x64-aot": {
+          "#import": []
+        },
+        "win10-x86": {
+          "#import": []
+        },
+        "win10-x86-aot": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_Xaml_App\\UWP_Xaml_App.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_Xaml_App\\UWP_Xaml_App.csproj",
+        "projectName": "UWP_Xaml_App",
+        "projectPath": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_Xaml_App\\UWP_Xaml_App.csproj",
+        "packagesPath": "C:\\Users\\DavidJones\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_Xaml_App\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\DavidJones\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "uap10.0.17763"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nugetized.blob.core.windows.net/live-reload/index.json": {}
+        },
+        "frameworks": {
+          "uap10.0.17763": {
+            "projectReferences": {
+              "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzDeviceStreamsLib\\UWP_AzDeviceStreamsLib.csproj": {
+                "projectPath": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzDeviceStreamsLib\\UWP_AzDeviceStreamsLib.csproj"
+              },
+              "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzureConnectionsLib\\UWP_AzureConnectionsLib.csproj": {
+                "projectPath": "C:\\Users\\DavidJones\\Source\\Repos\\AziothubDeviceStreaming\\UWP_AzureConnectionsLib\\UWP_AzureConnectionsLib.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "uap10.0.17763": {
+          "dependencies": {
+            "Microsoft.Azure.Devices": {
+              "target": "Package",
+              "version": "[1.27.0-preview-003, )"
+            },
+            "Microsoft.Azure.Devices.Client": {
+              "target": "Package",
+              "version": "[1.29.0-preview-002, )"
+            },
+            "Microsoft.NETCore.UniversalWindowsPlatform": {
+              "target": "Package",
+              "version": "[6.2.8, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      },
+      "runtimes": {
+        "win10-arm": {
+          "#import": []
+        },
+        "win10-arm-aot": {
+          "#import": []
+        },
+        "win10-arm64-aot": {
+          "#import": []
+        },
+        "win10-x64": {
+          "#import": []
+        },
+        "win10-x64-aot": {
+          "#import": []
+        },
+        "win10-x86": {
+          "#import": []
+        },
+        "win10-x86-aot": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

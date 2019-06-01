@@ -146,7 +146,7 @@
     </ProjectReference>
     <ProjectReference Include="..\UWP_AzureConnectionsLib\UWP_AzureConnectionsLib.csproj">
       <Project>{2459b2de-c604-464d-bd1e-509c7907809e}</Project>
-      <Name>UWP_AzureConnections</Name>
+      <Name>UWP_AzureConnectionsLib</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
