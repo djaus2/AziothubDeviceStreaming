@@ -9,7 +9,7 @@ _I’ve developed a GitHub C# Library project for UWP Sockets:  [djaus2/SocketsU
 With this repository, I am attempting to use Azure IoTHub as the conduit in another project that mimics the socket stream functionality.
 
 # The GitHub Repository
-The (new) GitHub repository for this project:  ![Solution Explorer](https://github.com/djaus2/AziothubDeviceStreaming/blob/master/images/Capture001.PNG)<br>
+The (new) GitHub repository for this project:<br>  ![Solution Explorer](https://github.com/djaus2/AziothubDeviceStreaming/blob/master/images/Capture001.PNG)<br>
 **The repository projects.** <br>
 There are three sets of projects, as per the class library projects they use:
 - .Net Core
