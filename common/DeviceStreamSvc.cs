@@ -153,34 +153,37 @@ namespace AzIoTHubDeviceStreams
                                      OnRecvdText(msgIn);
 
                                 System.Diagnostics.Debug.WriteLine(string.Format("Svc Received stream data: {0}", msgIn));
-                                }
-                            }
-                            catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
-                            {
-                            System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Hub connection failure " + xx.ToString());
-                            }
-                            catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
-                            {
-                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Device not found " + xx.ToString());
-                            }
-                            catch (TaskCanceledException)
-                            {
-                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Task canceled " + xx.ToString());
-                            }
-                            catch (OperationCanceledException)
-                            {
-                            System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Operation canceled " + xx.ToString()); ;
-                            }
-                            catch (Exception ex)
-                            {
-                                if (!ex.Message.Contains("Timeout"))
-                                    System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): " + ex.Message);
-                                else
-                                {
-                                    System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Timeout " + xx.ToString());
-                                }
+
+                                await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
+
                             }
                         }
+                        catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
+                        {
+                        System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Hub connection failure " + xx.ToString());
+                        }
+                        catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
+                        {
+                            System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Device not found " + xx.ToString());
+                        }
+                        catch (TaskCanceledException)
+                        {
+                            System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Task canceled " + xx.ToString());
+                        }
+                        catch (OperationCanceledException)
+                        {
+                        System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Operation canceled " + xx.ToString()); ;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (!ex.Message.Contains("Timeout"))
+                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): " + ex.Message);
+                            else
+                            {
+                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Timeout " + xx.ToString());
+                            }
+                        }
+                    }
                 }
             }
             catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)

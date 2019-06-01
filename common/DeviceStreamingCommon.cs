@@ -17,7 +17,7 @@ namespace AzIoTHubDeviceStreams
     {
         public static TransportType s_transportType = TransportType.Amqp;
 
-        public static Microsoft.Azure.Devices.Client.TransportType device_transportType = Microsoft.Azure.Devices.Client.TransportType.Mqtt;//.Amqp;
+        public static Microsoft.Azure.Devices.Client.TransportType device_transportType = Microsoft.Azure.Devices.Client.TransportType.Mqtt;
 
         public static TimeSpan _Timeout = TimeSpan.FromMilliseconds(1000);
 

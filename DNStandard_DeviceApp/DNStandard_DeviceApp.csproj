@@ -8,11 +8,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.29.0-preview-002" />
     <PackageReference Include="System.Net.WebSockets.Client" Version="4.3.2" />
-    <PackageReference Include="Microsoft.Azure.Devices" Version="1.27.0-preview-*" />
+    <PackageReference Include="Microsoft.Azure.Devices" Version="1.27.0-preview-003" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <ProjectReference Include="..\DNStandard_AzDeviceStreaming\DNStandard_AzDeviceStreamingLib.csproj"/>
-    <ProjectReference Include="..\DNStandard_AzureConnectionsLib\DNStandard_AzureConnectionsLib.csproj"/>
+    <ProjectReference Include="..\DNStandard_AzDeviceStreaming\DNStandard_AzDeviceStreamingLib.csproj" />
+    <ProjectReference Include="..\DNStandard_AzureConnectionsLib\DNStandard_AzureConnectionsLib.csproj" />
   </ItemGroup>
 </Project>

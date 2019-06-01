@@ -32,6 +32,7 @@ namespace Microsoft.Azure.Devices.Samples
 
                 DeviceStreamResponse result = await _serviceClient.CreateStreamAsync(_deviceId, deviceStreamRequest).ConfigureAwait(false);
 
+                System.Diagnostics.Debug.WriteLine("Stream response received: Name={0} IsAccepted={1}", deviceStreamRequest.StreamName, result.IsAccepted);
                 Console.WriteLine("Stream response received: Name={0} IsAccepted={1}", deviceStreamRequest.StreamName, result.IsAccepted);
 
                 if (result.IsAccepted)
@@ -44,15 +45,21 @@ namespace Microsoft.Azure.Devices.Samples
 
                         await stream.SendAsync(sendBuffer, WebSocketMessageType.Binary, true, cancellationTokenSource.Token).ConfigureAwait(false);
 
+                        System.Diagnostics.Debug.WriteLine(string.Format("Sent stream data: {0}", Encoding.UTF8.GetString(sendBuffer, 0, sendBuffer.Length)));
                         Console.WriteLine("Sent stream data: {0}", Encoding.UTF8.GetString(sendBuffer, 0, sendBuffer.Length));
 
                         var receiveResult = await stream.ReceiveAsync(receiveBuffer, cancellationTokenSource.Token).ConfigureAwait(false);
 
+                        System.Diagnostics.Debug.WriteLine(string.Format("Received stream data: {0}", Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count)));
                         Console.WriteLine("Received stream data: {0}", Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count));
+
+                        await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
+
                     }
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine("Stream request was rejected by the device");
                     Console.WriteLine("Stream request was rejected by the device");
                 }
             }
