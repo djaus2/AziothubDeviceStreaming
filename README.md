@@ -41,21 +41,6 @@ Exception thrown: 'Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundExcep
 2 Error RunSvcAsync(): Device not found
 ```
 
-# Why so many projects?
-With this suite of C# projects you can test the Azure IoT Hub Device Streaming with various combinations of versions of apps (device and streaming) based upon the SDK they use. For example, when the Device is backed by the .NetCore library, the service a .NetCore or UWP app, with any of the Transports,  But reverse the combination and teh transport must be MQTT. The UWP XAML apps, when using MQTT can act as both teh device and the service.
-
-# Links
-- The repository for this project:  [djaus2/AziothubDeviceStreaming](https://github.com/djaus2/AziothubDeviceStreaming) 
-- The Az IoTHub SDK Device streaming Echo qucikstart sample
-  - [How to tutorial](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-device-streams-echo-csharp)
-  - [Code](https://github.com/Azure-Samples/azure-iot-samples-csharp/archive/master.zip)
-    - Unzip and navigate from the unzip folder to /azure-iot-samples-csharp-master/iot-hub/Quickstarts/device-streams-echo/
-- [Az IoT Hub Device Streams Overview](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-device-streams-overview)
-- There is also a Device Streaming Proxy example (not discussed here, _yet_) where an arbitrary port on the client side can be funneled to the IoTHub using SSLs
-  - [How to tutorial](https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-device-streams-proxy-csharp)
-  - [Code](https://github.com/Azure-Samples/azure-iot-samples-csharp/archive/master.zip)
-    - Unzip and navigate from the unzip folder to /azure-iot-samples-csharp-master/iot-hub/Quickstarts/device-streams-proxy/
-
 **For this suite of projects I am attempting the refactor the Echo Example into a library that can be used in UWP apps.**
 
 ...<br>
