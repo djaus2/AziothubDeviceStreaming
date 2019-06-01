@@ -9,7 +9,7 @@ _I’ve developed a GitHub C# Library project for UWP Sockets:  [djaus2/SocketsU
 With this repository, I am attempting to use Azure IoTHub as the conduit in another project that mimics the socket stream functionality.
 
 # The GitHub Repository
-The (new) GitHub repository for this project:<br>  ![Solution Explorer](https://github.com/djaus2/AziothubDeviceStreaming/blob/master/images/Capture001.PNG)<br>
+![Solution Explorer](https://github.com/djaus2/AziothubDeviceStreaming/blob/master/images/Capture001.PNG)<br>
 **The repository projects.** <br>
 There are three sets of projects, as per the class library projects they use:
 - .Net Core
@@ -58,103 +58,6 @@ With this suite of C# projects you can test the Azure IoT Hub Device Streaming w
 
 **For this suite of projects I am attempting the refactor the Echo Example into a library that can be used in UWP apps.**
 
-# The Projects
-There are .NetCore, .NetStandard and UWP(.Net Framework) projects. The .NetCore libraries are for the .NetCore apps. 
-Similarly, UWP libraries are for the UWP apps. The .Net Standard libraries can be used with either
-
-## .Net Core Projects
-- Libraries
-	- DNCore_AzDeviceStreamsLib
-	- DNCore_AzureConnectionsDNCoreLib
-- Apps
-	- DNCore_DeviceApp
-	- DNCore_ServiceApp
-	- DNCore_OrigEchoSample_DeviceClientStreaming
-	- DNCore_OrigEchoSample_ServiceClientStreaming
-
-## .Net Standard Projects
-- Libraries
-	- DNStandard_AzDeviceStreamsLib
-	- DNStandard_AzureConnectionsLib
-
-## UWP Projects
-- Libraries
-	- UWP_AzDeviceStreamsUWPLib
-	- UWP_AzureConnectionsUWPLib
-- Apps
-	- UWP_Xaml_App
-	- UWP_ConsoleDevicetApp
-	- UWP_ConsoleSvcApp
-	- UWP_BGAppAzDeviceStream_Device
-	- UWP_BGAppAzDeviceStreamSvc2
-	- 
-## Hybrid Projects
-- Apps
-	- DNStandard_DeviceApp (.NetCore App using .Net Standard libraries)
-	- DNStandard_ServiceApp (.NetCore App using .Net Standard libraries)
-	- DNStandard_UWP_Xaml_App (UWP XAML App using .Net Standard libraries)
-
-
-With each target there is a Connection class which contains the IoT Hub connectivity settings:
-- IoT Hub Connection string
-- IoT Hub Device Connection string
-- IoT Hub Device Id (Eg "MyDevice")
-These are blank strings in teh repository. You can then set up one Az IoT Hub,  set up one device for it, and that can then be used throughout all projects.
-
-The other class library for each target contains the Azure IoTHub SDK functionality as refactored from the original sample apps.
-
-## .NetCore Apps
-To run in .NetCore mode set the target to AnyCPU, whereas for the UWP mode set the target for the target systems CPU.
-
-The apps for the .NetCore target are exactly the same as the device and server apps in the Echo Quickstart except that:
-- The IoT Hub functionality is removed and encapsulated in the AzDeviceStreams class libraries.
-- A callback delegate is used to pipe received messages to the app.
-- The app calls the library's API to send a message back
-- The device functionality echoes back the string to the service in uppercase
-- There are two code improvements as discussed later.
-
-Once the IoT Hub is set up you can run both apps simultaneously on the the same system.
-
-> [!NOTE]
-> There are now two versions of the .NetCore apps (besides the originals). 
-> One using the .NetCore libraries, the other the .Net Standard libraries.
-
-## UWP Apps
-To run in UWP mode set the  target for the target system's CPU (x86,x64 etc).
-
-The UWP class library is an exact copy of the .NetCore library (they use the same source code), but configured as a UWP class library.
-
-The UWP apps do work if they reference the .NetCore library instead but yoy have manually set the reference to to a specific DLL via browsing rather than referring to an included project in the solution. You may (??) need to also include some of the Nuget packages in the app tha the library uses. This has been now reworked and .Net Standard libraries have been added to the solution for this purpose.
-
-- UWP_Xaml_App<br>
-Implements both the Device and Service functionality
-- DNStandard_UWP_Xaml_App<br>
-UWP app but implements both the Device and Service functionality in .Net Standard
-- UWP_ConsoleDevicetApp<br>
-Implements the Device functionality as a UWP console app.
-- UWP_ConsoleSvcApp<br>
-Implements the Device functionality as a UWP console app.
-- UWP_BGAppAzDeviceStream_Device<br>
-Implements the Device functionality as a UWP Background Task. Runs only on IoT-Core
-- UWP_BGAppAzDeviceStreamSvc2<br>
-Implements the Service functionality as a UWP Background Task. Runs only on IoT-Core
-
-# Testing
-- Setup and Azure IoT Hub and add a device to it as per the [QuciskStart]((https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-device-streams-echo-csharp))
-- Get the Connection strings (both) and the DeviceId
-- Edit one AzureConnections class (only one as they all use teh same source code).
-- Set the Target and build
-- Run any pair of apps (Device and Stream) .Nb the UWPXamlApps can perform both ends
-
-Note that if run from Visual Studio, there are debug messages informing of the app's progress.
-
-## Outcomes Thus Far
-**_As per Status above, it is found that the Device when run as a UWP app does not connect with AMQP but does with MQTT transport for the device.
-
-# Code Improvements
-
-1. In RunSvcAsync() it was found that a call to close the stream was required. The Device reported that the socket was note closed properly at the other end. <br>The following was added at the end of the ```using (var stream = await DeviceStreaming ...``` segment just before the closing brace:
-```
-        await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
-```
+...<br>
+[Read more of my blog](https://davidjones.sportronics.com.au/azure/Azure-IoT-Hub-Device-Streaming-azure.html)
 
