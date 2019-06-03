@@ -16,7 +16,7 @@ With this repository, I am attempting to use Azure IoTHub as the conduit in anot
 
 # The GitHub Repository
 ![Solution Explorer](https://github.com/djaus2/AziothubDeviceStreaming/blob/master/images/Capture002.PNG)<br>
-**The repository projects.** <br>
+**The Version 2 Repository projects.**  _(5 less than Version 1)_ <br>
 There are three sets of projects, as per the class library projects they use:
 - .Net Core
 - .Net Standard
