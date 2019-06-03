@@ -6,8 +6,9 @@ A set of projects examining refactoring of the Azure IoTHub SDK Device Streaming
 > You do this by adding it, using Nuget, to the project
 > This was mentioned towards the end of the issue on GitHub [azure-iot-sdk-csharp/issues/784](https://github.com/Azure/azure-iot-sdk-csharp/issues/784)
 
-_**This is now Version 1 of the repository. With the solution implemented here the second version removes some of the test projects and builds upon the repository's functionality, uncluding only having .Net Stanard libraries as they can be used in both .Net Core apps and UWP apps.**_ Version 2 of the repository in here: [djaus2/AziothubDeviceStreaming-Master](https://github.com/djaus2/AziothubDeviceStreaming)
+_**This is now Version 1 of the repository. With the solution implemented here the second version removes some of the test projects and builds upon the repository's functionality, uncluding only having .Net Stanard libraries as they can be used in both .Net Core apps and UWP apps.**_ <br>Version 2 of the repository in here: [djaus2/AziothubDeviceStreaming-Master](https://github.com/djaus2/AziothubDeviceStreaming)
 
+<hr>
 
 # Background
 Azure IoT Hub Device Streaming, although in Preview, is a cool technology. It enables an IoT device to receive messages from another system (the service: for example a user app) and for device to respond by sending back a message to the service. An Azure IoT Hub acts as the intermediary in the communications. No modules are needed to be installed in the hub. The functionality is implemented by calls to the IoT Hub SDK by both the device and service apps.
