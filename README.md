@@ -27,7 +27,7 @@ The original Sample Azure IoTHub Device Streaming apps are included as standalon
 
  There are two types of libraries, built for each of the SDK Framework types:
 - The Device Streaming Functionality: Encap[sulted from the sample apps.
-- The Connections: The Hub conenction strings etc. (_Nb: In the repository left blank)_
+- The Connections: The Hub conenction strings etc. _(Nb: In the repository left blank)_
 
 All common code is located in a folder common off the Solution folder. Each of the libraries use the same source code form here; just built for a different SDK.
 
