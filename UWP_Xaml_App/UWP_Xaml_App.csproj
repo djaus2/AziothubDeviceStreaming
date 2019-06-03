@@ -160,13 +160,13 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UWP_AzDeviceStreamsLib\UWP_AzDeviceStreamsLib.csproj">
-      <Project>{152a618a-bf06-4316-b566-ed5e47f726c0}</Project>
-      <Name>UWP_AzDeviceStreamsLib</Name>
+    <ProjectReference Include="..\DNStandard_AzDeviceStreaming\DNStandard_AzDeviceStreamingLib.csproj">
+      <Project>{daa4a52e-c175-4b0a-921d-050db55874e2}</Project>
+      <Name>DNStandard_AzDeviceStreamingLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UWP_AzureConnectionsLib\UWP_AzureConnectionsLib.csproj">
-      <Project>{2459b2de-c604-464d-bd1e-509c7907809e}</Project>
-      <Name>UWP_AzureConnectionsLib</Name>
+    <ProjectReference Include="..\DNStandard_AzureConnectionsLib\DNStandard_AzureConnectionsLib.csproj">
+      <Project>{02549731-8979-48bb-bd26-d313828c3aac}</Project>
+      <Name>DNStandard_AzureConnectionsLib</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

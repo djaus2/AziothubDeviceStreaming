@@ -11,9 +11,8 @@
     <PackageReference Include="Microsoft.Azure.Devices" Version="1.27.0-preview-003" />
   </ItemGroup>
 
-
   <ItemGroup>
-    <ProjectReference Include="..\DNCore_AzDeviceStreamsLib\DNCore_AzDeviceStreamsLib.csproj" />
-    <ProjectReference Include="..\DNCore_AzureConnectionsLib\DNCore_AzureConnectionsLib.csproj" />
+    <ProjectReference Include="..\DNStandard_AzDeviceStreaming\DNStandard_AzDeviceStreamingLib.csproj" />
+    <ProjectReference Include="..\DNStandard_AzureConnectionsLib\DNStandard_AzureConnectionsLib.csproj" />
   </ItemGroup>
 </Project>
