@@ -17,16 +17,15 @@ With this repository, I am attempting to use Azure IoTHub as the conduit in anot
 # The GitHub Repository
 ![Solution Explorer](https://github.com/djaus2/AziothubDeviceStreaming/blob/master/images/Capture002.PNG)<br>
 **The Version 2 Repository projects.**  _(5 less than Version 1)_ <br>
-There are three sets of projects, as per the class library projects they use:
+There are three sets of app projects. All now use >Net Standard Libraries.
 - .Net Core
 - .Net Standard
 - UWP (.Net Framework)
-There is also some crossing of boundaries. For eaxample, there isa a UWP apps that uses the.Net Standard version of the libraries.
 
 The original Sample Azure IoTHub Device Streaming apps are included as standalone .NetCore apps. There is some slight modification of the given code but it essentially as supplied on GitHub (except for two changes as noted below.))
 
- There are two types of libraries, built for each of the SDK Framework types:
-- The Device Streaming Functionality: Encap[sulted from the sample apps.
+ There are two libraries, now only built using the .Net Core SDK Framework.
+- The Device Streaming Functionality: Encapsulted from the sample apps.
 - The Connections: The Hub conenction strings etc. _(Nb: In the repository left blank)_
 
 All common code is located in a folder common off the Solution folder. Each of the libraries use the same source code form here; just built for a different SDK.
