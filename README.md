@@ -3,7 +3,7 @@ A set of projects examining refactoring of the Azure IoTHub SDK Device Streaming
 The aim is to develop a library that implements the device and service functionality of IoT Hub Device Streaming that can be used in UWP apps. 
 It was found in version 1 of this repository that a couple of small code changes were required as well as the update of the Nuget package Micrososoft.Azure.Amqp.
 
-_**This is Version 2 of the repository. This version removes some of the test projects and builds upon the repository's functionality, uncluding only having .Net Stanard libraries as they can be used in both .Net Core apps and UWP apps.**_ 
+_**This is Version 2 of the repository. This version removes some of the test projects and builds upon the repository's functionality, including only having .Net Stanard libraries as they can be used in both .Net Core apps and UWP apps.**_ 
 <br>Version 1 of the repository in here: [djaus2/AziothubDeviceStreaming-master-original](https://github.com/djaus2/AziothubDeviceStreaming/tree/master_original)
 
 <hr>
