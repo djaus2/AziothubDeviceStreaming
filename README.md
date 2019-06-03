@@ -1,5 +1,12 @@
-# Azure IoT Hub Device Streaming
+)# Azure IoT Hub Device Streaming
 A set of projects examining refactoring of the Azure IoTHub SDK Device Streaming Echo sample functionality as .Net Core and UWP reusable libraries. The aim is to develop a library taht implements the device and service functionality of IoT Hub Device Streaming that can be used in UWP apps.
+
+# We now have a solution to issues raised here
+> Update Microsoft.Azure.Amqp to the latest version (2.4.2)
+> You do this by adding it, using Nuget, to the project
+> This was mentioned towards the end of the issue on GitHub [azure-iot-sdk-csharp/issues/784](https://github.com/Azure/azure-iot-sdk-csharp/issues/784)
+
+_**This is now Version 1 of the repository. With the solution implemented here the second version reoes some of the test projects and builds on the repository's functionality, uncluding only havine .Net Stanard libraries as they can be used in both .Net Core apps and UWP apps.**_ Version 2 of the repository in here: [djaus2/AziothubDeviceStreaming-Master](https://github.com/djaus2/AziothubDeviceStreaming)
 
 
 # Background
