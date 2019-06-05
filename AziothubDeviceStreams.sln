@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzDeviceStreaming", "AzDeviceStreaming\AzDeviceStreaming.csproj", "{DAA4A52E-C175-4B0A-921D-050DB55874E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureConnections", "AzureConnections\AzureConnections.csproj", "{02549731-8979-48BB-BD26-D313828C3AAC}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP_Xaml_App", "UWP_Xaml_App\UWP_Xaml_App.csproj", "{54396A12-9EB5-4CA1-A82C-2A3970088520}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNCore_DeviceApp", "DNCore_DeviceApp\DNCore_DeviceApp.csproj", "{5300F2F9-9930-48BA-9340-ED93726C5D7E}"
@@ -21,10 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNCore_OrigEchoSample_Servi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWP_Console_DeviceApp", "UWP_Console_DeviceApp\UWP_Console_DeviceApp.csproj", "{6BE9E64C-76C5-4B4F-9BE4-3450D08D25D5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNStandard_AzDeviceStreamingLib", "DNStandard_AzDeviceStreaming\DNStandard_AzDeviceStreamingLib.csproj", "{DAA4A52E-C175-4B0A-921D-050DB55874E2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNStandard_AzureConnectionsLib", "DNStandard_AzureConnectionsLib\DNStandard_AzureConnectionsLib.csproj", "{02549731-8979-48BB-BD26-D313828C3AAC}"
-EndProject
+
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNStandard_DeviceApp", "DNStandard_DeviceApp\DNStandard_DeviceApp.csproj", "{F26000A3-C46C-4772-9265-46BFBA46C719}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNStandard_ServiceApp", "DNStandard_ServiceApp\DNStandard_ServiceApp.csproj", "{4297BAFB-5973-4935-AD41-7AA74C6D6A22}"

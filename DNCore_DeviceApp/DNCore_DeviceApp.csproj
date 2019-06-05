@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DNStandard_AzDeviceStreaming\DNStandard_AzDeviceStreamingLib.csproj" />
-    <ProjectReference Include="..\DNStandard_AzureConnectionsLib\DNStandard_AzureConnectionsLib.csproj" />
+    <ProjectReference Include="..\AzDeviceStreaming\AzDeviceStreaming.csproj" />
+    <ProjectReference Include="..\AzureConnections\AzureConnections.csproj" />
   </ItemGroup>
 </Project>
