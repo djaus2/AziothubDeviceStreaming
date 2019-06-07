@@ -16,22 +16,19 @@ namespace AzIoTHubDeviceStreams
     {
         private DeviceClient _deviceClient;
         public ActionReceivedTextIO OnRecvdTextIO = null;
+        public KeepConnectionAlive KeepAlive = null;
+        public RespondToServer Respond = null;
 
-
-
-
-
-
-
-
-
-        public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText)
+        public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText, KeepConnectionAlive _KeepAlive, RespondToServer _Respond)
         {
             _deviceClient = deviceClient;
             OnRecvdTextIO = _OnRecvdText;
+            KeepAlive = _KeepAlive;
+            Respond = _Respond;
         }
 
-        public static async Task RunDevice(string device_cs, ActionReceivedTextIO _OnRecvText)
+
+        public static async Task RunDevice(string device_cs, ActionReceivedTextIO _OnRecvText, KeepConnectionAlive _KeepAlive=null, RespondToServer _Respond=null)
         {
             TransportType device_hubTransportTryp = DeviceStreamingCommon.device_transportType;
             try
@@ -44,7 +41,7 @@ namespace AzIoTHubDeviceStreams
                         //return null;
                     }
 
-                    var sample = new DeviceStream_Device(deviceClient, _OnRecvText);
+                    var sample = new DeviceStream_Device(deviceClient, _OnRecvText, _KeepAlive, _Respond);
                     if (sample == null)
                     {
                         System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamClient!");
@@ -139,16 +136,25 @@ namespace AzIoTHubDeviceStreams
                                 System.Diagnostics.Debug.WriteLine("Client-5");
                                 using (ClientWebSocket webSocket = await DeviceStreamingCommon.GetStreamingClientAsync(streamRequest.Url, streamRequest.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
                                 {
-                                    WebSocketReceiveResult receiveResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, 0, buffer.Length), cancellationTokenSource.Token).ConfigureAwait(false);
-                                    string msgIn = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
-                                    System.Diagnostics.Debug.WriteLine(string.Format("Client Received stream data: {0}", msgIn));
-                                    string msgOut = msgIn;
-                                    if (OnRecvdTextIO != null)
-                                        msgOut = OnRecvdTextIO(msgIn);
-                                    byte[] sendBuffer = Encoding.UTF8.GetBytes(msgOut);
+                                    do
+                                    {
+                                        WebSocketReceiveResult receiveResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, 0, buffer.Length), cancellationTokenSource.Token).ConfigureAwait(false);
+                                        string msgIn = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
+                                        System.Diagnostics.Debug.WriteLine(string.Format("Client Received stream data: {0}", msgIn));
+                                        string msgOut = msgIn;
+                                        if (OnRecvdTextIO != null)
+                                            msgOut = OnRecvdTextIO(msgIn);
 
-                                    await webSocket.SendAsync(new ArraySegment<byte>(sendBuffer, 0, sendBuffer.Length), WebSocketMessageType.Binary, true, cancellationTokenSource.Token).ConfigureAwait(false);
-                                    System.Diagnostics.Debug.WriteLine(string.Format("Client Sent stream data: {0}", Encoding.UTF8.GetString(sendBuffer, 0, sendBuffer.Length)));
+                                        //By default respond
+                                        if (Respond!=null?Respond():true)
+                                        {
+                                            byte[] sendBuffer = Encoding.UTF8.GetBytes(msgOut);
+
+                                            await webSocket.SendAsync(new ArraySegment<byte>(sendBuffer, 0, sendBuffer.Length), WebSocketMessageType.Binary, true, cancellationTokenSource.Token).ConfigureAwait(false);
+                                            System.Diagnostics.Debug.WriteLine(string.Format("Client Sent stream data: {0}", Encoding.UTF8.GetString(sendBuffer, 0, sendBuffer.Length)));
+                                        }
+                                    //By default do not loop    
+                                    } while (KeepAlive!=null?KeepAlive():false);
 
                                     await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
                                 }

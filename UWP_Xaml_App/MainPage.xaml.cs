@@ -37,13 +37,10 @@ namespace UWPXamlApp
             if (value is Microsoft.Azure.Devices.Client.TransportType)
             {
                 Microsoft.Azure.Devices.Client.TransportType trans = (Microsoft.Azure.Devices.Client.TransportType)value;
-                if (trans != null)
-                    return trans.ToString();
-                else
-                    return "vv";
+                return trans.ToString();
             }
             else
-                return "zz";
+                return "unknown";
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, string language)
@@ -57,11 +54,14 @@ namespace UWPXamlApp
         string device_id = AzureConnections.MyConnections.DeviceId;
         string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
+        AzureConnections.DeviceCurrentSettings deviceSettings = null;
+
         public  List<Microsoft.Azure.Devices.Client.TransportType> ListEnum { get { return typeof(Microsoft.Azure.Devices.Client.TransportType).GetEnumValues().Cast<Microsoft.Azure.Devices.Client.TransportType>().ToList(); } }
 
         public MainPage()
         {
             this.InitializeComponent();
+            deviceSettings = new AzureConnections.DeviceCurrentSettings();
         }
 
         private void OnrecvText(string recvTxt)
@@ -74,8 +74,12 @@ namespace UWPXamlApp
             });
         }
 
-        private string OnrecvTextIO(string msgIn)
-        { 
+        private string OnDeviceRecvText(string msgIn)
+        {
+            //A simple implmentation of settings. Device calls GetKeepAlive() and GetRespond() to get these.
+            deviceSettings.SetKeepAlive(msgIn.ToLower().Contains('k'));
+            deviceSettings.SetRespond(msgIn.ToLower().Contains('r'));
+
             string msgOut =msgIn.ToUpper();
             Task.Run(async () => {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -171,7 +175,7 @@ namespace UWPXamlApp
                 {
                     try
                     {
-                        DeviceStream_Device.RunDevice(device_cs, OnrecvTextIO).GetAwaiter().GetResult();
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, deviceSettings.GetKeepAlive, deviceSettings.GetRespond).GetAwaiter().GetResult();
                     }
                     catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                     {

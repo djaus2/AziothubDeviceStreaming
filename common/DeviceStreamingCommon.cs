@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace AzIoTHubDeviceStreams
 {
+    public delegate bool KeepConnectionAlive();
+    public delegate bool RespondToServer();
     public delegate void ActionReceivedText(string recvTxt);
 
     public delegate string ActionReceivedTextIO(string recvTxt);
