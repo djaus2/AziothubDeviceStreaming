@@ -78,8 +78,25 @@ namespace AzureConnections
 
     public class SvcCurrentSettings
     {
+        private bool expectResponse { get; set; } = true; //default
+        private bool keepAlive { get; set; } = false; //default
+
+        public bool GetKeepAlive()
+        { return keepAlive; }
+
+        public bool GetExpectResponse()
+        { return expectResponse; }
+
+        public void SetKeepAlive(bool val)
+        { keepAlive = val; }
+
+        public void SetExpectResponse(bool val)
+        { expectResponse = val; }
+
         public string ProcessMsgOut(string msgOut, bool keepAlive = false, bool expectReply = true)
         {
+            SetKeepAlive(keepAlive);
+            SetExpectResponse(expectReply);
             if (keepAlive)
                 msgOut = "~" + msgOut;
             if (expectReply)

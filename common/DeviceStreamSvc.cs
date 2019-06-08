@@ -18,18 +18,23 @@ namespace AzIoTHubDeviceStreams
         //Microsoft.Azure.Devices.ServiceClient ;
         private ServiceClient _serviceClient;
         public ActionReceivedText OnRecvdText = null;
-        bool KeepAlive = false;
-        bool ExpectResponse = true;
 
-        public static string MsgOut { get; set; }
+        public KeepConnectionAlive KeepAlive = null;
+        public ExpectResponseFromDevice ExpectResponse = null;
+
+        //static bool KeepAlive = false;
+        //static bool ExpectResponse = true;
+
+        public string MsgOut { get; set; }
         public static string MsgIn { get; set; }
 
-        private static AutoResetEvent MsgOutWaitHandle = null;
+        private  AutoResetEvent MsgOutWaitHandle = null;
+        private static DeviceStream_Svc sample = null;
 
         private String _deviceId;
         //private string _connectionString;
 
-        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string _msgOut, ActionReceivedText _OnRecvdText, bool _KeepAlive=false, bool _ExpectResponse=true)
+        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string _msgOut, ActionReceivedText _OnRecvdText, KeepConnectionAlive _KeepAlive =null, ExpectResponseFromDevice _ExpectResponse =null)
         {
             _serviceClient = deviceClient;
             _deviceId = deviceId;
@@ -39,12 +44,29 @@ namespace AzIoTHubDeviceStreams
             OnRecvdText = _OnRecvdText;
         }
 
-        public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdText, bool _KeepAlive = false, bool _Respond = true)
+        public static bool SignalSendMsgOut(string msgOut)
         {
-            MsgOut = msgOut;
-            if (MsgOutWaitHandle != null)
+            if (sample != null)
             {
-                MsgOutWaitHandle.Set();
+                sample.MsgOut = msgOut;
+                if (sample.MsgOutWaitHandle != null)
+                {
+                    sample.MsgOutWaitHandle.Set();
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+
+        public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdText, KeepConnectionAlive _KeepAlive = null, ExpectResponseFromDevice _ExpectResponse = null)
+        {
+            if (sample != null)
+            {
+                System.Diagnostics.Debug.WriteLine("Svc Socket is already open!");
+                return;
             }
             else
             {
@@ -57,7 +79,7 @@ namespace AzIoTHubDeviceStreams
                             System.Diagnostics.Debug.WriteLine("Failed to create SericeClient!");
                             //return null;
                         }
-                        var sample = new DeviceStream_Svc(serviceClient, deviceId, msgOut, _OnRecvdText, _KeepAlive, _Respond);
+                        sample = new DeviceStream_Svc(serviceClient, deviceId, msgOut, _OnRecvdText, _KeepAlive, _ExpectResponse);
                         if (sample == null)
                         {
                             System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamSvc!");
@@ -156,7 +178,7 @@ namespace AzIoTHubDeviceStreams
                                     //Nb: Not waited on first entry as waiting for msgOut, which we already have.
                                     MsgOutWaitHandle.WaitOne();
                                     await SendMsg(stream, MsgOut, cancellationTokenSource);
-                                    if (ExpectResponse)
+                                    if (ExpectResponse != null ? ExpectResponse() : true)
                                     {
                                         byte[] receiveBuffer = new byte[1024];
                                         System.ArraySegment<byte> ReceiveBuffer = new ArraySegment<byte>(receiveBuffer);
@@ -171,10 +193,11 @@ namespace AzIoTHubDeviceStreams
                                         System.Diagnostics.Debug.WriteLine(string.Format("Svc Received stream data: {0}", MsgIn));
                                     }
                                     MsgOutWaitHandle.Reset();
-                                } while (KeepAlive);
+                                } while (KeepAlive!=null?KeepAlive():false);
                                 MsgOutWaitHandle = null;
                                 System.Diagnostics.Debug.WriteLine("Closing Svc Socket");
-                                await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);                            
+                                await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
+                                sample = null;
                             }
                         }
                         catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)

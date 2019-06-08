@@ -50,7 +50,7 @@
             <Button x:Name="btnListen" 
                 Content="Start Listening as Device"  Height="120" Margin="20,20,0,0" VerticalAlignment="Top" Width="300" Click="Button_Click_Device"/>
             <TextBlock x:Name="lblNb" RelativePanel.Below="btnListen" RelativePanel.AlignLeftWith="btnListen" FontStyle="Italic" FontWeight="Bold"
-                Text="Nb: Only active for one recieved message." Margin="20,20,0,0"  />
+                Text="Nb: Only active for one recieved message if NOT KeepAlive." Margin="20,20,0,0"  />
 
             <TextBlock x:Name="lblDeviceTimeout" RelativePanel.RightOf="btnListen" Width="220" TextAlignment="Right" 
                 Text="Device - Timeout (ms):" Margin="20,20,0,0"  />
