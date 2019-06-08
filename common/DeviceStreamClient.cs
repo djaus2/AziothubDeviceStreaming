@@ -54,27 +54,27 @@ namespace AzIoTHubDeviceStreams
                     }
                     catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                     {
-                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Hub connection failure");
+                        System.Diagnostics.Debug.WriteLine("3 Error RunDevice(): Hub connection failure");
                     }
                     catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
                     {
-                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Device not found");
+                        System.Diagnostics.Debug.WriteLine("3 Error RunDevice(): Device not found");
                     }
                     catch (TaskCanceledException)
                     {
-                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Task canceled");
+                        System.Diagnostics.Debug.WriteLine("3 Error RunDevice(): Task canceled");
                     }
                     catch (OperationCanceledException)
                     {
-                        System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Operation canceled");
+                        System.Diagnostics.Debug.WriteLine("3 Error RunDevice(): Operation canceled");
                     }
                     catch (Exception ex)
                     {
                         if (!ex.Message.Contains("Timeout"))
-                            System.Diagnostics.Debug.WriteLine("3 Error RunClient(): " + ex.Message);
+                            System.Diagnostics.Debug.WriteLine("3 Error RunDevice(): " + ex.Message);
                         else
                         {
-                            System.Diagnostics.Debug.WriteLine("3 Error RunClient(): Timeout");
+                            System.Diagnostics.Debug.WriteLine("3 Error RunDevice(): Timeout");
                         }
                     }
 
@@ -83,27 +83,27 @@ namespace AzIoTHubDeviceStreams
             }
             catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
             {
-                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Hub connection failure");
+                System.Diagnostics.Debug.WriteLine("4 Error RunDevice(): Hub connection failure");
             }
             catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
             {
-                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Device not found");
+                System.Diagnostics.Debug.WriteLine("4 Error RunDevice(): Device not found");
             }
             catch (TaskCanceledException)
             {
-                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Task canceled");
+                System.Diagnostics.Debug.WriteLine("4 Error RunDevice(): Task canceled");
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException eex)
             {
-                System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Operation canceled");
+                System.Diagnostics.Debug.WriteLine("4 Error RunDevice(): Operation canceled \r\n" + eex.Message);
             }
             catch (Exception ex)
             {
                 if (!ex.Message.Contains("Timeout"))
-                    System.Diagnostics.Debug.WriteLine("4 Error RunClient(): " + ex.Message);
+                    System.Diagnostics.Debug.WriteLine("4 Error RunDevice(): " + ex.Message);
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("4 Error RunClient(): Timeout");
+                    System.Diagnostics.Debug.WriteLine("4 Error RunDevice(): Timeout");
                 }
             }
         }
@@ -119,28 +119,28 @@ namespace AzIoTHubDeviceStreams
 
             try
             {
-                System.Diagnostics.Debug.WriteLine("Client-1");
+                System.Diagnostics.Debug.WriteLine("Device-1");
                 using (var cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
                 {
                     try
                     {
-                        System.Diagnostics.Debug.WriteLine("Client-2");
+                        System.Diagnostics.Debug.WriteLine("Device-2");
                         Microsoft.Azure.Devices.Client.DeviceStreamRequest streamRequest = await _deviceClient.WaitForDeviceStreamRequestAsync(cancellationTokenSource.Token).ConfigureAwait(false);
-                        System.Diagnostics.Debug.WriteLine("Client-3");
+                        System.Diagnostics.Debug.WriteLine("Device-3");
                         if (streamRequest != null)
                         {
                             if (acceptDeviceStreamingRequest)
                             {
-                                System.Diagnostics.Debug.WriteLine("Client-4");
+                                System.Diagnostics.Debug.WriteLine("Device-4");
                                 await _deviceClient.AcceptDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
-                                System.Diagnostics.Debug.WriteLine("Client-5");
+                                System.Diagnostics.Debug.WriteLine("Device-5");
                                 using (ClientWebSocket webSocket = await DeviceStreamingCommon.GetStreamingClientAsync(streamRequest.Url, streamRequest.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
                                 {
                                     do
                                     {
                                         WebSocketReceiveResult receiveResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, 0, buffer.Length), cancellationTokenSource.Token).ConfigureAwait(false);
                                         string msgIn = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
-                                        System.Diagnostics.Debug.WriteLine(string.Format("Client Received stream data: {0}", msgIn));
+                                        System.Diagnostics.Debug.WriteLine(string.Format("Device Received stream data: {0}", msgIn));
                                         string msgOut = msgIn;
                                         if (OnRecvdTextIO != null)
                                             msgOut = OnRecvdTextIO(msgIn);
@@ -151,11 +151,12 @@ namespace AzIoTHubDeviceStreams
                                             byte[] sendBuffer = Encoding.UTF8.GetBytes(msgOut);
 
                                             await webSocket.SendAsync(new ArraySegment<byte>(sendBuffer, 0, sendBuffer.Length), WebSocketMessageType.Binary, true, cancellationTokenSource.Token).ConfigureAwait(false);
-                                            System.Diagnostics.Debug.WriteLine(string.Format("Client Sent stream data: {0}", Encoding.UTF8.GetString(sendBuffer, 0, sendBuffer.Length)));
+                                            System.Diagnostics.Debug.WriteLine(string.Format("Device Sent stream data: {0}", Encoding.UTF8.GetString(sendBuffer, 0, sendBuffer.Length)));
                                         }
                                     //By default do not loop    
                                     } while (KeepAlive!=null?KeepAlive():false);
 
+                                    System.Diagnostics.Debug.WriteLine("Closing Device Socket");
                                     await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
                                 }
                             }
@@ -169,54 +170,54 @@ namespace AzIoTHubDeviceStreams
                     }
                     catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                     {
-                        System.Diagnostics.Debug.WriteLine("1 Error RunClientAsync(): Hub connection failure");
+                        System.Diagnostics.Debug.WriteLine("1 Error RunDeviceAsync(): Hub connection failure");
                     }
                     catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
                     {
-                        System.Diagnostics.Debug.WriteLine("1 Error RunClientAsync(): Device not found");
+                        System.Diagnostics.Debug.WriteLine("1 Error RunDeviceAsync(): Device not found");
                     }
                     catch (TaskCanceledException)
                     {
-                        System.Diagnostics.Debug.WriteLine("1 Error RunClientAsync(): Task canceled");
+                        System.Diagnostics.Debug.WriteLine("1 Error RunDeviceAsync(): Task canceled");
                     }
-                    catch (OperationCanceledException)
+                    catch (OperationCanceledException eex)
                     {
-                        System.Diagnostics.Debug.WriteLine("1 Error RunClientAsync(): Operation canceled");
+                        System.Diagnostics.Debug.WriteLine("1 Error RunDeviceAsync(): Operation canceled \r\n" + eex.Message);
                     }
                     catch (Exception ex)
                     {
                         if (!ex.Message.Contains("Timeout"))
-                            System.Diagnostics.Debug.WriteLine("1 Error RunClientAsync(): " + ex.Message);
+                            System.Diagnostics.Debug.WriteLine("1 Error RunDeviceAsync(): " + ex.Message);
                         else
                         {
-                            System.Diagnostics.Debug.WriteLine("1 Error RunClientAsync(): Timeout");
+                            System.Diagnostics.Debug.WriteLine("1 Error RunDeviceAsync(): Timeout");
                         }
                     }
                 }
             }
             catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
             {
-                System.Diagnostics.Debug.WriteLine("2 Error RunClientAsync(): Hub connection failure");
+                System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Hub connection failure");
             }
             catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
             {
-                System.Diagnostics.Debug.WriteLine("2 Error RunClientAsync(): Device not found");
+                System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Device not found");
             }
             catch (TaskCanceledException)
             {
-                System.Diagnostics.Debug.WriteLine("2 Error RunClientAsync(): Task canceled");
+                System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Task canceled");
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException eex)
             {
-                System.Diagnostics.Debug.WriteLine("2 Error RunClientAsync(): Operation canceled");
+                System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Operation canceled \r\n" + eex.Message);
             }
             catch (Exception ex)
             {
                 if (!ex.Message.Contains("Timeout"))
-                    System.Diagnostics.Debug.WriteLine("2 Error RunClientAsync(): " + ex.Message);
+                    System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): " + ex.Message);
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("2 Error RunClientAsync(): Timeout");
+                    System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Timeout");
                 }
             }
         }
