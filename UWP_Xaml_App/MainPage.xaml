@@ -17,6 +17,12 @@
         <RelativePanel Background="Beige">
             <Button x:Name="btnSend" 
                 Content="Send using Service" Height="120" Margin="20" VerticalAlignment="Top" Width="300" Click="Button_Click_Svc"/>
+            <CheckBox x:Name="chkKeepAlive" Content="Keep connection alive."
+                      RelativePanel.Below="btnSend" Margin="20,10,0,0"
+                      />
+            <CheckBox x:Name="chkExpectResponse" Content="Expect response." IsChecked="True"
+                      RelativePanel.Below="chkKeepAlive" Margin="20,10,0,0"
+                      />
             <TextBlock x:Name="lblSvcTimeout" RelativePanel.RightOf="btnSend" Width="200" TextAlignment="Right"
                 Text="Service - Timeout (ms):" Margin="20,20,0,0"  />
 
