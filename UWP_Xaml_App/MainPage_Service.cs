@@ -12,12 +12,13 @@ namespace UWPXamlApp
 {
     sealed partial class MainPage : Page
     {
-        private void OnSvcRecvText(string recvTxt)
+        private void OnSvcRecvText(string recvdMsg)
         {
+            string msg2 = svcSettings.ProcessMsgIn(recvdMsg);
             Task.Run(async () => {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    tbSvcMsgIn.Text = recvTxt;
+                    tbSvcMsgIn.Text = recvdMsg;
                 });
             });
         }
@@ -29,7 +30,8 @@ namespace UWPXamlApp
                 DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(to);
             string msgOut = tbSvcMsgOut.Text;
             bool KeepAlive = (chkKeepAlive.IsChecked == true);
-            bool Response = (chkExpectResponse.IsChecked == true);
+            bool ExpectResponse = (chkExpectResponse.IsChecked == true);
+            msgOut = svcSettings.ProcessMsgOut(msgOut, KeepAlive, ExpectResponse);
 
             try
             {
@@ -38,7 +40,7 @@ namespace UWPXamlApp
                     try
                     {
 
-                        DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, KeepAlive,Response).GetAwaiter().GetResult();
+                        DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, KeepAlive,ExpectResponse).GetAwaiter().GetResult();
 
                     }
                     catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)

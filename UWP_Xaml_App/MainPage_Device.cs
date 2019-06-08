@@ -14,11 +14,7 @@ namespace UWPXamlApp
     {
         private string OnDeviceRecvText(string msgIn)
         {
-            //A simple implmentation of settings. Device calls GetKeepAlive() and GetRespond() to get these.
-            deviceSettings.SetKeepAlive(msgIn.ToLower().Contains('~'));
-            deviceSettings.SetRespond(msgIn.ToLower().Contains('`'));
-
-            string msgOut = msgIn.ToUpper();
+            string msgOut = deviceSettings.ProcessMsgIn(msgIn);
             Task.Run(async () => {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {

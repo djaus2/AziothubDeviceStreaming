@@ -28,6 +28,7 @@ namespace UWPXamlApp
         string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
         AzureConnections.DeviceCurrentSettings deviceSettings = null;
+        AzureConnections.SvcCurrentSettings svcSettings = null;
 
         public  List<Microsoft.Azure.Devices.Client.TransportType> ListEnum { get { return typeof(Microsoft.Azure.Devices.Client.TransportType).GetEnumValues().Cast<Microsoft.Azure.Devices.Client.TransportType>().ToList(); } }
 
@@ -35,6 +36,7 @@ namespace UWPXamlApp
         {
             this.InitializeComponent();
             deviceSettings = new AzureConnections.DeviceCurrentSettings();
+            svcSettings = new AzureConnections.SvcCurrentSettings();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
