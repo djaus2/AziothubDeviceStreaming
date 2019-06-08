@@ -173,6 +173,7 @@ namespace AzIoTHubDeviceStreams
                                     MsgOutWaitHandle.Reset();
                                 } while (KeepAlive);
                                 MsgOutWaitHandle = null;
+                                System.Diagnostics.Debug.WriteLine("Closing Svc Socket");
                                 await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);                            
                             }
                         }
