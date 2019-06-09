@@ -1,5 +1,5 @@
 # Azure IoT Hub Device Streaming
-In the previous post, some issues were raised wrt refactoring of the Azure IoTHub SDK Device Streaming Echo sample functionality as .Net Core and UWP reusable libraries. These issues have been resolved and the library is now presented as a .Net Standard library that can be used in .Net Core, UWP and Xamarin apps (last yet to be tested). The library implements the device and service functionality of IoT Hub Device Streaming that can be used in UWP and other types apps.
+In the previous version of this repository, some issues were raised wrt refactoring of the Azure IoTHub SDK Device Streaming Echo sample functionality as .Net Core and UWP reusable libraries. These issues have been resolved and the library is now presented as a .Net Standard library that can be used in .Net Core, UWP and Xamarin apps (last yet to be tested). The library implements the device and service functionality of IoT Hub Device Streaming that can be used in UWP and other types apps.
 <!--more-->
 
 My blog on this: [djaus2/AziothubDeviceStreaming](https://davidjones.sportronics.com.au/2020-06-09-Azure-IoT-Hub-Device-Streaming-A-Libray-azure.html)<br>
