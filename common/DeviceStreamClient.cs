@@ -15,9 +15,9 @@ namespace AzIoTHubDeviceStreams
     public class DeviceStream_Device
     {
         private DeviceClient _deviceClient;
-        public ActionReceivedTextIO OnRecvdTextIO = null;
-        public KeepConnectionAlive KeepAlive = null;
-        public RespondToServer Respond = null;
+        private ActionReceivedTextIO OnRecvdTextIO = null;
+        private KeepConnectionAlive KeepAlive = null;
+        private RespondToServer Respond = null;
 
         public static DeviceStream_Device deviceStream_Device = null;
 
@@ -28,7 +28,6 @@ namespace AzIoTHubDeviceStreams
             KeepAlive = _KeepAlive;
             Respond = _Respond;
         }
-
 
         public static async Task RunDevice(string device_cs, ActionReceivedTextIO _OnRecvText, KeepConnectionAlive _KeepAlive=null, RespondToServer _Respond=null)
         {
@@ -110,19 +109,19 @@ namespace AzIoTHubDeviceStreams
             }
         }
 
-        public async Task RunDeviceAsync()
-        {
-            await RunDeviceAsync(true).ConfigureAwait(false);
-        }
-
-        CancellationTokenSource cancellationTokenSource = null;
-
         public void Cancel()
         {
             cancellationTokenSource?.Cancel();
         }
 
-        public async Task RunDeviceAsync(bool acceptDeviceStreamingRequest)
+        private async Task RunDeviceAsync()
+        {
+            await RunDeviceAsync(true).ConfigureAwait(false);
+        }
+
+        private CancellationTokenSource cancellationTokenSource = null;
+
+        private async Task RunDeviceAsync(bool acceptDeviceStreamingRequest)
         {
             byte[] buffer = new byte[1024];
 
@@ -203,7 +202,6 @@ namespace AzIoTHubDeviceStreams
                         }
                     }
                 }
-                deviceStream_Device = null;
             }
             catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
             {
@@ -230,8 +228,8 @@ namespace AzIoTHubDeviceStreams
                     System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Timeout");
                 }
             }
-        }
-
-
+            cancellationTokenSource = null;
+            deviceStream_Device = null;
+        }     
     }
 }

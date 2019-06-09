@@ -22,6 +22,10 @@ namespace UWPXamlApp
                 });
             });
         }
+        private void ButtonCanceLSvc_Click(object sender, RoutedEventArgs e)
+        {
+            DeviceStream_Svc.deviceStream_Svc?.Cancel();
+        }
 
         private async void Button_Click_Svc(object sender, RoutedEventArgs e)
         {

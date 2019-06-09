@@ -16,13 +16,16 @@
         <TextBlock Text="Sportronics: UWP Azure IoT Hub Device Streaming" Margin ="100,20,20,20" Foreground="Blue" FontSize="32" FontWeight="Bold"/>
         <RelativePanel Background="Beige">
             <Button x:Name="btnSend" 
-                Content="Send using Service" Height="120" Margin="20" VerticalAlignment="Top" Width="300" Click="Button_Click_Svc"/>
+                Content="Send using Service" Height="120" Width="336" Click="Button_Click_Svc"/>
             <CheckBox x:Name="chkKeepAlive" Content="Keep connection alive."
                       RelativePanel.Below="btnSend" Margin="20,10,0,0"
                       />
             <CheckBox x:Name="chkExpectResponse" Content="Expect response." IsChecked="True"
                       RelativePanel.Below="chkKeepAlive" Margin="20,10,0,0"
                       />
+            <Button x:Name="btnCancelSvc" Content="Cancel Device" RelativePanel.Below="btnSend" RelativePanel.AlignRightWith="btnSend"
+                    Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLDevice_Click"/>
+            
             <TextBlock x:Name="lblSvcTimeout" RelativePanel.RightOf="btnSend" Width="200" TextAlignment="Right"
                 Text="Service - Timeout (ms):" Margin="20,20,0,0"  />
 
@@ -48,7 +51,7 @@
         <RelativePanel Background="LightCyan">
 
             <Button x:Name="btnListen" 
-                Content="Start Listening as Device"  Height="120" Margin="20,20,0,0" VerticalAlignment="Top" Width="300" Click="Button_Click_Device"/>
+                Content="Start Listening as Device"  Height="120" Width="332" Click="Button_Click_Device"/>
             <TextBlock x:Name="lblNb" RelativePanel.Below="btnListen" RelativePanel.AlignLeftWith="btnListen" FontStyle="Italic" FontWeight="Bold"
                 Text="Nb: Only active for one recieved message if NOT KeepAlive." Margin="20,20,0,0"  />
 
@@ -82,8 +85,8 @@
             </ListView>
             <TextBlock x:Name="lblNb2" RelativePanel.Below="ListviewTransports" RelativePanel.AlignLeftWith="lblNb" FontStyle="Italic" FontWeight="Bold"
                 Text="Nb2: Run in Visual Studio, Debug mode and note Debug messages in Output Window." Margin="20,20,0,20"  />
-            <Button Content="Cancel" RelativePanel.Below="lblNb" Margin="20"
-                    Height="104" Width="237" Click="Button_Click"/>
+            <Button x:Name="btnCancelDevice" Content="Cancel Device" RelativePanel.Below="lblNb" RelativePanel.AlignRightWith="btnListen"
+                    Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLSvc_Click"/>
         </RelativePanel>
 
 

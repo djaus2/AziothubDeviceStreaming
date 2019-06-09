@@ -116,9 +116,6 @@ namespace AzIoTHubDeviceStreams
                                 System.Diagnostics.Debug.WriteLine("3 Error RunSvc(): Timeout");
                             }
                         }
-
-
-                        //return null;
                     }
                 }
                 catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
@@ -150,13 +147,14 @@ namespace AzIoTHubDeviceStreams
             
         }
 
-        private CancellationTokenSource cancellationTokenSource = null;
         public void Cancel()
         {
             cancellationTokenSource?.Cancel();
         }
 
-        public async Task RunSvcAsync()
+        private CancellationTokenSource cancellationTokenSource = null;
+        
+        private async Task RunSvcAsync()
         {
             try
             {
@@ -257,9 +255,11 @@ namespace AzIoTHubDeviceStreams
                 }
             }
             deviceStream_Svc = null;
+            MsgOutWaitHandle = null;
+            cancellationTokenSource = null;
         }
 
-        public static async Task SendMsg(ClientWebSocket stream, string msgOut, CancellationTokenSource cancellationTokenSource)
+        private static async Task SendMsg(ClientWebSocket stream, string msgOut, CancellationTokenSource cancellationTokenSource)
         {
             byte[] sendBuffer = Encoding.UTF8.GetBytes(msgOut);
             System.ArraySegment<byte> SendBuffer = new ArraySegment<byte>(sendBuffer);
