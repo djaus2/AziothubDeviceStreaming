@@ -3,7 +3,7 @@ In the previous version of this repository, some issues were raised wrt refactor
 <!--more-->
 
 My blog on this: [djaus2/AziothubDeviceStreaming](https://davidjones.sportronics.com.au/2020-06-09-Azure-IoT-Hub-Device-Streaming-A-Libray-azure.html)<br>
-Link to [the previous version of the repository](https://github.com/djaus2/AziothubDeviceStreaming/tree/master_original)
+Link to [the previous version of the repository](https://github.com/djaus2/AziothubDeviceStreaming/tree/master_original)<br>
 Link to [the blog on the previous version of this repository.](https://davidjones.sportronics.com.au//Azure-IoT-Hub-Device-Streaming-azure.html)<br>
 
 # We have a solution!
