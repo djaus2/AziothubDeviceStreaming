@@ -82,6 +82,8 @@
             </ListView>
             <TextBlock x:Name="lblNb2" RelativePanel.Below="ListviewTransports" RelativePanel.AlignLeftWith="lblNb" FontStyle="Italic" FontWeight="Bold"
                 Text="Nb2: Run in Visual Studio, Debug mode and note Debug messages in Output Window." Margin="20,20,0,20"  />
+            <Button Content="Cancel" RelativePanel.Below="lblNb" Margin="20"
+                    Height="104" Width="237" Click="Button_Click"/>
         </RelativePanel>
 
 

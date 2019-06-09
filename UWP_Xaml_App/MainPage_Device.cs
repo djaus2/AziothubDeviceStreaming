@@ -25,6 +25,12 @@ namespace UWPXamlApp
             return msgOut;
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            DeviceStream_Device.deviceStream_Device?.Cancel();
+            DeviceStream_Svc.deviceStream_Svc?.Cancel();
+        }
+
         private async void Button_Click_Device(object sender, RoutedEventArgs e)
         {
             double to;

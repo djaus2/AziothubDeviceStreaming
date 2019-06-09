@@ -29,7 +29,7 @@ namespace AzIoTHubDeviceStreams
         public static string MsgIn { get; set; }
 
         private  AutoResetEvent MsgOutWaitHandle = null;
-        private static DeviceStream_Svc sample = null;
+        public static DeviceStream_Svc deviceStream_Svc = null;
 
         private String _deviceId;
         //private string _connectionString;
@@ -46,12 +46,12 @@ namespace AzIoTHubDeviceStreams
 
         public static bool SignalSendMsgOut(string msgOut)
         {
-            if (sample != null)
+            if (deviceStream_Svc != null)
             {
-                sample.MsgOut = msgOut;
-                if (sample.MsgOutWaitHandle != null)
+                deviceStream_Svc.MsgOut = msgOut;
+                if (deviceStream_Svc.MsgOutWaitHandle != null)
                 {
-                    sample.MsgOutWaitHandle.Set();
+                    deviceStream_Svc.MsgOutWaitHandle.Set();
                     return true;
                 }
                 else
@@ -63,7 +63,7 @@ namespace AzIoTHubDeviceStreams
 
         public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdTextD, KeepConnectionAlive _KeepAliveD = null, ExpectResponseFromDevice _ExpectResponseD = null)
         {
-            if (sample != null)
+            if (deviceStream_Svc != null)
             {
                 System.Diagnostics.Debug.WriteLine("Svc Socket is already open!");
                 return;
@@ -79,8 +79,8 @@ namespace AzIoTHubDeviceStreams
                             System.Diagnostics.Debug.WriteLine("Failed to create SericeClient!");
                             //return null;
                         }
-                        sample = new DeviceStream_Svc(serviceClient, deviceId, msgOut, _OnRecvdTextD, _KeepAliveD, _ExpectResponseD);
-                        if (sample == null)
+                        deviceStream_Svc = new DeviceStream_Svc(serviceClient, deviceId, msgOut, _OnRecvdTextD, _KeepAliveD, _ExpectResponseD);
+                        if (deviceStream_Svc == null)
                         {
                             System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamSvc!");
                             //return null;
@@ -89,7 +89,7 @@ namespace AzIoTHubDeviceStreams
 
                         try
                         {
-                            await sample.RunSvcAsync();//.GetAwaiter().GetResult();
+                            await deviceStream_Svc.RunSvcAsync();//.GetAwaiter().GetResult();
                         }
                         catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                         {
@@ -150,7 +150,11 @@ namespace AzIoTHubDeviceStreams
             
         }
 
-  
+        private CancellationTokenSource cancellationTokenSource = null;
+        public void Cancel()
+        {
+            cancellationTokenSource?.Cancel();
+        }
 
         public async Task RunSvcAsync()
         {
@@ -166,7 +170,7 @@ namespace AzIoTHubDeviceStreams
 
                 if (result.IsAccepted)
                 {
-                    using (var cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
+                    using ( cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
                         {
                         try
                         {
@@ -197,7 +201,6 @@ namespace AzIoTHubDeviceStreams
                                 MsgOutWaitHandle = null;
                                 System.Diagnostics.Debug.WriteLine("Closing Svc Socket");
                                 await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
-                                sample = null;
                             }
                         }
                         catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
@@ -253,6 +256,7 @@ namespace AzIoTHubDeviceStreams
                     System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Timeout");
                 }
             }
+            deviceStream_Svc = null;
         }
 
         public static async Task SendMsg(ClientWebSocket stream, string msgOut, CancellationTokenSource cancellationTokenSource)

@@ -70,5 +70,7 @@ namespace UWPXamlApp
                 tbDeiceMsgOut.Width = newWidth;
             }
         }
+
+
     }
 }

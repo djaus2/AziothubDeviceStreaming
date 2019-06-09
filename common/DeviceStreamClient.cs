@@ -19,6 +19,8 @@ namespace AzIoTHubDeviceStreams
         public KeepConnectionAlive KeepAlive = null;
         public RespondToServer Respond = null;
 
+        public static DeviceStream_Device deviceStream_Device = null;
+
         public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText, KeepConnectionAlive _KeepAlive, RespondToServer _Respond)
         {
             _deviceClient = deviceClient;
@@ -41,8 +43,8 @@ namespace AzIoTHubDeviceStreams
                         //return null;
                     }
 
-                    var sample = new DeviceStream_Device(deviceClient, _OnRecvText, _KeepAlive, _Respond);
-                    if (sample == null)
+                    deviceStream_Device = new DeviceStream_Device(deviceClient, _OnRecvText, _KeepAlive, _Respond);
+                    if (deviceStream_Device == null)
                     {
                         System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamClient!");
                         //return null;
@@ -50,7 +52,7 @@ namespace AzIoTHubDeviceStreams
 
                     try
                     {
-                        await sample.RunDeviceAsync();//.GetAwaiter().GetResult();
+                        await deviceStream_Device.RunDeviceAsync();//.GetAwaiter().GetResult();
                     }
                     catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                     {
@@ -113,6 +115,13 @@ namespace AzIoTHubDeviceStreams
             await RunDeviceAsync(true).ConfigureAwait(false);
         }
 
+        CancellationTokenSource cancellationTokenSource = null;
+
+        public void Cancel()
+        {
+            cancellationTokenSource?.Cancel();
+        }
+
         public async Task RunDeviceAsync(bool acceptDeviceStreamingRequest)
         {
             byte[] buffer = new byte[1024];
@@ -120,7 +129,7 @@ namespace AzIoTHubDeviceStreams
             try
             {
                 System.Diagnostics.Debug.WriteLine("Device-1");
-                using (var cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
+                using ( cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
                 {
                     try
                     {
@@ -194,6 +203,7 @@ namespace AzIoTHubDeviceStreams
                         }
                     }
                 }
+                deviceStream_Device = null;
             }
             catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
             {
