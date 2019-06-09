@@ -1,53 +1,27 @@
 # Azure IoT Hub Device Streaming
-A set of projects examining refactoring of the Azure IoTHub SDK Device Streaming Echo sample functionality as .Net Core and UWP reusable libraries. 
-The aim is to develop a library that implements the device and service functionality of IoT Hub Device Streaming that can be used in UWP apps. 
-It was found in version 1 of this repository that a couple of small code changes were required as well as the update of the Nuget package Micrososoft.Azure.Amqp.
+In the previous post, some issues were raised wrt refactoring of the Azure IoTHub SDK Device Streaming Echo sample functionality as .Net Core and UWP reusable libraries. These issues have been resolved and the library is now presented as a .Net Standard library that can be used in .Net Core, UWP and Xamarin apps (last yet to be tested). The library implements the device and service functionality of IoT Hub Device Streaming that can be used in UWP and other types apps.
+<!--more-->
 
-_**This is Version 2 of the repository. This version removes some of the test projects and builds upon the repository's functionality, including only having .Net Stanard libraries as they can be used in both .Net Core apps and UWP apps.**_ 
-<br>Version 1 of the repository in here: [djaus2/AziothubDeviceStreaming-master-original](https://github.com/djaus2/AziothubDeviceStreaming/tree/master_original)
+My blog on this: [djaus2/AziothubDeviceStreaming](https://davidjones.sportronics.com.au/2020-06-09-Azure-IoT-Hub-Device-Streaming-A-Libray-azure.html)<br>
+Link to [the previous version of the repository](https://github.com/djaus2/AziothubDeviceStreaming/tree/master_original)
+Link to [the blog on the previous version of this repository.](https://davidjones.sportronics.com.au//Azure-IoT-Hub-Device-Streaming-azure.html)<br>
 
-<hr>
+# We have a solution!
+The main problem, as discussed previously, was that the developed Device Streaming library, regardless of the SDK .Net Framework used (UWP, .Net Core or .Net Standard), did not support the AMQP transport (Device-IoTHub) when used with a UWP app. It was determined that the Nuget installation of Microsoft.Azure.Device.Client (Device Streaming requires the latest preview version) implicitly installed an earlier version of Microsoft.Azure.Ampq 2.3.7, whereas version 2.4.2 was required. This was resolved by explicitly installing Microsoft.Azure.Amqp version (2.4.2) using Nuget.
 
 # Background
-Azure IoT Hub Device Streaming, although in Preview, is a cool technology. It enables an IoT device to receive messages from another system (the service: for example a user app) and for device to respond by sending back a message to the service. An Azure IoT Hub acts as the intermediary in the communications. No modules are needed to be installed in the hub. The functionality is implemented by calls to the IoT Hub SDK by both the device and service apps.
+Azure IoT Hub Device Streaming, although in Preview, is a cool technology. It enables an IoT device app to receive messages from an app on another system (the service: for example a user app) and for device to respond by sending back a message to the service. An Azure IoT Hub acts as the intermediary in the communications. No modules are needed to be installed in the hub. The functionality is implemented by calls to the IoT Hub SDK by both the device and service apps.
 
-_I’ve developed a GitHub C# Library project for UWP Sockets:  [djaus2/SocketsUWP](https://github.com/djaus2/SocketsUWP). 
-With this repository, I am attempting to use Azure IoTHub as the conduit in another project that mimics the socket stream functionality.
+I’ve developed a GitHub C# Library project for UWP Sockets:  [djaus2/SocketsUWP](https://github.com/djaus2/SocketsUWP). 
+With _THIS_ new repository, I am attempting to use Azure IoTHub as the conduit in new library that mimics the socket stream functionality.
 
-# The GitHub Repository
-![Solution Explorer](https://github.com/djaus2/AziothubDeviceStreaming/blob/master/images/Capture002.PNG)<br>
-**The Version 2 Repository projects.**  _(5 less than Version 1)_ <br>
-There are three sets of app projects. All now use >Net Standard Libraries.
-- .Net Core
-- .Net Standard
-- UWP (.Net Framework)
+Whereas the previous version of the repository, implemented all three types of .Net libraries, the new version only implements the .Net Standard version as this can be used universally. The various types of test apps remain in the repository. The UWP app have been significantly extended to test some added features of the library:
 
-The original Sample Azure IoTHub Device Streaming apps are included as standalone .NetCore apps. There is some slight modification of the given code but it essentially as supplied on GitHub (except for two changes as noted below.))
+- The original communications were single shot. The service create a socket send a message waits for a reply then closes the socket. The device listens for a connection, create a socket, reads teh message, processes it and sends it back. It then closes its socket. Whilst this is the default behaviour with the new version of the library, there is a Keep Alive option that keeps the sockets open at both ends, subject to timeout, until closed. This option is dictated by the Service end.
+- The original device processing required a response to be sent back. For this repository the received message was uppercased. (The SDK Echo Sample app just sent back the received message). This is now optional, and is dictated by the Service end.
+- Whilst not 100% debugged, there is now an option to cancel the socket at either end.
 
- There are two libraries, now only built using the .Net Core SDK Framework.
-- The Device Streaming Functionality: Encapsulted from the sample apps.
-- The Connections: The Hub conenction strings etc. _(Nb: In the repository left blank)_
-
-All common code is located in a folder common off the Solution folder. Each of the libraries use the same source code form here; just built for a different SDK.
-
-_The device functionality with the SDK's sample DeviceStreaming apps is to just echo back the message received. In this suite of apps, the device uppercases the received string and sends that back to the service. This functionality is implemented in the AzDeviceStreamingLib class libraries._
-
-# Status
-The .Net Core library implements Azure IoT Hub connectivity for the Device and Service sample console apps. These both function correctly ( that is as per the supplied examples) with the functionality moved to the library. Originally it was found that when the app is a UWP app though, whether as an XAML or Console app, the service references work OK but the device references did not. This was true whether the library is implemented as a .Net Core class library or as a UWP class library.
-
-> [!NOTE]
-> Later on it was found that the UWP apps work at both ends when the Device Transport is MQTT instead of the default AMQPP transport which does not work with UWP.
-
-When the connection fails, it is the Device that fails to connect to the IoTHub:
-```
-Exception thrown: 'Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException' in System.Private.CoreLib.dll
-1 Error RunDeviceAsync(): Hub connection failure
-Exception thrown: 'Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException' in System.Private.CoreLib.dll
-2 Error RunSvcAsync(): Device not found
-```
-
-**For this suite of projects I am attempting the refactor the Echo Example into a library that can be used in UWP apps.**
-
+**Overall,the object here is to to create a conceptually high level library that encapsulates the Azure IoTHub Device Streaming functionality which is simple to use, but contains inbuilt extensibility _(read options)_ that can be exploited in host apps without reconstruction of the library.**
 ...<br>
 [Read more of my blog](https://davidjones.sportronics.com.au/azure/Azure-IoT-Hub-Device-Streaming-azure.html)
 
