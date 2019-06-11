@@ -16,20 +16,17 @@ namespace AzIoTHubDeviceStreams
     {
         private DeviceClient _deviceClient;
         private ActionReceivedTextIO OnRecvdTextIO = null;
-        private KeepConnectionAlive KeepAlive = null;
-        private RespondToServer Respond = null;
+
 
         public static DeviceStream_Device deviceStream_Device = null;
 
-        public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText, KeepConnectionAlive _KeepAlive, RespondToServer _Respond)
+        public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText)
         {
             _deviceClient = deviceClient;
             OnRecvdTextIO = _OnRecvdText;
-            KeepAlive = _KeepAlive;
-            Respond = _Respond;
         }
 
-        public static async Task RunDevice(string device_cs, ActionReceivedTextIO _OnRecvText, KeepConnectionAlive _KeepAlive=null, RespondToServer _Respond=null)
+        public static async Task RunDevice(string device_cs, ActionReceivedTextIO _OnRecvText)
         {
             TransportType device_hubTransportTryp = DeviceStreamingCommon.device_transportType;
             try
@@ -42,7 +39,7 @@ namespace AzIoTHubDeviceStreams
                         //return null;
                     }
 
-                    deviceStream_Device = new DeviceStream_Device(deviceClient, _OnRecvText, _KeepAlive, _Respond);
+                    deviceStream_Device = new DeviceStream_Device(deviceClient, _OnRecvText);
                     if (deviceStream_Device == null)
                     {
                         System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamClient!");
@@ -127,34 +124,42 @@ namespace AzIoTHubDeviceStreams
 
             try
             {
-                System.Diagnostics.Debug.WriteLine("Device-1");
+                //System.Diagnostics.Debug.WriteLine("Device-1");
                 using ( cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
                 {
                     try
                     {
-                        System.Diagnostics.Debug.WriteLine("Device-2");
+                        //System.Diagnostics.Debug.WriteLine("Device-2");
+                        System.Diagnostics.Debug.WriteLine("Starting Device Stream Request");
                         Microsoft.Azure.Devices.Client.DeviceStreamRequest streamRequest = await _deviceClient.WaitForDeviceStreamRequestAsync(cancellationTokenSource.Token).ConfigureAwait(false);
-                        System.Diagnostics.Debug.WriteLine("Device-3");
+                        //System.Diagnostics.Debug.WriteLine("Device-3");
                         if (streamRequest != null)
                         {
                             if (acceptDeviceStreamingRequest)
                             {
-                                System.Diagnostics.Debug.WriteLine("Device-4");
                                 await _deviceClient.AcceptDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
-                                System.Diagnostics.Debug.WriteLine("Device-5");
-                                using (ClientWebSocket webSocket = await DeviceStreamingCommon.GetStreamingClientAsync(streamRequest.Url, streamRequest.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
+                                System.Diagnostics.Debug.WriteLine("Device got a connection.");
+                                using (ClientWebSocket webSocket = await DeviceStreamingCommon.GetStreamingDeviceAsync(streamRequest.Url, streamRequest.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
                                 {
+                                    System.Diagnostics.Debug.WriteLine(string.Format("Device got stream: Name={0}", streamRequest.Name));
+                                    bool keepAlive = false;
                                     do
                                     {
                                         WebSocketReceiveResult receiveResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, 0, buffer.Length), cancellationTokenSource.Token).ConfigureAwait(false);
                                         string msgIn = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
                                         System.Diagnostics.Debug.WriteLine(string.Format("Device Received stream data: {0}", msgIn));
+
+                                        //Get keepAlive and respond flags and strip from msg in
+                                        DeviceCurrentSettings deviceCurrentSettings = new DeviceCurrentSettings();
+                                        msgIn = deviceCurrentSettings.ProcessMsgIn(msgIn);
+                                        bool respond = deviceCurrentSettings.Respond;
+                                        keepAlive = deviceCurrentSettings.KeepAlive;
+
                                         string msgOut = msgIn;
                                         if (OnRecvdTextIO != null)
                                             msgOut = OnRecvdTextIO(msgIn);
 
-                                        //By default respond
-                                        if (Respond!=null?Respond():true)
+                                        if (respond)
                                         {
                                             byte[] sendBuffer = Encoding.UTF8.GetBytes(msgOut);
 
@@ -162,7 +167,7 @@ namespace AzIoTHubDeviceStreams
                                             System.Diagnostics.Debug.WriteLine(string.Format("Device Sent stream data: {0}", Encoding.UTF8.GetString(sendBuffer, 0, sendBuffer.Length)));
                                         }
                                     //By default do not loop    
-                                    } while (KeepAlive!=null?KeepAlive():false);
+                                    } while (keepAlive);
 
                                     System.Diagnostics.Debug.WriteLine("Closing Device Socket");
                                     await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);

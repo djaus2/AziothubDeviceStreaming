@@ -14,7 +14,9 @@ namespace UWPXamlApp
     {
         private void OnSvcRecvText(string recvdMsg)
         {
-            string msg2 = svcSettings.ProcessMsgIn(recvdMsg);
+            //Action here the returned msg:
+
+
             Task.Run(async () => {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
@@ -33,11 +35,10 @@ namespace UWPXamlApp
             if (double.TryParse(tbSvcTimeout.Text, out to))
                 DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(to);
             string msgOut = tbSvcMsgOut.Text;
-            bool KeepAlive = (chkKeepAlive.IsChecked == true);
-            bool ExpectResponse = (chkExpectResponse.IsChecked == true);
-            msgOut = svcSettings.ProcessMsgOut(msgOut, KeepAlive, ExpectResponse);
+            bool keepAlive = (chkKeepAlive.IsChecked == true);
+            bool expectResponse = (chkExpectResponse.IsChecked == true);;
 
-            if (!DeviceStream_Svc.SignalSendMsgOut(msgOut))
+            if (!DeviceStream_Svc.SignalSendMsgOut(msgOut, keepAlive,expectResponse))
             {
                 try
                 {
@@ -45,7 +46,7 @@ namespace UWPXamlApp
                     {
                         try
                         {
-                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, svcSettings.GetKeepAlive, svcSettings.GetExpectResponse).GetAwaiter().GetResult();
+                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, keepAlive, expectResponse).GetAwaiter().GetResult();
                         }
                         catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                         {

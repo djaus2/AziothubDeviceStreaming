@@ -39,7 +39,7 @@ namespace DeviceClientStreamingDNCoreSample
                     {
                         await _deviceClient.AcceptDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
 
-                        using (ClientWebSocket webSocket = await DeviceStreamingCommon.GetStreamingClientAsync(streamRequest.Url, streamRequest.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
+                        using (ClientWebSocket webSocket = await DeviceStreamingCommon.GetStreamingDeviceAsync(streamRequest.Url, streamRequest.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
                         {
                             WebSocketReceiveResult receiveResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer, 0, buffer.Length), cancellationTokenSource.Token).ConfigureAwait(false);
                             Console.WriteLine("Received stream data: {0}", Encoding.UTF8.GetString(buffer, 0, receiveResult.Count));

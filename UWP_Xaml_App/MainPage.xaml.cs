@@ -27,16 +27,12 @@ namespace UWPXamlApp
         string device_id = AzureConnections.MyConnections.DeviceId;
         string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
-        AzureConnections.DeviceCurrentSettings deviceSettings = null;
-        AzureConnections.SvcCurrentSettings svcSettings = null;
 
         public  List<Microsoft.Azure.Devices.Client.TransportType> ListEnum { get { return typeof(Microsoft.Azure.Devices.Client.TransportType).GetEnumValues().Cast<Microsoft.Azure.Devices.Client.TransportType>().ToList(); } }
 
         public MainPage()
         {
             this.InitializeComponent();
-            deviceSettings = new AzureConnections.DeviceCurrentSettings();
-            svcSettings = new AzureConnections.SvcCurrentSettings();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -51,7 +47,7 @@ namespace UWPXamlApp
             if (ListviewTransports.SelectedIndex != -1)
             {
                 AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType = (Microsoft.Azure.Devices.Client.TransportType) ListviewTransports.SelectedItem;
-                System.Diagnostics.Debug.WriteLine(AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType);
+                System.Diagnostics.Debug.WriteLine(string.Format("Using Device Transport {0}", AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType));
             }
         }
 

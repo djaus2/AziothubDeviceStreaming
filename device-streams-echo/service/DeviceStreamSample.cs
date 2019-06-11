@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Devices.Samples
                 if (result.IsAccepted)
                 {
                     using (var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
-                    using (var stream = await DeviceStreamingCommon.GetStreamingClientAsync(result.Url, result.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
+                    using (var stream = await DeviceStreamingCommon.GetStreamingDeviceAsync(result.Url, result.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
                     {
                         byte[] sendBuffer = Encoding.UTF8.GetBytes("Streaming data over a stream...");
                         byte[] receiveBuffer = new byte[1024];

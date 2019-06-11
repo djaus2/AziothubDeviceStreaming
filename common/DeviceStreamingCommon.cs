@@ -10,12 +10,10 @@ using System.Threading.Tasks;
 
 namespace AzIoTHubDeviceStreams
 {
-    public delegate bool KeepConnectionAlive();
-    public delegate bool RespondToServer();
-    public delegate bool ExpectResponseFromDevice();
+
     public delegate void ActionReceivedText(string recvTxt);
 
-    public delegate string ActionReceivedTextIO(string recvTxt);
+    public delegate string  ActionReceivedTextIO(string msgIn);
     public static class DeviceStreamingCommon
     {
         public static TransportType s_transportType = TransportType.Amqp;
@@ -31,7 +29,7 @@ namespace AzIoTHubDeviceStreams
         /// <param name="authorizationToken">Authorization token to connect to the Streaming Gateway.</param>
         /// <param name="cancellationToken">The token used for cancelling this operation if desired.</param>
         /// <returns>A ClientWebSocket instance connected to the Device Streaming gateway, if successful.</returns>
-        public static async Task<ClientWebSocket> GetStreamingClientAsync(Uri url, string authorizationToken, CancellationToken cancellationToken)
+        public static async Task<ClientWebSocket> GetStreamingDeviceAsync(Uri url, string authorizationToken, CancellationToken cancellationToken)
         {
 
             ClientWebSocket wsClient = new ClientWebSocket();

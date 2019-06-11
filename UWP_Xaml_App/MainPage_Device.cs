@@ -14,7 +14,7 @@ namespace UWPXamlApp
     {
         private string OnDeviceRecvText(string msgIn)
         {
-            string msgOut = deviceSettings.ProcessMsgIn(msgIn);
+            string msgOut = msgIn.ToUpper();
             Task.Run(async () => {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
@@ -42,7 +42,7 @@ namespace UWPXamlApp
                 {
                     try
                     {
-                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, deviceSettings.GetKeepAlive, deviceSettings.GetRespond).GetAwaiter().GetResult();
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText).GetAwaiter().GetResult();
                     }
                     catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                     {

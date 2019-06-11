@@ -33,7 +33,7 @@
                  Margin="20,20,0,0" Height="40" Text="10000" Width="100" />
             <TextBlock x:Name="lblSend" RelativePanel.RightOf="btnSend" RelativePanel.Below="tbSvcTimeout" RelativePanel.AlignRightWith="lblSvcTimeout"
                         TextAlignment="Right"
-                Text="Service-Message-Out:" Margin="20,20,0,0"  />
+                Text="Service-Message Out:" Margin="20,20,0,0"  />
             <TextBlock  RelativePanel.Below="lblSend" RelativePanel.AlignRightWith="lblSend"
                         TextAlignment="Right" FontStyle="Italic"
                 Text="Nb: Can be mulitline." Margin="20,10,0,0"  />
@@ -42,7 +42,7 @@
                  HorizontalAlignment="Left" Height="84" Margin="20,20,0,0" Text="Msg Out" VerticalAlignment="Top" MinWidth="200"/>
             <TextBlock x:Name="lblRecv" RelativePanel.RightOf="btnSend" RelativePanel.Below="tbSvcMsgOut" RelativePanel.AlignRightWith="lblSvcTimeout"
                         TextAlignment="Right"
-                Text="Service-Message-In:" Margin="20,20,0,0"  />
+                Text="Service-Message In:" Margin="20,20,0,0"  />
             <TextBox x:Name="tbSvcMsgIn" RelativePanel.RightOf="lblRecv" RelativePanel.AlignTopWith="lblRecv" RelativePanel.AlignLeftWith="tbSvcMsgOut"
                      AcceptsReturn="True"
                      HorizontalAlignment="Left" Height="84" Margin="20,20,0,20" Text="Msg Recv'd" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True"/>
