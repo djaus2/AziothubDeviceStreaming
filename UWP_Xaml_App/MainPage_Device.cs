@@ -14,7 +14,9 @@ namespace UWPXamlApp
     {
         private string OnDeviceRecvText(string msgIn)
         {
+            //Perform device side processing here. Eg read sensors.
             string msgOut = msgIn.ToUpper();
+
             Task.Run(async () => {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {

@@ -12,27 +12,32 @@ namespace AzIoTHubDeviceStreams
         public const char RespondChar = '~';
 
     }
-    public class DeviceCurrentSettings
+    public class DeviceCurrentSettings : IDeviceCurrentSettings
     {
 
         private bool respond = false;
         private bool keepAlive = false;
-
+        /// <summary>
+        /// If true then device needs to respond when message received.
+        /// </summary>
         public bool Respond { get => respond; set => respond = value; }
+        /// <summary>
+        /// If true then keep socket alive and wait for another message when post reception processing is finished.
+        /// </summary>
         public bool KeepAlive { get => keepAlive; set => keepAlive = value; }
 
+        // Called to get flags
         /// <summary>
-        /// The following 3 methods are used as delegates
+        /// Called on reception of message to get flags
         /// </summary>
-
-
-        // Called if response required
+        /// <param name="msgIn">Message with flags embedded</param>
+        /// <returns>Message without "flags"</returns>
         public string ProcessMsgIn(string msgIn)
         {
             KeepAlive = false;
             Respond = false;
 
-            if ( !string.IsNullOrEmpty(msgIn))
+            if (!string.IsNullOrEmpty(msgIn))
             {
                 // ?Keepalive possibly followed by respond chars
                 if (msgIn.ToLower()[0] == Info.KeppAliveChar)
@@ -64,20 +69,15 @@ namespace AzIoTHubDeviceStreams
                             msgIn = msgIn.Substring(1);
                         }
                         else
-                            KeepAlive= false;
+                            KeepAlive = false;
                     }
-                }   
+                }
             }
-
-
-            //Generate required message out here
-            //Could, for example, read a sensor
-            string msgOut = msgIn.ToUpper();
-            return msgOut;
+            return msgIn;
         }
     }
 
-    public class SvcCurrentSettings
+    public class SvcCurrentSettings : ISvcCurrentSettings
     {
 
         private bool expectResponse = false;
@@ -88,12 +88,19 @@ namespace AzIoTHubDeviceStreams
 
 
 
-        //This is called prior to message being sent by svc
+        //
+        /// <summary>
+        /// Called prior to message being sent by svc. Embed property flags in message
+        /// </summary>
+        /// <param name="msgOut"></param>
+        /// <param name="keepAlive"></param>
+        /// <param name="expectResponse"></param>
+        /// <returns>Message to be sent</returns>
         public string ProcessMsgOut(string msgOut, bool keepAlive = false, bool expectResponse = true)
         {
             KeepAlive = keepAlive;
             ExpectResponse = expectResponse;
-            //Prepend message with indicative to device chars if relevant flags are true
+            //Prepend message with indicative chars (for device to interpret as abvoe) if relevant flags are true
             if (keepAlive)
                 msgOut = Info.KeppAliveChar + msgOut;
             if (expectResponse)
