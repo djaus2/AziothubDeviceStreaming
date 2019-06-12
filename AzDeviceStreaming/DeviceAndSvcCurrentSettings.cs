@@ -4,23 +4,24 @@ using System.Text;
 
 namespace AzIoTHubDeviceStreams
 {
-    public static class Info
-    {
-        //Signals from svc to device 
-        //Prepended to sent message if relevant state required
-        public const char KeppAliveChar = '`';
-        public const char RespondChar = '~';
 
-    }
-    public class DeviceCurrentSettings : IDeviceCurrentSettings
+    public class DeviceAndSvcCurrentSettings : IDeviceAndSvcCurrentSettings
     {
+        public static class Info
+        {
+            //Signals from svc to device 
+            //Prepended to sent message if relevant state required
+            public static char KeppAliveChar = '`';
+            public static char RespondChar = '~';
 
-        private bool respond = false;
+        }
+
+        private bool responseExpected = false;
         private bool keepAlive = false;
         /// <summary>
         /// If true then device needs to respond when message received.
         /// </summary>
-        public bool Respond { get => respond; set => respond = value; }
+        public bool ResponseExpected { get => responseExpected; set => responseExpected = value; }
         /// <summary>
         /// If true then keep socket alive and wait for another message when post reception processing is finished.
         /// </summary>
@@ -32,10 +33,10 @@ namespace AzIoTHubDeviceStreams
         /// </summary>
         /// <param name="msgIn">Message with flags embedded</param>
         /// <returns>Message without "flags"</returns>
-        public string ProcessMsgIn(string msgIn)
+        public virtual string ProcessMsgIn(string msgIn)
         {
             KeepAlive = false;
-            Respond = false;
+            ResponseExpected = false;
 
             if (!string.IsNullOrEmpty(msgIn))
             {
@@ -48,18 +49,18 @@ namespace AzIoTHubDeviceStreams
                     {
                         if (msgIn.ToLower()[0] == Info.RespondChar)
                         {
-                            Respond = true;
+                            ResponseExpected = true;
                             msgIn = msgIn.Substring(1);
                         }
                         else
-                            Respond = false;
+                            ResponseExpected = false;
                     }
                 }
 
                 // ?Respond possibly followed by keepalive chars
                 if (msgIn.ToLower()[0] == Info.RespondChar)
                 {
-                    Respond = true;
+                    ResponseExpected = true;
                     msgIn = msgIn.Substring(1);
                     if (!string.IsNullOrEmpty(msgIn))
                     {
@@ -75,17 +76,6 @@ namespace AzIoTHubDeviceStreams
             }
             return msgIn;
         }
-    }
-
-    public class SvcCurrentSettings : ISvcCurrentSettings
-    {
-
-        private bool expectResponse = false;
-        private bool keepAlive = false;
-
-        public bool ExpectResponse { get => expectResponse; set => expectResponse = value; }
-        public bool KeepAlive { get => keepAlive; set => keepAlive = value; }
-
 
 
         //
@@ -94,16 +84,16 @@ namespace AzIoTHubDeviceStreams
         /// </summary>
         /// <param name="msgOut"></param>
         /// <param name="keepAlive"></param>
-        /// <param name="expectResponse"></param>
+        /// <param name="responseExpected"></param>
         /// <returns>Message to be sent</returns>
-        public string ProcessMsgOut(string msgOut, bool keepAlive = false, bool expectResponse = true)
+        public virtual string ProcessMsgOut(string msgOut, bool keepAlive = false, bool responseExpected = true)
         {
             KeepAlive = keepAlive;
-            ExpectResponse = expectResponse;
+            ResponseExpected = responseExpected;
             //Prepend message with indicative chars (for device to interpret as abvoe) if relevant flags are true
             if (keepAlive)
                 msgOut = Info.KeppAliveChar + msgOut;
-            if (expectResponse)
+            if (responseExpected)
                 msgOut = Info.RespondChar + msgOut;
             return msgOut;
         }

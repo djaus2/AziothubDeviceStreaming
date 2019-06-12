@@ -35,6 +35,7 @@ namespace UWPXamlApp
         private async void Button_Click_Device(object sender, RoutedEventArgs e)
         {
             double to;
+            bool useCustomClass = (chkUseCustomClass.IsChecked == true);
             if (double.TryParse(tbDeviceTimeout.Text, out to))
                 DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(to);
             try
@@ -44,7 +45,10 @@ namespace UWPXamlApp
                 {
                     try
                     {
-                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText).GetAwaiter().GetResult();
+                        if(!useCustomClass)
+                            DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText).GetAwaiter().GetResult();
+                        else
+                            DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
                     }
                     catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                     {

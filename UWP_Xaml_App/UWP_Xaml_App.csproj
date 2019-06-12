@@ -122,10 +122,11 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage_Device.cs" >
+    <Compile Include="MainPage_Device.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage_Service.cs" >
+    <Compile Include="MainPage_DeviceSvcCurrentSettingsExample.cs" />
+    <Compile Include="MainPage_Service.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

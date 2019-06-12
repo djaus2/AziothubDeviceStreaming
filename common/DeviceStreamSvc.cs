@@ -19,55 +19,50 @@ namespace AzIoTHubDeviceStreams
         private ServiceClient _serviceClient;
         public ActionReceivedText OnRecvdTextD = null;
 
-        public bool KeepAlive { get; private set; }
-        public bool ExpectResponse { get; private set; }
         public string MsgOut { get; set; }
         public static string MsgIn { get; set; }
 
         private  AutoResetEvent MsgOutWaitHandle = null;
         public static DeviceStream_Svc deviceStream_Svc = null;
 
+        DeviceAndSvcCurrentSettings SvcCurrentSettings = null;
+
         private String _deviceId;
 
-        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string _msgOut, ActionReceivedText _OnRecvdTextD, bool keepAlive = false, bool expectResponse = true)
+        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string _msgOut, ActionReceivedText _OnRecvdTextD, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings svcCurrentSettings = null)
         {
             _serviceClient = deviceClient;
             _deviceId = deviceId;
-            MsgOut = _msgOut;
             OnRecvdTextD = _OnRecvdTextD;
-            KeepAlive = keepAlive;
-            ExpectResponse = expectResponse;
+            if (svcCurrentSettings != null)
+                SvcCurrentSettings = svcCurrentSettings;
+            else
+                SvcCurrentSettings = new DeviceAndSvcCurrentSettings();
+            SvcCurrentSettings.KeepAlive = keepAlive;
+            SvcCurrentSettings.ResponseExpected = responseExpected;
+            MsgOut = SvcCurrentSettings.ProcessMsgOut(_msgOut, keepAlive, responseExpected);
         }
 
-        public static bool SignalSendMsgOut(string msgOut, bool keepAlive, bool expectResponse)
+        public static bool SignalSendMsgOut(string msgOut, bool keepAlive, bool responseExpected)
         {
             if (deviceStream_Svc != null)
             {
-
                 if (deviceStream_Svc.MsgOutWaitHandle != null)
                 {
-                    SvcCurrentSettings svcCurrentSettings = new SvcCurrentSettings();
-                    msgOut = svcCurrentSettings.ProcessMsgOut(msgOut, keepAlive, expectResponse);
-                    deviceStream_Svc.MsgOut = msgOut;
-                    deviceStream_Svc.KeepAlive = keepAlive;
-                    deviceStream_Svc.ExpectResponse = expectResponse;
-                    deviceStream_Svc.MsgOutWaitHandle.Set();
-                    return true;
+                    if (deviceStream_Svc.SvcCurrentSettings != null)
+                    {
+                        msgOut = deviceStream_Svc.SvcCurrentSettings.ProcessMsgOut(msgOut, keepAlive, responseExpected);
+                        deviceStream_Svc.MsgOut = msgOut;;
+                        deviceStream_Svc.MsgOutWaitHandle.Set();
+                        return true;
+                    }
                 }
-                else
-                    return false;
             }
-            else
-                return false;
+            return false;
         }
 
-        public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdTextD, bool keepAlive = false, bool expectResponse = true)
+        public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdTextD, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings deviceAndSvcCurrentSettings = null )
         {
-            
-        //}
-
-        //public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdTextD, KeepConnectionAlive _KeepAliveD = null, ExpectResponseFromDevice _ExpectResponseD = null)
-        //{
             if (deviceStream_Svc != null)
             {
                 System.Diagnostics.Debug.WriteLine("Svc Socket is already open!");
@@ -87,10 +82,8 @@ namespace AzIoTHubDeviceStreams
                         }
 
                         //Attach keepalive and respond info if set
-                        SvcCurrentSettings svcCurrentSettings = new SvcCurrentSettings();
-                        msgOut = svcCurrentSettings.ProcessMsgOut(msgOut,keepAlive,expectResponse);
 
-                        deviceStream_Svc = new DeviceStream_Svc(serviceClient, deviceId, msgOut, _OnRecvdTextD, keepAlive,expectResponse);
+                        deviceStream_Svc = new DeviceStream_Svc(serviceClient, deviceId, msgOut, _OnRecvdTextD, keepAlive,responseExpected, deviceAndSvcCurrentSettings);
                         if (deviceStream_Svc == null)
                         {
                             System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamSvc!");
@@ -191,7 +184,7 @@ namespace AzIoTHubDeviceStreams
                                     //Nb: Not waited on first entry as waiting for msgOut, which we already have.
                                     MsgOutWaitHandle.WaitOne();
                                     await SendMsg(stream, MsgOut, cancellationTokenSource);
-                                    if (this.ExpectResponse)
+                                    if (this.SvcCurrentSettings.ResponseExpected)
                                     {
                                         byte[] receiveBuffer = new byte[1024];
                                         System.ArraySegment<byte> ReceiveBuffer = new ArraySegment<byte>(receiveBuffer);
@@ -206,7 +199,7 @@ namespace AzIoTHubDeviceStreams
                                         System.Diagnostics.Debug.WriteLine(string.Format("Svc Received stream data: {0}", MsgIn));
                                     }
                                     MsgOutWaitHandle.Reset();
-                                } while (this.KeepAlive);
+                                } while (this.SvcCurrentSettings.KeepAlive);
                                 MsgOutWaitHandle = null;
                                 System.Diagnostics.Debug.WriteLine("Closing Svc Socket");
                                 await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);

@@ -1,7 +1,4 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
-using Microsoft.Azure.Devices.Client;
+﻿using Microsoft.Azure.Devices.Client;
 using System;
 using System.Net.WebSockets;
 using System.Text;
@@ -14,19 +11,46 @@ namespace AzIoTHubDeviceStreams
     
     public class DeviceStream_Device
     {
-        private DeviceClient _deviceClient;
+        // From SDK in Microsoft.Azure.Devices.Client.DeviceClient
+        private DeviceClient deviceClient;
+
+        // Callback for received message
         private ActionReceivedTextIO OnRecvdTextIO = null;
 
+        // Can trigger cancellation of DS task due to timeout or manual
+        private CancellationTokenSource cancellationTokenSource = null;
 
+        // Callback to handle received message, post stripping of flag
+        public DeviceAndSvcCurrentSettings DeviceCurrentSettings {  get;  set; }
+
+        // An instance of this class
+        // Nb: Referred to for Cancel and for subsequent messages in KeepAlive mode
         public static DeviceStream_Device deviceStream_Device = null;
 
-        public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText)
+        /// <summary>
+        /// The class constructor
+        /// </summary>
+        /// <param name="deviceClient">Instance of class for Device Steaming from the SDK</param>
+        /// <param name="_OnRecvText">Callback to handle received message, post stripping of flags</param>
+        /// <param name="deviceCurrentSettings">Optional custom class to handle processing of flags</param>
+        public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText, DeviceAndSvcCurrentSettings deviceCurrentSettings = null)
         {
-            _deviceClient = deviceClient;
+            this.deviceClient = deviceClient;
             OnRecvdTextIO = _OnRecvdText;
+            if (deviceCurrentSettings != null)
+                DeviceCurrentSettings = deviceCurrentSettings;
+            else
+                DeviceCurrentSettings = new DeviceAndSvcCurrentSettings();
         }
 
-        public static async Task RunDevice(string device_cs, ActionReceivedTextIO _OnRecvText)
+        /// <summary>
+        /// Method called from app to instantiate this class and start Device Streaming on Device.
+        /// </summary>
+        /// <param name="device_cs">Device Id eg "MyDevice"</param>
+        /// <param name="_OnRecvText">Callback to handle received message, post stripping of flags</param>
+        /// <param name="deviceCurrentSettings">Optional custom class to handle processing of flags</param>
+        /// <returns>The running task</returns>
+        public static async Task RunDevice(string device_cs, ActionReceivedTextIO _OnRecvText, DeviceAndSvcCurrentSettings deviceCurrentSettings = null)
         {
             TransportType device_hubTransportTryp = DeviceStreamingCommon.device_transportType;
             try
@@ -39,7 +63,7 @@ namespace AzIoTHubDeviceStreams
                         //return null;
                     }
 
-                    deviceStream_Device = new DeviceStream_Device(deviceClient, _OnRecvText);
+                    deviceStream_Device = new DeviceStream_Device(deviceClient, _OnRecvText, deviceCurrentSettings);
                     if (deviceStream_Device == null)
                     {
                         System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamClient!");
@@ -106,38 +130,46 @@ namespace AzIoTHubDeviceStreams
             }
         }
 
+        /// <summary>
+        /// Issues cancellation
+        /// </summary>
         public void Cancel()
         {
             cancellationTokenSource?.Cancel();
         }
 
+        /// <summary>
+        /// Launches the task to run the Device's Device Streaming
+        /// </summary>
+        /// <returns></returns>
         private async Task RunDeviceAsync()
         {
             await RunDeviceAsync(true).ConfigureAwait(false);
         }
 
-        private CancellationTokenSource cancellationTokenSource = null;
 
+        /// <summary>
+        /// The actual Device Streaming method at Device end of the pipe
+        /// </summary>
+        /// <param name="acceptDeviceStreamingRequest"></param>
+        /// <returns></returns>
         private async Task RunDeviceAsync(bool acceptDeviceStreamingRequest)
         {
             byte[] buffer = new byte[1024];
 
             try
             {
-                //System.Diagnostics.Debug.WriteLine("Device-1");
                 using ( cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
                 {
                     try
                     {
-                        //System.Diagnostics.Debug.WriteLine("Device-2");
                         System.Diagnostics.Debug.WriteLine("Starting Device Stream Request");
-                        Microsoft.Azure.Devices.Client.DeviceStreamRequest streamRequest = await _deviceClient.WaitForDeviceStreamRequestAsync(cancellationTokenSource.Token).ConfigureAwait(false);
-                        //System.Diagnostics.Debug.WriteLine("Device-3");
+                        Microsoft.Azure.Devices.Client.DeviceStreamRequest streamRequest = await deviceClient.WaitForDeviceStreamRequestAsync(cancellationTokenSource.Token).ConfigureAwait(false);
                         if (streamRequest != null)
                         {
                             if (acceptDeviceStreamingRequest)
                             {
-                                await _deviceClient.AcceptDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
+                                await deviceClient.AcceptDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
                                 System.Diagnostics.Debug.WriteLine("Device got a connection.");
                                 using (ClientWebSocket webSocket = await DeviceStreamingCommon.GetStreamingDeviceAsync(streamRequest.Url, streamRequest.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
                                 {
@@ -150,10 +182,10 @@ namespace AzIoTHubDeviceStreams
                                         System.Diagnostics.Debug.WriteLine(string.Format("Device Received stream data: {0}", msgIn));
 
                                         //Get keepAlive and respond flags and strip from msg in
-                                        DeviceCurrentSettings deviceCurrentSettings = new DeviceCurrentSettings();
-                                        msgIn = deviceCurrentSettings.ProcessMsgIn(msgIn);
-                                        bool respond = deviceCurrentSettings.Respond;
-                                        keepAlive = deviceCurrentSettings.KeepAlive;
+                                        
+                                        msgIn = DeviceCurrentSettings.ProcessMsgIn(msgIn);
+                                        bool respond = DeviceCurrentSettings.ResponseExpected;
+                                        keepAlive = DeviceCurrentSettings.KeepAlive;
 
                                         string msgOut = msgIn;
                                         if (OnRecvdTextIO != null)
@@ -175,11 +207,11 @@ namespace AzIoTHubDeviceStreams
                             }
                             else
                             {
-                                await _deviceClient.RejectDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
+                                await deviceClient.RejectDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
                             }
                         }
 
-                        await _deviceClient.CloseAsync().ConfigureAwait(false);
+                        await deviceClient.CloseAsync().ConfigureAwait(false);
                     }
                     catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                     {

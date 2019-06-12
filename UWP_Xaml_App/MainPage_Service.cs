@@ -10,6 +10,8 @@ using Windows.UI.Xaml.Controls;
 
 namespace UWPXamlApp
 {
+
+
     sealed partial class MainPage : Page
     {
         private void OnSvcRecvText(string recvdMsg)
@@ -36,9 +38,10 @@ namespace UWPXamlApp
                 DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(to);
             string msgOut = tbSvcMsgOut.Text;
             bool keepAlive = (chkKeepAlive.IsChecked == true);
-            bool expectResponse = (chkExpectResponse.IsChecked == true);;
+            bool responseExpected = (chkExpectResponse.IsChecked == true);
+            bool useCustomClass = (chkUseCustomClass.IsChecked == true);
 
-            if (!DeviceStream_Svc.SignalSendMsgOut(msgOut, keepAlive,expectResponse))
+            if (!DeviceStream_Svc.SignalSendMsgOut(msgOut, keepAlive,responseExpected))
             {
                 try
                 {
@@ -46,7 +49,10 @@ namespace UWPXamlApp
                     {
                         try
                         {
-                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, keepAlive, expectResponse).GetAwaiter().GetResult();
+                            if(!useCustomClass)
+                                DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, keepAlive, responseExpected).GetAwaiter().GetResult();
+                            else
+                                DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, keepAlive, responseExpected, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
                         }
                         catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                         {

@@ -5,15 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DeviceAndSvcCurrentSettings.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\common\AzureConnections.cs" Link="AzureConnections.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="DeviceAndSvcCurrentSettings.cs" />
   </ItemGroup>
 
 </Project>
