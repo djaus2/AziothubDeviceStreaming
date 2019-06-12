@@ -154,7 +154,7 @@ namespace AzIoTHubDeviceStreams
         public void Cancel()
         {
             cancellationTokenSource2?.Cancel();
-            cancellationTokenSource?.Cancel();
+            //cancellationTokenSource?.Cancel();
         }
 
         private CancellationTokenSource cancellationTokenSource2= null;
@@ -171,6 +171,12 @@ namespace AzIoTHubDeviceStreams
                         streamName: "TestStream"
                     );
                     System.Diagnostics.Debug.WriteLine("Starting Svc TestStream");
+                    cancellationTokenSource2.Token.Register(() =>
+                    {
+                         _serviceClient.CloseAsync();
+                        _serviceClient.Dispose();
+                        });
+                    
                     DeviceStreamResponse result = await _serviceClient.CreateStreamAsync(_deviceId, deviceStreamRequest).ConfigureAwait(false);
 
                     System.Diagnostics.Debug.WriteLine(string.Format("Svc Stream response received: Name={0} IsAccepted={1}", deviceStreamRequest.StreamName, result.IsAccepted));
