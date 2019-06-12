@@ -5,7 +5,7 @@ using System.Text;
 namespace AzIoTHubDeviceStreams
 {
 
-    public class DeviceAndSvcCurrentSettings : IDeviceAndSvcCurrentSettings
+    public class DeviceAndSvcCurrentSettings 
     {
         public static class Info
         {

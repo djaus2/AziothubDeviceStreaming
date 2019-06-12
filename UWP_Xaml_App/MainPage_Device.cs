@@ -35,7 +35,7 @@ namespace UWPXamlApp
         private async void Button_Click_Device(object sender, RoutedEventArgs e)
         {
             double to;
-            bool useCustomClass = (chkUseCustomClass.IsChecked == true);
+            bool useCustomClass = (chkUseCustomClassDevice.IsChecked == true);
             if (double.TryParse(tbDeviceTimeout.Text, out to))
                 DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(to);
             try

@@ -153,114 +153,130 @@ namespace AzIoTHubDeviceStreams
 
         public void Cancel()
         {
+            cancellationTokenSource2?.Cancel();
             cancellationTokenSource?.Cancel();
         }
 
+        private CancellationTokenSource cancellationTokenSource2= null;
         private CancellationTokenSource cancellationTokenSource = null;
-        
+
         private async Task RunSvcAsync()
         {
-            try
+            using (cancellationTokenSource2 = new CancellationTokenSource())
             {
-                DeviceStreamRequest deviceStreamRequest = new DeviceStreamRequest(
-                    streamName: "TestStream"
-                );
-                System.Diagnostics.Debug.WriteLine("Starting Svc TestStream");
-                DeviceStreamResponse result = await _serviceClient.CreateStreamAsync(_deviceId, deviceStreamRequest).ConfigureAwait(false);
-
-                System.Diagnostics.Debug.WriteLine(string.Format("Svc Stream response received: Name={0} IsAccepted={1}", deviceStreamRequest.StreamName, result.IsAccepted));
-
-                if (result.IsAccepted)
+                ClientWebSocket stream = null;
+                try
                 {
-                    using ( cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
+                    DeviceStreamRequest deviceStreamRequest = new DeviceStreamRequest(
+                        streamName: "TestStream"
+                    );
+                    System.Diagnostics.Debug.WriteLine("Starting Svc TestStream");
+                    DeviceStreamResponse result = await _serviceClient.CreateStreamAsync(_deviceId, deviceStreamRequest).ConfigureAwait(false);
+
+                    System.Diagnostics.Debug.WriteLine(string.Format("Svc Stream response received: Name={0} IsAccepted={1}", deviceStreamRequest.StreamName, result.IsAccepted));
+
+                    if (result.IsAccepted)
+                    {
+                        using (cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
                         {
-                        try
-                        {
-                            using (var stream = await DeviceStreamingCommon.GetStreamingDeviceAsync(result.Url, result.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
+                            try
                             {
-                                MsgOutWaitHandle = new AutoResetEvent(true);
-                                do
+                                using (stream = await DeviceStreamingCommon.GetStreamingDeviceAsync(result.Url, result.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
                                 {
-                                    //Nb: Not waited on first entry as waiting for msgOut, which we already have.
-                                    MsgOutWaitHandle.WaitOne();
-                                    await SendMsg(stream, MsgOut, cancellationTokenSource);
-                                    if (this.SvcCurrentSettings.ResponseExpected)
+                                    MsgOutWaitHandle = new AutoResetEvent(true);
+                                    do
                                     {
-                                        byte[] receiveBuffer = new byte[1024];
-                                        System.ArraySegment<byte> ReceiveBuffer = new ArraySegment<byte>(receiveBuffer);
+                                        //Nb: Not waited on first entry as waiting for msgOut, which we already have.
+                                        MsgOutWaitHandle.WaitOne();
+                                        await SendMsg(stream, MsgOut, cancellationTokenSource);
+                                        if (this.SvcCurrentSettings.ResponseExpected)
+                                        {
+                                            byte[] receiveBuffer = new byte[1024];
+                                            System.ArraySegment<byte> ReceiveBuffer = new ArraySegment<byte>(receiveBuffer);
 
-                                        var receiveResult = await stream.ReceiveAsync(ReceiveBuffer, cancellationTokenSource.Token).ConfigureAwait(false);
+                                            var receiveResult = await stream.ReceiveAsync(ReceiveBuffer, cancellationTokenSource.Token).ConfigureAwait(false);
 
-                                        MsgIn = Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count);
+                                            MsgIn = Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count);
 
-                                        if (OnRecvdTextD != null)
-                                            OnRecvdTextD(MsgIn);
+                                            if (OnRecvdTextD != null)
+                                                OnRecvdTextD(MsgIn);
 
-                                        System.Diagnostics.Debug.WriteLine(string.Format("Svc Received stream data: {0}", MsgIn));
-                                    }
-                                    MsgOutWaitHandle.Reset();
-                                } while (this.SvcCurrentSettings.KeepAlive);
-                                MsgOutWaitHandle = null;
-                                System.Diagnostics.Debug.WriteLine("Closing Svc Socket");
-                                await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
+                                            System.Diagnostics.Debug.WriteLine(string.Format("Svc Received stream data: {0}", MsgIn));
+                                        }
+                                        MsgOutWaitHandle.Reset();
+                                    } while (this.SvcCurrentSettings.KeepAlive);
+                                    MsgOutWaitHandle = null;
+                                    System.Diagnostics.Debug.WriteLine("Closing Svc Socket");
+                                    await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
+                                    stream = null;
+                                }
                             }
-                        }
-                        catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
-                        {
-                        System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Hub connection failure" );
-                        }
-                        catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
-                        {
-                            System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Device not found" );
-                        }
-                        catch (TaskCanceledException)
-                        {
-                            System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Task canceled" );
-                        }
-                        catch (OperationCanceledException)
-                        {
-                        System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Operation canceled" ); ;
-                        }
-                        catch (Exception ex)
-                        {
-                            if (!ex.Message.Contains("Timeout"))
-                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): " + ex.Message);
-                            else
+                            catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                             {
-                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Timeout" );
+                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Hub connection failure");
+                            }
+                            catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
+                            {
+                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Device not found");
+                            }
+                            catch (TaskCanceledException)
+                            {
+                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Task cancelled");
+                            }
+                            catch (OperationCanceledException)
+                            {
+                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Operation canceleld"); ;
+                            }
+                            catch (Exception ex)
+                            {
+                                if (!ex.Message.Contains("Timeout"))
+                                    System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): " + ex.Message);
+                                else
+                                {
+                                    System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Timeout");
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
-            {
-                System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Hub connection failure");
-            }
-            catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
-            {
-                System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Device not found");
-            }
-            catch (TaskCanceledException)
-            {
-                System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Task canceled");
-            }
-            catch (OperationCanceledException)
-            {
-                System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Operation canceled");
-            }
-            catch (Exception ex)
-            {
-                if (!ex.Message.Contains("Timeout"))
-                    System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): " + ex.Message);
-                else
+                catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                 {
-                    System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Timeout");
+                    System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Hub connection failure");
                 }
+                catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
+                {
+                    System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Device not found");
+                }
+                catch (TaskCanceledException)
+                {
+                    System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Task cancelled");
+                }
+                catch (OperationCanceledException)
+                {
+                    System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Operation cancelled");
+                }
+                catch (Exception ex)
+                {
+                    if (!ex.Message.Contains("Timeout"))
+                        System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): " + ex.Message);
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Timeout");
+                    }
+                }
+           ;
+                if (stream != null)
+                {
+                    if (stream.CloseStatus != WebSocketCloseStatus.NormalClosure)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Aborting Svc Socket as is errant or cancelled");
+                        stream.Abort();
+                    }
+                }
+                deviceStream_Svc = null;
+                MsgOutWaitHandle = null;
+                cancellationTokenSource = null;
             }
-            deviceStream_Svc = null;
-            MsgOutWaitHandle = null;
-            cancellationTokenSource = null;
         }
 
         private static async Task SendMsg(ClientWebSocket stream, string msgOut, CancellationTokenSource cancellationTokenSource)

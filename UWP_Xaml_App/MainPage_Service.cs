@@ -39,7 +39,7 @@ namespace UWPXamlApp
             string msgOut = tbSvcMsgOut.Text;
             bool keepAlive = (chkKeepAlive.IsChecked == true);
             bool responseExpected = (chkExpectResponse.IsChecked == true);
-            bool useCustomClass = (chkUseCustomClass.IsChecked == true);
+            bool useCustomClass = (ChkUseCustomClassSvc.IsChecked == true);
 
             if (!DeviceStream_Svc.SignalSendMsgOut(msgOut, keepAlive,responseExpected))
             {

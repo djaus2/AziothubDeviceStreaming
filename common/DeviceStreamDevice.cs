@@ -156,7 +156,7 @@ namespace AzIoTHubDeviceStreams
         private async Task RunDeviceAsync(bool acceptDeviceStreamingRequest)
         {
             byte[] buffer = new byte[1024];
-
+            ClientWebSocket webSocket = null;
             try
             {
                 using ( cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
@@ -171,7 +171,7 @@ namespace AzIoTHubDeviceStreams
                             {
                                 await deviceClient.AcceptDeviceStreamRequestAsync(streamRequest, cancellationTokenSource.Token).ConfigureAwait(false);
                                 System.Diagnostics.Debug.WriteLine("Device got a connection.");
-                                using (ClientWebSocket webSocket = await DeviceStreamingCommon.GetStreamingDeviceAsync(streamRequest.Url, streamRequest.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
+                                using ( webSocket = await DeviceStreamingCommon.GetStreamingDeviceAsync(streamRequest.Url, streamRequest.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
                                 {
                                     System.Diagnostics.Debug.WriteLine(string.Format("Device got stream: Name={0}", streamRequest.Name));
                                     bool keepAlive = false;
@@ -203,6 +203,7 @@ namespace AzIoTHubDeviceStreams
 
                                     System.Diagnostics.Debug.WriteLine("Closing Device Socket");
                                     await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
+                                    webSocket = null;
                                 }
                             }
                             else
@@ -223,11 +224,11 @@ namespace AzIoTHubDeviceStreams
                     }
                     catch (TaskCanceledException)
                     {
-                        System.Diagnostics.Debug.WriteLine("1 Error RunDeviceAsync(): Task canceled");
+                        System.Diagnostics.Debug.WriteLine("1 Error RunDeviceAsync(): Task cancelled");
                     }
                     catch (OperationCanceledException eex)
                     {
-                        System.Diagnostics.Debug.WriteLine("1 Error RunDeviceAsync(): Operation canceled \r\n" + eex.Message);
+                        System.Diagnostics.Debug.WriteLine("1 Error RunDeviceAsync(): Operation cancelled \r\n" + eex.Message);
                     }
                     catch (Exception ex)
                     {
@@ -250,11 +251,11 @@ namespace AzIoTHubDeviceStreams
             }
             catch (TaskCanceledException)
             {
-                System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Task canceled");
+                System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Task cancelled");
             }
             catch (OperationCanceledException eex)
             {
-                System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Operation canceled \r\n" + eex.Message);
+                System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Operation cancelled \r\n" + eex.Message);
             }
             catch (Exception ex)
             {
@@ -263,6 +264,14 @@ namespace AzIoTHubDeviceStreams
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("2 Error RunDeviceAsync(): Timeout");
+                }
+            }
+            if ( webSocket != null)
+            {
+                if (webSocket.CloseStatus != WebSocketCloseStatus.NormalClosure)
+                {
+                    System.Diagnostics.Debug.WriteLine("Aborting Device Socket as is errant or cancelled.");
+                    webSocket.Abort();
                 }
             }
             cancellationTokenSource = null;

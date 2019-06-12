@@ -16,20 +16,20 @@
         <TextBlock Text="Sportronics: UWP Azure IoT Hub Device Streaming" Margin ="100,20,20,20" Foreground="Blue" FontSize="32" FontWeight="Bold"/>
         <RelativePanel Background="Beige">
             <Button x:Name="btnSend" 
-                Content="Send using Service" Height="120" Width="336" Click="Button_Click_Svc"/>
+                Content="Send using Service" Height="120" Width="340" Click="Button_Click_Svc"/>
             <CheckBox x:Name="chkKeepAlive" Content="Keep connection alive."
                       RelativePanel.Below="btnSend" Margin="20,10,0,0"
                       />
             <CheckBox x:Name="chkExpectResponse" Content="Expect response." IsChecked="True"
                       RelativePanel.Below="chkKeepAlive" Margin="20,10,0,0"
                       />
-            <CheckBox x:Name="chkUseCustomClass" Content="Use Custom Flags Class" IsChecked="False"
-                      RelativePanel.Below="chkExpectResponse" Margin="20,10,0,0"
+            <CheckBox x:Name="ChkUseCustomClassSvc" Content="Use Custom Flags Class" IsChecked="False"
+                      RelativePanel.Below="chkExpectResponse" Margin="20,10,0,0" Checked="ChkUseCustomClassSvc_Checked"
                       />
-            <Button x:Name="btnCancelSvc" Content="Cancel Device" RelativePanel.Below="btnSend" RelativePanel.AlignRightWith="btnSend"
-                    Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLDevice_Click"/>
+            <Button x:Name="btnCancelSvc" Content="Cancel Svc&#xD;&#xA;" RelativePanel.Below="btnSend" RelativePanel.AlignRightWith="btnSend"
+                    Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLSvc_Click"/>
 
-            <TextBlock x:Name="lblSvcTimeout" RelativePanel.RightOf="btnSend" Width="200" TextAlignment="Right"
+            <TextBlock x:Name="lblSvcTimeout" RelativePanel.RightOf="btnSend" Width="220" TextAlignment="Right"
                 Margin="20,20,0,0"  ><Run Text="Service-Timeout"/><Run Text=" "/><Run Text="(ms):"/></TextBlock>
 
             <TextBox x:Name="tbSvcTimeout" RelativePanel.RightOf="lblSvcTimeout" RelativePanel.AlignTopWith="lblSvcTimeout"
@@ -54,9 +54,12 @@
         <RelativePanel Background="LightCyan">
 
             <Button x:Name="btnListen" 
-                Content="Start Listening as Device"  Height="120" Width="332" Click="Button_Click_Device"/>
+                Content="Start Listening as Device"  Height="120" Width="340" Click="Button_Click_Device"/>
             <TextBlock x:Name="lblNb" RelativePanel.Below="btnListen" RelativePanel.AlignLeftWith="btnListen" FontStyle="Italic" FontWeight="Bold"
-                Text="Nb: Only active for one recieved message if NOT KeepAlive." Margin="20,20,0,0"  />
+                Text="Nb: Device only active for one recieved message if NOT KeepAlive." Margin="20,20,0,0"  />
+            <CheckBox x:Name="chkUseCustomClassDevice" Content="Use Custom Flags Class" IsChecked="False"
+                      RelativePanel.Below="lblNb" Margin="20,10,0,0" Checked="ChkUseCustomClassDevice_Checked"
+                      />
 
             <TextBlock x:Name="lblDeviceTimeout" RelativePanel.RightOf="btnListen" Width="220" TextAlignment="Right" 
                 Text="Device-Timeout (ms):" Margin="20,20,0,0"  />
