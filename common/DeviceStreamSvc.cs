@@ -18,6 +18,7 @@ namespace AzIoTHubDeviceStreams
         //Microsoft.Azure.Devices.ServiceClient ;
         private ServiceClient _serviceClient;
         public ActionReceivedText OnRecvdTextD = null;
+        public ActionReceivedText OnStatusUpdateD = null;
 
         public string MsgOut { get; set; }
         public static string MsgIn { get; set; }
@@ -29,11 +30,12 @@ namespace AzIoTHubDeviceStreams
 
         private String _deviceId;
 
-        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string _msgOut, ActionReceivedText _OnRecvdTextD, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings svcCurrentSettings = null)
+        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string _msgOut, ActionReceivedText _OnRecvdTextD, ActionReceivedText _OnStatusUpdateD = null, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings svcCurrentSettings = null)
         {
             _serviceClient = deviceClient;
             _deviceId = deviceId;
             OnRecvdTextD = _OnRecvdTextD;
+            OnStatusUpdateD = _OnStatusUpdateD;
             if (svcCurrentSettings != null)
                 SvcCurrentSettings = svcCurrentSettings;
             else
@@ -61,7 +63,7 @@ namespace AzIoTHubDeviceStreams
             return false;
         }
 
-        public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdTextD, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings deviceAndSvcCurrentSettings = null )
+        public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdTextD, ActionReceivedText _OnStatusUpdateD=null, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings deviceAndSvcCurrentSettings = null )
         {
             if (deviceStream_Svc != null)
             {
@@ -83,7 +85,7 @@ namespace AzIoTHubDeviceStreams
 
                         //Attach keepalive and respond info if set
 
-                        deviceStream_Svc = new DeviceStream_Svc(serviceClient, deviceId, msgOut, _OnRecvdTextD, keepAlive,responseExpected, deviceAndSvcCurrentSettings);
+                        deviceStream_Svc = new DeviceStream_Svc(serviceClient, deviceId, msgOut, _OnRecvdTextD, _OnStatusUpdateD, keepAlive,responseExpected, deviceAndSvcCurrentSettings);
                         if (deviceStream_Svc == null)
                         {
                             System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamSvc!");
@@ -153,16 +155,21 @@ namespace AzIoTHubDeviceStreams
 
         public void Cancel()
         {
-            cancellationTokenSource2?.Cancel();
-            //cancellationTokenSource?.Cancel();
+            if (cancellationTokenSourceTimeout==null)
+                cancellationTokenSourceManual?.Cancel();
+            else
+                cancellationTokenSourceTimeout?.Cancel();
         }
 
-        private CancellationTokenSource cancellationTokenSource2= null;
-        private CancellationTokenSource cancellationTokenSource = null;
+        private CancellationTokenSource cancellationTokenSourceManual= null;
+        private CancellationTokenSource cancellationTokenSourceTimeout = null;
 
         private async Task RunSvcAsync()
         {
-            using (cancellationTokenSource2 = new CancellationTokenSource())
+            string errorMsg = "";
+            string updateMsg = "";
+            
+            using (cancellationTokenSourceManual = new CancellationTokenSource())
             {
                 ClientWebSocket stream = null;
                 try
@@ -170,76 +177,111 @@ namespace AzIoTHubDeviceStreams
                     DeviceStreamRequest deviceStreamRequest = new DeviceStreamRequest(
                         streamName: "TestStream"
                     );
-                    System.Diagnostics.Debug.WriteLine("Starting Svc TestStream");
-                    cancellationTokenSource2.Token.Register(() =>
+                    updateMsg = "Starting Svc TestStream";
+                    UpdateStatus(updateMsg);
+
+                    cancellationTokenSourceManual.Token.Register(() =>
                     {
-                         _serviceClient.CloseAsync();
-                        _serviceClient.Dispose();
-                        });
-                    
+                        _serviceClient?.CloseAsync();
+                        _serviceClient?.Dispose();
+                    });
+
                     DeviceStreamResponse result = await _serviceClient.CreateStreamAsync(_deviceId, deviceStreamRequest).ConfigureAwait(false);
 
-                    System.Diagnostics.Debug.WriteLine(string.Format("Svc Stream response received: Name={0} IsAccepted={1}", deviceStreamRequest.StreamName, result.IsAccepted));
+                    updateMsg = string.Format("Svc Stream response received: Name={0} IsAccepted={1}", deviceStreamRequest.StreamName, result.IsAccepted);
+                    UpdateStatus(updateMsg);
 
                     if (result.IsAccepted)
                     {
-                        using (cancellationTokenSource = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
+                        using (cancellationTokenSourceTimeout = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
                         {
                             try
                             {
-                                using (stream = await DeviceStreamingCommon.GetStreamingDeviceAsync(result.Url, result.AuthorizationToken, cancellationTokenSource.Token).ConfigureAwait(false))
+                                using (stream = await DeviceStreamingCommon.GetStreamingDeviceAsync(result.Url, result.AuthorizationToken, cancellationTokenSourceTimeout.Token).ConfigureAwait(false))
                                 {
+                                    updateMsg = "Stream is open.";
+                                    UpdateStatus(updateMsg);
+
                                     MsgOutWaitHandle = new AutoResetEvent(true);
                                     do
                                     {
                                         //Nb: Not waited on first entry as waiting for msgOut, which we already have.
+                                        updateMsg = "Stream is open. Waiting for msg to send.";
+                                        UpdateStatus(updateMsg);
+
                                         MsgOutWaitHandle.WaitOne();
-                                        await SendMsg(stream, MsgOut, cancellationTokenSource);
+                                        updateMsg = "Sending msg.";
+                                        UpdateStatus(updateMsg);
+
+                                        await SendMsg(stream, MsgOut, cancellationTokenSourceTimeout);
+                                        updateMsg = "Sent msg.";
+                                        UpdateStatus(updateMsg);
+
                                         if (this.SvcCurrentSettings.ResponseExpected)
                                         {
                                             byte[] receiveBuffer = new byte[1024];
                                             System.ArraySegment<byte> ReceiveBuffer = new ArraySegment<byte>(receiveBuffer);
 
-                                            var receiveResult = await stream.ReceiveAsync(ReceiveBuffer, cancellationTokenSource.Token).ConfigureAwait(false);
+                                            var receiveResult = await stream.ReceiveAsync(ReceiveBuffer, cancellationTokenSourceTimeout.Token).ConfigureAwait(false);
 
                                             MsgIn = Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count);
 
                                             if (OnRecvdTextD != null)
                                                 OnRecvdTextD(MsgIn);
 
-                                            System.Diagnostics.Debug.WriteLine(string.Format("Svc Received stream data: {0}", MsgIn));
+                                            updateMsg = string.Format("Svc Received stream data: {0}", MsgIn);
+                                            UpdateStatus(updateMsg);
                                         }
                                         MsgOutWaitHandle.Reset();
                                     } while (this.SvcCurrentSettings.KeepAlive);
                                     MsgOutWaitHandle = null;
-                                    System.Diagnostics.Debug.WriteLine("Closing Svc Socket");
-                                    await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSource.Token).ConfigureAwait(false);
+                                    updateMsg = "Closing Svc Socket";
+                                    UpdateStatus(updateMsg);
+                                    await stream.CloseAsync(WebSocketCloseStatus.NormalClosure, String.Empty, cancellationTokenSourceTimeout.Token).ConfigureAwait(false);
                                     stream = null;
                                 }
                             }
                             catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                             {
                                 System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Hub connection failure");
+                                errorMsg = "Hub connection failure";
                             }
                             catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
                             {
                                 System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Device not found");
+                                errorMsg = "Device not found";
                             }
                             catch (TaskCanceledException)
                             {
                                 System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Task cancelled");
+                                errorMsg = "Task cancelled";
                             }
                             catch (OperationCanceledException)
                             {
-                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Operation canceleld"); ;
+                                System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Operation cancelled");
+                                errorMsg = "Operation cancelled";
                             }
                             catch (Exception ex)
                             {
-                                if (!ex.Message.Contains("Timeout"))
+                                if ((bool)cancellationTokenSourceManual?.IsCancellationRequested)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Cancelled.");
+                                    errorMsg = "Cancelled";
+                                }
+                                else if ((bool)cancellationTokenSourceTimeout?.IsCancellationRequested)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Timed Out.");
+                                    errorMsg = "Timed Out";
+                                }
+                                else if (!ex.Message.Contains("Timed out"))
+                                {
                                     System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): " + ex.Message);
+                                    errorMsg = ex.Message;
+                                }
                                 else
                                 {
-                                    System.Diagnostics.Debug.WriteLine("1 Error RunSvcAsync(): Timeout");
+                                    System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Timed out");
+                                    errorMsg = "Timed Out";
                                 }
                             }
                         }
@@ -248,40 +290,72 @@ namespace AzIoTHubDeviceStreams
                 catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
                 {
                     System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Hub connection failure");
+                    errorMsg += " Hub connection failure";
                 }
                 catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
                 {
                     System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Device not found");
+                    errorMsg += " Device not found";
                 }
                 catch (TaskCanceledException)
                 {
                     System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Task cancelled");
+                    errorMsg += " Task cancelled";
                 }
                 catch (OperationCanceledException)
                 {
                     System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Operation cancelled");
+                    errorMsg += " Operation cancelled";
                 }
                 catch (Exception ex)
-                {
-                    if (!ex.Message.Contains("Timeout"))
+                { if ((bool)cancellationTokenSourceManual?.IsCancellationRequested)
+                    {
+                        System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Cancelled.");
+                        errorMsg += " Cancelled";
+                    }
+                    else if ((bool)cancellationTokenSourceTimeout?.IsCancellationRequested)
+                    {
+                        System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Timed Out.");
+                        errorMsg += " Timed Out";
+                    }
+                    else if (!ex.Message.Contains("Timed out"))
+                    {
                         System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): " + ex.Message);
+                        errorMsg += " " + ex.Message;
+                    }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Timeout");
+                        System.Diagnostics.Debug.WriteLine("2 Error RunSvcAsync(): Timed out");
+                        errorMsg += " Timed Out";
                     }
-                }
-           ;
+                };
+
                 if (stream != null)
                 {
                     if (stream.CloseStatus != WebSocketCloseStatus.NormalClosure)
                     {
-                        System.Diagnostics.Debug.WriteLine("Aborting Svc Socket as is errant or cancelled");
+                        updateMsg= "Aborting Svc Socket as is errant or cancelled: " + errorMsg;
+                        UpdateStatus(updateMsg);
                         stream.Abort();
+                        updateMsg = "Aborted Svc Socket as was errant or cancelled:" + errorMsg;
+                        UpdateStatus(updateMsg);
                     }
+                    else
+                    {
+                        updateMsg = "Socket closed normally: " + errorMsg;
+                        UpdateStatus(updateMsg);
+                    }
+                    stream = null;
                 }
+                else
+                {
+                    updateMsg = "Socket closed Normally: " + errorMsg; 
+                    UpdateStatus(updateMsg);
+                }
+
                 deviceStream_Svc = null;
                 MsgOutWaitHandle = null;
-                cancellationTokenSource = null;
+                cancellationTokenSourceTimeout = null;
             }
         }
 
@@ -294,6 +368,13 @@ namespace AzIoTHubDeviceStreams
 
             System.Diagnostics.Debug.WriteLine(string.Format("Svc Sent stream data: {0}", Encoding.UTF8.GetString(sendBuffer, 0, sendBuffer.Length)));
 
+        }
+
+        private void UpdateStatus(string msg)
+        {
+            System.Diagnostics.Debug.WriteLine("Service: " + msg);
+            if (OnStatusUpdateD != null)
+                OnStatusUpdateD(msg);
         }
     }
 }

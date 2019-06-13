@@ -51,7 +51,25 @@
                      HorizontalAlignment="Left" Height="84" Margin="20,20,0,20" Text="Msg Recv'd" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True"/>
 
         </RelativePanel>
-        <RelativePanel Background="LightCyan">
+    
+            <CommandBar Background="Brown" Margin="0" Height="30" >
+                <CommandBar.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Service Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
+                        <TextBlock x:Name="tbSvcStatus" Text="Hello" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0"/>
+                    </StackPanel>
+                </CommandBar.Content>
+            </CommandBar>
+        <CommandBar Background="DarkCyan" Margin="0,10,0,10" Height="30" >
+            <CommandBar.Content >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Device Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
+                    <TextBlock x:Name="tbDeviceStatus" Text="Hello" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0"/>
+                </StackPanel>
+            </CommandBar.Content>
+        </CommandBar>
+
+        <RelativePanel Background="LightCyan" >
 
             <Button x:Name="btnListen" 
                 Content="Start Listening as Device"  Height="120" Width="340" Click="Button_Click_Device"/>
@@ -90,13 +108,25 @@
                 </ListView.ItemTemplate>
             </ListView>
             <TextBlock x:Name="lblNb2" RelativePanel.Below="ListviewTransports" RelativePanel.AlignLeftWith="lblNb" FontStyle="Italic" FontWeight="Bold"
-                Text="Nb2: Run in Visual Studio, Debug mode and note Debug messages in Output Window." Margin="20,20,0,20"  />
+                Text="Nb2: Run in Visual Studio, Debug mode and note Debug messages in Output Window." Margin="20,20,0,0"  />
             <Button x:Name="btnCancelDevice" Content="Cancel Device" RelativePanel.Below="lblNb" RelativePanel.AlignRightWith="btnListen"
-                    Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLSvc_Click"/>
+                    Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLDevice_Click"/>
+         
         </RelativePanel>
 
+    
 
 
     </StackPanel>
 
+    <!--<Page.BottomAppBar>
+        <CommandBar Background="DarkCyan" Margin="0" Height="30" >
+            <CommandBar.Content >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Device Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
+                    <TextBlock x:Name="DeviceStatus" Text="Hello" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0"/>
+                </StackPanel>
+            </CommandBar.Content>
+        </CommandBar>
+    </Page.BottomAppBar>-->
 </Page>

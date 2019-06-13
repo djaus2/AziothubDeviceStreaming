@@ -27,6 +27,16 @@ namespace UWPXamlApp
             return msgOut;
         }
 
+        private void OnDeviceStatusUpdate(string msgIn)
+        {
+            Task.Run(async () => {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    tbDeviceStatus.Text = msgIn;
+                });
+            });
+        }
+
         private void ButtonCanceLDevice_Click(object sender, RoutedEventArgs e)
         {
             DeviceStream_Device.deviceStream_Device?.Cancel();
@@ -37,71 +47,29 @@ namespace UWPXamlApp
             double to;
             bool useCustomClass = (chkUseCustomClassDevice.IsChecked == true);
             if (double.TryParse(tbDeviceTimeout.Text, out to))
-                DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(to);
-            try
+            DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(to);
+            await Task.Run(() =>
             {
-                //va
-                await Task.Run(() =>
+                try
                 {
-                    try
-                    {
-                        if(!useCustomClass)
-                            DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText).GetAwaiter().GetResult();
-                        else
-                            DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
-                    }
-                    catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
-                    {
-                        System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): Hub connection failure");
-                    }
-                    catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
-                    {
-                        System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): Device not found");
-                    }
-                    catch (TaskCanceledException)
-                    {
-                        System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): Task canceled");
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): Operation canceled");
-                    }
-                    catch (Exception ex)
-                    {
-                        if (ex.Message.Contains("Timeout"))
-                            System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): " + ex.Message);
-                        else
-                        {
-                            System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): Timeout");
-                        }
-                    }
-                });
-            }
-            catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
-            {
-                System.Diagnostics.Debug.WriteLine("00 Error App.RunClient(): Hub connection failure");
-            }
-            catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
-            {
-                System.Diagnostics.Debug.WriteLine("00 Error App.RunClient(): Device not found");
-            }
-            catch (TaskCanceledException)
-            {
-                System.Diagnostics.Debug.WriteLine("00 Error App.RunClient(): Task canceled");
-            }
-            catch (OperationCanceledException)
-            {
-                System.Diagnostics.Debug.WriteLine("00 Error App.RunClient(): Operation canceled");
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("Timeout"))
-                    System.Diagnostics.Debug.WriteLine("00 Error App.RunClient(): " + ex.Message);
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("00 Error App.RunClient(): Timeout");
+                    if(!useCustomClass)
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate).GetAwaiter().GetResult();
+                    else
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate,  new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
                 }
-            }
+                catch (TaskCanceledException)
+                {
+                    System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): Task cancelled");
+                }
+                catch (OperationCanceledException)
+                {
+                    System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): Operation cancelled");
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): " + ex.Message);
+                }
+            });
         }
     }
 }
