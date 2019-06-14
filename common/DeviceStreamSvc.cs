@@ -42,7 +42,7 @@ namespace AzIoTHubDeviceStreams
                 SvcCurrentSettings = new DeviceAndSvcCurrentSettings();
             SvcCurrentSettings.KeepAlive = keepAlive;
             SvcCurrentSettings.ResponseExpected = responseExpected;
-            MsgOut = SvcCurrentSettings.ProcessMsgOut(_msgOut, keepAlive, responseExpected);
+            MsgOut = _msgOut; 
         }
 
         public static bool SignalSendMsgOut(string msgOut, bool keepAlive, bool responseExpected)
@@ -53,8 +53,10 @@ namespace AzIoTHubDeviceStreams
                 {
                     if (deviceStream_Svc.SvcCurrentSettings != null)
                     {
-                        msgOut = deviceStream_Svc.SvcCurrentSettings.ProcessMsgOut(msgOut, keepAlive, responseExpected);
+                        //msgOut = deviceStream_Svc.SvcCurrentSettings.ProcessMsgOut(msgOut, keepAlive, responseExpected);
                         deviceStream_Svc.MsgOut = msgOut;;
+                        deviceStream_Svc.SvcCurrentSettings.KeepAlive = keepAlive; ;
+                        deviceStream_Svc.SvcCurrentSettings.ResponseExpected = responseExpected; ;
                         deviceStream_Svc.MsgOutWaitHandle.Set();
                         return true;
                     }
@@ -114,7 +116,7 @@ namespace AzIoTHubDeviceStreams
                             }
                             catch (Exception ex)
                             {
-                                if (!ex.Message.Contains("Timeout"))
+                                if (!ex.Message.Contains("Timed out"))
                                     System.Diagnostics.Debug.WriteLine("3 Error RunSvc(): " + ex.Message);
                                 else
                                 {
@@ -201,7 +203,7 @@ namespace AzIoTHubDeviceStreams
                                 {
                                     updateMsg = "Stream is open.";
                                     UpdateStatus(updateMsg);
-
+                                    bool keepAlive = false;
                                     MsgOutWaitHandle = new AutoResetEvent(true);
                                     do
                                     {
@@ -212,28 +214,51 @@ namespace AzIoTHubDeviceStreams
                                         MsgOutWaitHandle.WaitOne();
                                         updateMsg = "Sending msg.";
                                         UpdateStatus(updateMsg);
-
-                                        await SendMsg(stream, MsgOut, cancellationTokenSourceTimeout);
-                                        updateMsg = "Sent msg.";
-                                        UpdateStatus(updateMsg);
-
-                                        if (this.SvcCurrentSettings.ResponseExpected)
+                                        bool caught = false;
+                                        try
                                         {
-                                            byte[] receiveBuffer = new byte[1024];
-                                            System.ArraySegment<byte> ReceiveBuffer = new ArraySegment<byte>(receiveBuffer);
-
-                                            var receiveResult = await stream.ReceiveAsync(ReceiveBuffer, cancellationTokenSourceTimeout.Token).ConfigureAwait(false);
-
-                                            MsgIn = Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count);
-
-                                            if (OnRecvdTextD != null)
-                                                OnRecvdTextD(MsgIn);
-
-                                            updateMsg = string.Format("Svc Received stream data: {0}", MsgIn);
-                                            UpdateStatus(updateMsg);
+                                          MsgOut = SvcCurrentSettings.ProcessMsgOut(MsgOut, SvcCurrentSettings.KeepAlive, SvcCurrentSettings.ResponseExpected);
+                                        } catch (NotImplementedException nex)
+                                        {
+                                            errorMsg += "DeviceCurrentSettings not properly implemented";
+                                            keepAlive = false;
+                                            caught = true;
                                         }
-                                        MsgOutWaitHandle.Reset();
-                                    } while (this.SvcCurrentSettings.KeepAlive);
+                                        if (!caught)
+                                        {
+                                            await SendMsg(stream, MsgOut, cancellationTokenSourceTimeout);
+                                            updateMsg = "Sent msg.";
+                                            UpdateStatus(updateMsg);
+
+                                            if (this.SvcCurrentSettings.ResponseExpected)
+                                            {
+                                                byte[] receiveBuffer = new byte[1024];
+                                                System.ArraySegment<byte> ReceiveBuffer = new ArraySegment<byte>(receiveBuffer);
+
+                                                var receiveResult = await stream.ReceiveAsync(ReceiveBuffer, cancellationTokenSourceTimeout.Token).ConfigureAwait(false);
+
+                                                MsgIn = Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count);
+
+                                                keepAlive = false;
+                                                if (SvcCurrentSettings != null)
+                                                    keepAlive = this.SvcCurrentSettings.KeepAlive;
+                                                try
+                                                {
+                                                    if (OnRecvdTextD != null)
+                                                        OnRecvdTextD(MsgIn);
+                                                }
+                                                catch (Exception exx)
+                                                {
+                                                    errorMsg += "OnRecvdTextD not properly implemented: " + exx.Message;
+                                                    keepAlive = false;
+                                                }
+
+                                                updateMsg = string.Format("Svc Received stream data: {0}", MsgIn);
+                                                UpdateStatus(updateMsg);
+                                            }
+                                            MsgOutWaitHandle.Reset();
+                                        }
+                                    } while (keepAlive) ;
                                     MsgOutWaitHandle = null;
                                     updateMsg = "Closing Svc Socket";
                                     UpdateStatus(updateMsg);

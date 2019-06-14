@@ -95,7 +95,7 @@ namespace AzIoTHubDeviceStreams
                     }
                     catch (Exception ex)
                     {
-                        if (!ex.Message.Contains("Timeout"))
+                        if (!ex.Message.Contains("Timed out"))
                             System.Diagnostics.Debug.WriteLine("3 Error RunDevice(): " + ex.Message);
                         else
                         {
@@ -205,14 +205,30 @@ namespace AzIoTHubDeviceStreams
                                         UpdateStatus(updateMsg);
 
                                         //Get keepAlive and respond flags and strip from msg in
-
-                                        msgIn = DeviceCurrentSettings.ProcessMsgIn(msgIn);
-                                        bool respond = DeviceCurrentSettings.ResponseExpected;
-                                        keepAlive = DeviceCurrentSettings.KeepAlive;
+                                        bool respond = true;
+                                        try
+                                        {
+                                            msgIn = DeviceCurrentSettings.ProcessMsgIn(msgIn);
+                                            respond = DeviceCurrentSettings.ResponseExpected;
+                                            keepAlive  = DeviceCurrentSettings.KeepAlive;
+                                        } catch (System.NotImplementedException niex)
+                                        {
+                                            errorMsg += "DeviceCurrentSettings not properly Implemented";
+                                            keepAlive = false;
+                                            respond = false;
+                                        }
 
                                         string msgOut = msgIn;
-                                        if (OnRecvdTextIO != null)
-                                            msgOut = OnRecvdTextIO(msgIn);
+                                        try
+                                        {
+                                            if (OnRecvdTextIO != null)
+                                                msgOut = OnRecvdTextIO(msgIn);
+                                        } catch (Exception exx)
+                                        {
+                                            errorMsg += "OnRecvdTextIO not properly nmplemented: " + exx.Message;
+                                            keepAlive = false;
+                                            respond = false;
+                                        }
 
                                         if (respond)
                                         {
