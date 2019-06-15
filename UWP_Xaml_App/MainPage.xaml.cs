@@ -37,6 +37,10 @@ namespace UWPXamlApp
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadConSettings();
+            service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
+            device_id = AzureConnections.MyConnections.DeviceId;
+            device_cs = AzureConnections.MyConnections.DeviceConnectionString;
             ListviewTransports.ItemsSource = ListEnum;
             ListviewTransports.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
             ListviewTransports.ScrollIntoView(ListviewTransports.SelectedItem);
@@ -100,6 +104,117 @@ namespace UWPXamlApp
                 checkboxActive = false;
         }
 
-    
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+            Popup_SetConnectionDetails.DataContext = conDetail;
+            Popup_SetConnectionDetails.IsOpen = false;
+            Popup_SetConnectionDetails.IsOpen = true;
+        }
+
+        public class ConDetail
+        {
+            public string ConString { get; set; }
+            public string DevString { get; set; }
+            public string DevId { get; set; }
+            public ConDetail(string a, string b, string c)
+            {
+                ConString = a;
+                DevString = b;
+                DevId = c;
+            }
+
+            public ConDetail()
+            {
+            }
+
+        }
+
+        private ConDetail conDetail =null;
+
+        private void LoadConSettings()
+        {
+            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.Keys.Contains("ConDetail"))
+            {
+                Windows.Storage.ApplicationDataCompositeValue composite =
+   (Windows.Storage.ApplicationDataCompositeValue)localSettings.Values["ConDetail"];
+                if (composite != null)
+                {
+                    ConDetail details = new ConDetail();
+                    details.ConString = (string) composite["ConString"];
+                    details.DevString = (string) composite["DevString"];
+                    details.DevId = (string)  composite["DevId"];
+                    SaveConnectionSettingsToAzureConnections(details);
+                }
+            }
+            //else use existing.
+        }
+
+        private void SaveConnectionSettingsToAzureConnections(ConDetail ccondetail)
+        {
+            conDetail = ccondetail;
+            AzureConnections.MyConnections.IoTHubConnectionString = ccondetail.ConString;
+            AzureConnections.MyConnections.DeviceConnectionString = ccondetail.DevString;
+            AzureConnections.MyConnections.DeviceId = ccondetail.DevId;
+        }
+        private void DoneSetConnectionDetails_Click(object sender, RoutedEventArgs e)
+        {
+            SaveConnectionSettingsToAzureConnections(conDetail);
+            Popup_SetConnectionDetails.IsOpen = false;
+            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.Keys.Contains("ConDetail"))
+            {
+                localSettings.Values.Remove("ConDetail");
+            }
+            Windows.Storage.ApplicationDataCompositeValue composite = new Windows.Storage.ApplicationDataCompositeValue();
+            composite["ConString"] = conDetail.ConString;
+            composite["DevString"] = conDetail.DevString;
+            composite["DevId"] = conDetail.DevId;
+            localSettings.Values.Add("ConDetail", composite);           
+        }
+
+        private void CancelSetConnectionDetails_Click(object sender, RoutedEventArgs e)
+        {
+            Popup_SetConnectionDetails.IsOpen = false;
+        }
+
+ 
+
+        private async void Button_RemoveDBLQuotes_Click(object sender, RoutedEventArgs e)
+        {
+            Button butt = (Button)sender;
+            if (butt != null)
+            { 
+                var dataPackageView = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
+                if (dataPackageView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Text))
+                {
+                    string strn = await dataPackageView.GetTextAsync();
+                    if (!string.IsNullOrEmpty(strn))
+                    {
+                        if (strn[0] == '\"')
+                            strn = strn.Substring(1);
+                        if (strn[strn.Length - 1] == '\"')
+                            strn = strn.Substring(0, strn.Length - 1);
+                    }
+                    string tag = (string)butt.Tag;
+                    switch (tag)
+                    {
+                        case "0":
+                            conDetail.ConString = strn;
+                            break;
+                        case "1":
+                            conDetail.DevString = strn;
+                            break;
+                        case "2":
+                            conDetail.DevId = strn;
+                            break;
+                    }
+                   
+                }
+                Popup_SetConnectionDetails.DataContext = null;
+                Popup_SetConnectionDetails.DataContext = conDetail;
+            }
+        }
     }
 }

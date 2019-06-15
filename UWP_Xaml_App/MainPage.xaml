@@ -14,13 +14,87 @@
 
     <StackPanel Height="863" VerticalAlignment="Top">
         <TextBlock Text="Sportronics: UWP Azure IoT Hub Device Streaming" Margin ="100,20,20,20" Foreground="Blue" FontSize="32" FontWeight="Bold"/>
+        <CommandBar x:Name="SvcC" Background="Brown" Margin="0" Height="30" Foreground="AntiqueWhite"  >
+            <CommandBar.Content>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Service Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
+                    <TextBlock x:Name="tbSvcStatus" Text="Hello" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0"/>
+                </StackPanel>
+            </CommandBar.Content>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="WebCam"  Label="Set Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="1"/>
+                <AppBarButton Icon="AddFriend"  Label="Get Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="2"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+        <Popup VerticalOffset="10"                x:Name="Popup_SetConnectionDetails" 
+               HorizontalAlignment="Left" 
+               HorizontalOffset="100"
+               VerticalAlignment="Top"
+               IsLightDismissEnabled="False">
+            <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
+                Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+                BorderThickness="2" Width="600" >
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Violet" Offset="1"/>
+                            <GradientStop Color="Indigo" Offset="0.85"/>
+                            <GradientStop Color="Blue" Offset="0.70"/>
+                            <GradientStop Color="Green" Offset="0.55"/>
+                            <GradientStop Color="Yellow" Offset="0.4"/>
+                            <GradientStop Color="Orange" Offset="0.25"/>
+                            <GradientStop Color="Red" Offset="0"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition  />
+                        <RowDefinition Height="10" />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition Height="10" />
+                        <RowDefinition />
+                        <RowDefinition Height="10" />
+                        <RowDefinition />
+                        <RowDefinition Height="10" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                    </Grid.ColumnDefinitions>
+                    <Border Background="Green" BorderThickness="1" Height="30" BorderBrush="Black" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
+                        <TextBlock x:Name="ActionEditAthlete" Text="Edit Connection Details" 
+                               FontStyle="Italic" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"
+                                   Height="30"
+                                TextAlignment="Left" Margin="0"/>
+                    </Border>
+
+                    <Button Content="Service Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,10,0" Foreground="Blue" FontWeight="Bold" Width="200"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
+                    <TextBox Name="tbSvcConString" Text="{Binding  Path=ConString, Mode=TwoWay}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
+
+                    <Button Content="Device Connection String:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,10,0"  Foreground="Blue" FontWeight="Bold" Width="200" Click="Button_RemoveDBLQuotes_Click" Tag="1" />
+                    <TextBox Name="tbDeviceConString" Text="{Binding  Path=DevString, Mode=TwoWay}"  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
+
+                    
+                    <Button Content="Device Id:" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0"  Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="200" Click="Button_RemoveDBLQuotes_Click" Tag="2"/>
+                    <TextBox Name="tbDeviceId" Text="{Binding  Path=DevId, Mode=TwoWay}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Background="White"/>
+                    <Button x:Name="CancelSetConnectionDetails" Content="Cancel"  Click="CancelSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="DoneSetConnectionDetails" Content="Update"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="3"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                </Grid>
+            </Border>
+        </Popup>
         <RelativePanel Background="Beige">
+
             <Button x:Name="btnSend" 
-                Content="Send using Service" Height="120" Width="340" Click="Button_Click_Svc"/>
+                Content="Send using Service" Height="120" Width="340" Click="Button_Click_Svc" Margin="0,10,0,0"/>
             <CheckBox x:Name="chkKeepAlive" Content="Keep connection alive."
                       RelativePanel.Below="btnSend" Margin="20,10,0,0"
                       />
-            <CheckBox x:Name="chkExpectResponse" Content="Expect response." IsChecked="True"
+            <CheckBox x:Name="chkExpectResponse" Content="Expect response." IsChecked="True" 
                       RelativePanel.Below="chkKeepAlive" Margin="20,10,0,0"
                       />
             <CheckBox x:Name="ChkUseCustomClassSvc" Content="Use Custom Flags Class" IsChecked="False"
@@ -52,14 +126,7 @@
 
         </RelativePanel>
     
-            <CommandBar Background="Brown" Margin="0" Height="30" >
-                <CommandBar.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Service Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
-                        <TextBlock x:Name="tbSvcStatus" Text="Hello" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0"/>
-                    </StackPanel>
-                </CommandBar.Content>
-            </CommandBar>
+
         <CommandBar Background="DarkCyan" Margin="0,10,0,10" Height="30" >
             <CommandBar.Content >
                 <StackPanel Orientation="Horizontal">

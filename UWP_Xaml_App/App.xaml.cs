@@ -40,6 +40,13 @@ namespace UWPXamlApp
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
+            this.DebugSettings.EnableFrameRateCounter = false;
+            this.DebugSettings.IsOverdrawHeatMapEnabled = false;
+            this.DebugSettings.IsTextPerformanceVisualizationEnabled = false;
+            this.DebugSettings.IsBindingTracingEnabled = true;
+            this.DebugSettings.EnableRedrawRegions = false;
+
+            this.DebugSettings.BindingFailed += DebugSettings_BindingFailed;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -47,6 +54,9 @@ namespace UWPXamlApp
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
+               
+
+                
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
@@ -71,6 +81,11 @@ namespace UWPXamlApp
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+
+        private void DebugSettings_BindingFailed(object sender, BindingFailedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine(e.Message);
         }
 
         /// <summary>
