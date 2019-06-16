@@ -195,7 +195,7 @@ namespace AzIoTHubDeviceStreams
 
                     if (result.IsAccepted)
                     {
-                        using (cancellationTokenSourceTimeout = new CancellationTokenSource(DeviceStreamingCommon._Timeout))
+                        using (cancellationTokenSourceTimeout = new CancellationTokenSource(DeviceStreamingCommon.DeviceTimeout))
                         {
                             try
                             {

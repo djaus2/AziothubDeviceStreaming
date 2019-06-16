@@ -36,7 +36,7 @@ namespace UWPConsoleDeviceApp
 
         private static void RunDevice(string device_cs, double ts)
         {
-            DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(ts);
+            DeviceStreamingCommon.DeviceTimeout = TimeSpan.FromMilliseconds(ts);
  
             try
             {

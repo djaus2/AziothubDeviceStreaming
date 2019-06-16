@@ -43,9 +43,6 @@ namespace UWPXamlApp
 
         private async void Button_Click_Svc(object sender, RoutedEventArgs e)
         {
-            double to;
-            if (double.TryParse(tbSvcTimeout.Text, out to))
-                DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(to);
             string msgOut = tbSvcMsgOut.Text;
             bool keepAlive = (chkKeepAlive.IsChecked == true);
             bool responseExpected = (chkExpectResponse.IsChecked == true);

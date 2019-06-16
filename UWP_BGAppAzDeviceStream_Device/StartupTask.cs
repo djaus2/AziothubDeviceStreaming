@@ -38,10 +38,11 @@ namespace BGAppAzDeviceStream_Device
 
         private  void RunDevice(string device_cs, double ts)
         {
-            DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(ts);
+            DeviceStreamingCommon.DeviceTimeout = TimeSpan.FromMilliseconds(ts);
 
             try
             {
+
                 DeviceStream_Device.RunDevice(device_cs, OnrecvTextIO).GetAwaiter().GetResult();
             }
             //catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)

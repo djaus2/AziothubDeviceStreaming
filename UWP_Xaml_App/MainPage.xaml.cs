@@ -44,6 +44,12 @@ namespace UWPXamlApp
             ListviewTransports.ItemsSource = ListEnum;
             ListviewTransports.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
             ListviewTransports.ScrollIntoView(ListviewTransports.SelectedItem);
+
+
+            if (autoStartDevice)
+            {
+                Button_Click_Device(null, null);
+            }
         }
 
         private void ListviewTransports_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -157,6 +163,31 @@ namespace UWPXamlApp
             {
                 chKeepDeviceListening.IsChecked = (bool)localSettings.Values["KeepDeviceListening"];
             }
+
+            if (localSettings.Values.Keys.Contains("DeviceTimeout"))
+            {
+                if (localSettings.Values["DeviceTimeout"] is double)
+                {
+                    double _deviceTimeout = (double)localSettings.Values["DeviceTimeout"];
+                    tbDeviceTimeout.Text = _deviceTimeout.ToString();
+                }
+                else
+                    tbDeviceTimeout.Text = DeviceStreamingCommon.DeviceTimeoutDef.ToString();
+            }
+            else
+                tbDeviceTimeout.Text = DeviceStreamingCommon.DeviceTimeoutDef.ToString();
+            if (localSettings.Values.Keys.Contains("SvcTimeout"))
+            {
+                if (localSettings.Values["SvcTimeout"] is double)
+                {
+                    double _svcTimeout = (double)localSettings.Values["SvcTimeout"];
+                    tbSvcTimeout.Text = _svcTimeout.ToString();
+                }
+                else
+                    tbSvcTimeout.Text = DeviceStreamingCommon.SvcTimeoutDef.ToString();
+            }
+            else
+                tbSvcTimeout.Text = DeviceStreamingCommon.SvcTimeoutDef.ToString();
         }
 
         private void SaveConnectionSettingsToAzureConnections(ConDetail ccondetail)
@@ -165,6 +196,9 @@ namespace UWPXamlApp
             AzureConnections.MyConnections.IoTHubConnectionString = ccondetail.ConString;
             AzureConnections.MyConnections.DeviceConnectionString = ccondetail.DevString;
             AzureConnections.MyConnections.DeviceId = ccondetail.DevId;
+            service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
+            device_id = AzureConnections.MyConnections.DeviceId;
+            device_cs = AzureConnections.MyConnections.DeviceConnectionString;
         }
         private void DoneSetConnectionDetails_Click(object sender, RoutedEventArgs e)
         {
@@ -202,8 +236,16 @@ namespace UWPXamlApp
                     {
                         if (strn[0] == '\"')
                             strn = strn.Substring(1);
-                        if (strn[strn.Length - 1] == '\"')
-                            strn = strn.Substring(0, strn.Length - 1);
+                        if (strn != "")
+                        {
+                            if (strn[strn.Length - 1] == ';')
+                                strn = strn.Substring(0, strn.Length - 1);
+                            if (strn != "")
+                            {
+                                if (strn[strn.Length - 1] == '\"')
+                                    strn = strn.Substring(0, strn.Length - 1);
+                            }
+                        }
                     }
                     string tag = (string)butt.Tag;
                     switch (tag)
@@ -225,6 +267,106 @@ namespace UWPXamlApp
             }
         }
 
+        TimeSpan DeviceTimeout { get; set; } = TimeSpan.FromMilliseconds(10000);
+        private void TbDeviceTimeout_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double timeout;
+            if (double.TryParse(tbDeviceTimeout.Text, out timeout))
+            {
+                
+                DeviceTimeout = TimeSpan.FromMilliseconds( timeout);
+                DeviceStreamingCommon.DeviceTimeout = DeviceTimeout;
+                Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+                if (localSettings.Values.Keys.Contains("DeviceTimeout"))
+                {
+                    if (localSettings.Values["DeviceTimeout"] is double)
+                        localSettings.Values["DeviceTimeout"] = timeout;
+                    else
+                        localSettings.Values.Remove("DeviceTimeout");
+                }
+                if (!localSettings.Values.Keys.Contains("DeviceTimeout"))
+                    localSettings.Values.Add("DeviceTimeout", timeout);
+            }
+        }
 
+        TimeSpan SvcTimeout { get; set; } = TimeSpan.FromMilliseconds(10000);
+        private void TbSvcTimeout_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            double timeout;
+            if (double.TryParse(tbSvcTimeout.Text, out timeout))
+            {
+               SvcTimeout = TimeSpan.FromMilliseconds(timeout);
+                DeviceStreamingCommon.SvcTimeout = SvcTimeout;
+                Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+                if (localSettings.Values.Keys.Contains("SvcTimeout"))
+                {
+                    if (localSettings.Values["SvcTimeout"] is double)
+                        localSettings.Values["SvcTimeout"] = timeout;
+                    else
+                        localSettings.Values.Remove("SvcTimeout");
+                }
+                if (!localSettings.Values.Keys.Contains("SvcTimeout"))
+                    localSettings.Values.Add("SvcTimeout", timeout);
+            }
+        }
+
+        private async void PasteAllConnectionDetails_Click(object sender, RoutedEventArgs e)
+        {
+            var dataPackageView = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
+            if (dataPackageView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Text))
+            {
+                string strn = await dataPackageView.GetTextAsync();
+                string[] lines = strn.Split(new char[] { '\r', '\n' });
+                conDetail = new ConDetail();
+                foreach (string _line in lines)
+                {
+                    var line =_line.Trim();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        string[] parts = line.Split(new char[] { '=' },2,StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length == 2)
+                        {
+                            string propName = parts[0].Trim();
+                            string propValue = parts[1].Trim();
+                            if (propValue == null)
+                                propValue = "";
+                            if (!string.IsNullOrEmpty(propName))
+                            {
+                                if (!string.IsNullOrEmpty(propValue))
+                                {
+                                    if (propValue[0] == '\"')
+                                        propValue = propValue.Substring(1);
+                                    if (propValue != "")
+                                    {
+                                        if (propValue[propValue.Length - 1] == ';')
+                                            propValue = propValue.Substring(0, propValue.Length - 1);
+                                        if (propValue != "")
+                                        {
+                                            if (propValue[propValue.Length - 1] == '\"')
+                                                propValue = propValue.Substring(0, propValue.Length - 1);
+                                        }
+                                    }
+                                    
+                                    switch (propName.ToLower())
+                                    {
+                                        case "iothubconnectionstring":
+                                            conDetail.ConString = propValue;
+                                            break;
+                                        case "deviceconnectionstring":
+                                            conDetail.DevString = propValue;
+                                            break;
+                                        case "deviceid":
+                                            conDetail.DevId = propValue;
+                                            break;
+                                    }
+                                    Popup_SetConnectionDetails.DataContext = null;
+                                    Popup_SetConnectionDetails.DataContext = conDetail;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

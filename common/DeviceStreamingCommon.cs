@@ -20,7 +20,10 @@ namespace AzIoTHubDeviceStreams
 
         public static Microsoft.Azure.Devices.Client.TransportType device_transportType = Microsoft.Azure.Devices.Client.TransportType.Mqtt;
 
-        public static TimeSpan _Timeout = TimeSpan.FromMilliseconds(1000);
+        public static double DeviceTimeoutDef = 12345;
+        public static double SvcTimeoutDef = 67890;
+        public static TimeSpan DeviceTimeout = TimeSpan.FromMilliseconds(DeviceTimeoutDef);
+        public static TimeSpan SvcTimeout = TimeSpan.FromMilliseconds(SvcTimeoutDef); 
 
         /// <summary>
         /// Creates a ClientWebSocket with the proper authorization header for Device Streaming.

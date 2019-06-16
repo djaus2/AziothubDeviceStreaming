@@ -35,7 +35,7 @@ namespace BGAppAzDeviceStreamSvc2
         private  void RunSvc(string servvicecs, string devid, string msgOut, double ts)
         {
 
-            DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(ts);
+            DeviceStreamingCommon.DeviceTimeout = TimeSpan.FromMilliseconds(ts);
 
             try
             {

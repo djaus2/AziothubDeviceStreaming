@@ -44,18 +44,15 @@ namespace UWPXamlApp
 
         private async void Button_Click_Device(object sender, RoutedEventArgs e)
         {
-            double to;
-            bool useCustomClass = (chkUseCustomClassDevice.IsChecked == true);
-            if (double.TryParse(tbDeviceTimeout.Text, out to))
-                DeviceStreamingCommon._Timeout = TimeSpan.FromMilliseconds(to);
+            bool useCustomClass = (chkUseCustomClassDevice.IsChecked == true);           
             await Task.Run(() =>
             {
                 try
                 {
                     if (!useCustomClass)
-                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate).GetAwaiter().GetResult();
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate, KeepDeviceListening).GetAwaiter().GetResult();
                     else
-                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate, KeepDeviceListening, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
                 }
                 catch (TaskCanceledException)
                 {

@@ -83,7 +83,8 @@
                     <Button Content="Device Id:" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0"  Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="200" Click="Button_RemoveDBLQuotes_Click" Tag="2"/>
                     <TextBox Name="tbDeviceId" Text="{Binding  Path=DevId, Mode=TwoWay}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Background="White"/>
                     <Button x:Name="CancelSetConnectionDetails" Content="Cancel"  Click="CancelSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
-                    <Button x:Name="DoneSetConnectionDetails" Content="Update"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="3"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="PasteAllConnectionDetails" Content="Paste All"  Click="PasteAllConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="3"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="DoneSetConnectionDetails" Content="Update"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
                 </Grid>
             </Border>
         </Popup>
@@ -107,7 +108,7 @@
                 Margin="20,20,0,0"  ><Run Text="Service-Timeout"/><Run Text=" "/><Run Text="(ms):"/></TextBlock>
 
             <TextBox x:Name="tbSvcTimeout" RelativePanel.RightOf="lblSvcTimeout" RelativePanel.AlignTopWith="lblSvcTimeout"
-                 Margin="20,20,0,0" Height="40" Text="10000" Width="100" />
+                 Margin="20,20,0,0" Height="40" Text="10000" Width="100" TextChanged="TbSvcTimeout_TextChanged" />
             <TextBlock x:Name="lblSend" RelativePanel.RightOf="btnSend" RelativePanel.Below="tbSvcTimeout" RelativePanel.AlignRightWith="lblSvcTimeout"
                         TextAlignment="Right"
                 Text="Service-Message Out:" Margin="20,20,0,0"  />
@@ -154,7 +155,7 @@
             <TextBlock x:Name="lblDeviceTimeout" RelativePanel.RightOf="btnListen" Width="220" TextAlignment="Right" 
                 Text="Device-Timeout (ms):" Margin="20,20,0,0"  />
             <TextBox x:Name="tbDeviceTimeout" RelativePanel.RightOf="lblDeviceTimeout" RelativePanel.AlignTopWith="lblDeviceTimeout"
-                     HorizontalAlignment="Left" Height="40" Margin="20,20,0,0" Text="10000" VerticalAlignment="Top" Width="100"/>
+                     HorizontalAlignment="Left" Height="40" Margin="20,20,0,0" Text="10000" VerticalAlignment="Top" Width="100" TextChanged="TbDeviceTimeout_TextChanged"/>
             <TextBlock x:Name="lblDeviceRecv" RelativePanel.RightOf="btnListen" RelativePanel.Below="tbDeviceTimeout" RelativePanel.AlignRightWith="lblDeviceTimeout"
                         TextAlignment="Right"
                 Text="Device-Message Received:" Margin="20,20,0,0"  />
