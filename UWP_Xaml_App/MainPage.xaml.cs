@@ -142,13 +142,21 @@ namespace UWPXamlApp
                 if (composite != null)
                 {
                     ConDetail details = new ConDetail();
-                    details.ConString = (string) composite["ConString"];
-                    details.DevString = (string) composite["DevString"];
-                    details.DevId = (string)  composite["DevId"];
+                    details.ConString = (string)composite["ConString"];
+                    details.DevString = (string)composite["DevString"];
+                    details.DevId = (string)composite["DevId"];
                     SaveConnectionSettingsToAzureConnections(details);
                 }
             }
             //else use existing.
+            if (localSettings.Values.Keys.Contains("AutoStartDevice"))
+            {
+                chkAutoStart.IsChecked = (bool) localSettings.Values["AutoStartDevice"];
+            }
+            if (localSettings.Values.Keys.Contains("KeepDeviceListening"))
+            {
+                chKeepDeviceListening.IsChecked = (bool)localSettings.Values["KeepDeviceListening"];
+            }
         }
 
         private void SaveConnectionSettingsToAzureConnections(ConDetail ccondetail)
@@ -216,5 +224,7 @@ namespace UWPXamlApp
                 Popup_SetConnectionDetails.DataContext = conDetail;
             }
         }
+
+
     }
 }
