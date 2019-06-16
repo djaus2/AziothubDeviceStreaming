@@ -14,6 +14,8 @@ namespace AzIoTHubDeviceStreams
     public delegate void ActionReceivedText(string recvTxt);
 
     public delegate string  ActionReceivedTextIO(string msgIn);
+
+    public delegate void ActionCommandD(bool flag, string msg, int al, int cmd);
     public static class DeviceStreamingCommon
     {
         public static TransportType s_transportType = TransportType.Amqp;

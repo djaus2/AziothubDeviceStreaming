@@ -44,9 +44,34 @@ namespace UWPXamlApp
         private async void Button_Click_Svc(object sender, RoutedEventArgs e)
         {
             string msgOut = tbSvcMsgOut.Text;
+
+            switch (DevKeepListening)
+            {
+                case 0:
+                    msgOut = DeviceAndSvcCurrentSettings.Info.KeepDeviceListeningChar + msgOut;
+                        break;
+                case 1:
+                    msgOut = DeviceAndSvcCurrentSettings.Info.UnKeepDeviceListeningChar + msgOut;
+                    break;
+                case 2:
+                    break;
+            }
+            switch (DevAutoStart)
+            {
+                case 0:
+                    msgOut = DeviceAndSvcCurrentSettings.Info.AutoStartDevice + msgOut;
+                    break;
+                case 1:
+                    msgOut = DeviceAndSvcCurrentSettings.Info.UnAutoStartDevice+ msgOut;
+                    break;
+                case 2:
+                    break;
+            }
             bool keepAlive = (chkKeepAlive.IsChecked == true);
             bool responseExpected = (chkExpectResponse.IsChecked == true);
             bool useCustomClass = (ChkUseCustomClassSvc.IsChecked == true);
+
+
 
             if (!DeviceStream_Svc.SignalSendMsgOut(msgOut, keepAlive,responseExpected))
             {

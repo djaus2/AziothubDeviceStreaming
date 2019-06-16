@@ -11,13 +11,21 @@ namespace AzIoTHubDeviceStreams
         {
             //Signals from svc to device 
             //Prepended to sent message if relevant state required
-            public static char KeppAliveChar = '`';
-            public static char RespondChar = '~';
+            public const  char KeppAliveChar = '`';
+            public const  char RespondChar = '~';
+            public const char KeepDeviceListeningChar = '@';
+            public const char UnKeepDeviceListeningChar = '#';
+            public const char AutoStartDevice = '$';
+            public const char UnAutoStartDevice = '%';
+            public const char Delimeter = '!';
+            public static List<char> SpecialsKs = new List<char> { KeppAliveChar , RespondChar , KeepDeviceListeningChar , UnKeepDeviceListeningChar, AutoStartDevice, UnAutoStartDevice , Delimeter };
 
         }
 
         private bool responseExpected = false;
         private bool keepAlive = false;
+        private bool autoStartDevice = false;
+        private bool keepDeviceListening = false;
         /// <summary>
         /// If true then device needs to respond when message received.
         /// </summary>
@@ -26,6 +34,9 @@ namespace AzIoTHubDeviceStreams
         /// If true then keep socket alive and wait for another message when post reception processing is finished.
         /// </summary>
         public bool KeepAlive { get => keepAlive; set => keepAlive = value; }
+
+        public bool KeepDeviceListening { get => keepDeviceListening; set => keepDeviceListening = value; } 
+        public bool AutoStartDevice { get => autoStartDevice; set => autoStartDevice = value; }
 
         // Called to get flags
         /// <summary>
@@ -39,6 +50,48 @@ namespace AzIoTHubDeviceStreams
             ResponseExpected = false;
 
             if (!string.IsNullOrEmpty(msgIn))
+            {
+                int i = 0;
+                while ((msgIn != "")&& (Info.SpecialsKs.Contains(msgIn[i])))
+                {
+                    if (msgIn[i] == Info.Delimeter)
+                        break;
+                    else
+                    {
+                        switch (msgIn[i])
+                        {
+                            case Info.AutoStartDevice:
+                                AutoStartDevice = true;
+                                msgIn = msgIn.Substring(1);
+                                break;
+                            case Info.KeepDeviceListeningChar:
+                                KeepDeviceListening = true;
+                                msgIn = msgIn.Substring(1);
+                                break;
+                            case Info.KeppAliveChar:
+                                KeepAlive = true;
+                                msgIn = msgIn.Substring(1);
+                                break;
+                            case Info.RespondChar:
+                                ResponseExpected = true;
+                                msgIn = msgIn.Substring(1);
+                                break;
+                            case Info.UnAutoStartDevice:
+                                AutoStartDevice = false;
+                                msgIn = msgIn.Substring(1);
+                                break;
+                            case Info.UnKeepDeviceListeningChar:
+                                KeepDeviceListening = false;
+                                msgIn = msgIn.Substring(1);
+                                break;;
+                        }
+                    }
+                }
+
+
+            }
+
+            /*    if (!string.IsNullOrEmpty(msgIn))
             {
                 // ?Keepalive possibly followed by respond chars
                 if (msgIn.ToLower()[0] == Info.KeppAliveChar)
@@ -73,7 +126,7 @@ namespace AzIoTHubDeviceStreams
                             KeepAlive = false;
                     }
                 }
-            }
+            }*/
             return msgIn;
         }
 

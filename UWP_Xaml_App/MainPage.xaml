@@ -25,6 +25,26 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="WebCam"  Label="Set Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="1"/>
                 <AppBarButton Icon="AddFriend"  Label="Get Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="2"/>
+                <AppBarSeparator/>
+                <AppBarElementContainer>
+                <Frame x:Name="GrpDevlAutoStart"    >
+                    <StackPanel>
+                        <RadioButton x:Name = "rbAutoStart" Margin = "0" Checked="RbAutoStart_Checked"  GroupName = "DevAutoStart" Content="Send to Device: Auto Start"  Tag="0" />
+                        <RadioButton x:Name = "rbNoAutoStart" Margin = "0" Checked = "RbAutoStart_Checked" GroupName = "DevAutoStart" Content="Send to Device: No Auto Start" Tag="1"/>
+                        <RadioButton x:Name = "rbNoChangeAutoStart" Margin = "0" Checked = "RbAutoStart_Checked" IsChecked ="True" GroupName = "DevAutoStart" Content="No change " Tag="2" />
+                    </StackPanel>
+                </Frame>
+                </AppBarElementContainer>
+                <AppBarSeparator/>
+                <AppBarElementContainer>
+                <Frame x:Name="GrpDevlisten"  >
+                    <StackPanel>
+                        <RadioButton x:Name = "rbKeepListening" Margin = "0" Checked ="RbKeepListening_Checked"  GroupName = "DevKeepListening" Content="Send to Device: Keep Listening" Tag="0"/>
+                        <RadioButton x:Name = "rbUnKeepListening" Margin = "0" Checked = "RbKeepListening_Checked" GroupName = "DevKeepListening" Content="Send to Device: Stop Keep Listening" Tag="1"/>
+                        <RadioButton x:Name = "rbNoChangeListening" Margin = "0" Checked = "RbKeepListening_Checked" IsChecked ="True" GroupName = "DevKeepListening" Content="No change " Tag="2"/>
+                    </StackPanel>
+                </Frame>
+                </AppBarElementContainer>
             </CommandBar.SecondaryCommands>
         </CommandBar>
         <Popup VerticalOffset="10"                x:Name="Popup_SetConnectionDetails" 
@@ -117,7 +137,8 @@
                 Text="Nb: Can be mulitline." Margin="20,10,0,0"  />
             <TextBox x:Name="tbSvcMsgOut" RelativePanel.RightOf="lblSend" RelativePanel.AlignTopWith="lblSend"  
                      AcceptsReturn="True"
-                 HorizontalAlignment="Left" Height="84" Margin="20,20,0,0" Text="Msg Out" VerticalAlignment="Top" MinWidth="200"/>
+                 HorizontalAlignment="Left" Height="84" Margin="20,20,0,0" Text="Msg Out" VerticalAlignment="Top" MinWidth="200" />
+
             <TextBlock x:Name="lblRecv" RelativePanel.RightOf="btnSend" RelativePanel.Below="tbSvcMsgOut" RelativePanel.AlignRightWith="lblSvcTimeout"
                         TextAlignment="Right"
                 Text="Service-Message In:" Margin="20,20,0,0"  />

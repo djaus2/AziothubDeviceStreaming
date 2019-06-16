@@ -368,5 +368,29 @@ namespace UWPXamlApp
                 }
             }
         }
+
+
+        private int DevKeepListening = 2;
+        private void RbKeepListening_Checked(object sender, RoutedEventArgs e)
+        {
+            string dm = Convert.ToString(((RadioButton)sender)?.Tag);
+            if (!string.IsNullOrEmpty(dm))
+            {
+                if (!int.TryParse(dm, out DevKeepListening))
+                    DevKeepListening = 2;
+            }
+
+        }
+
+        private int DevAutoStart = 2;
+        private void RbAutoStart_Checked(object sender, RoutedEventArgs e)
+        {
+            string dm = Convert.ToString(((RadioButton)sender)?.Tag);
+            if (!string.IsNullOrEmpty(dm))
+            {
+                if (!int.TryParse(dm, out DevAutoStart))
+                    DevAutoStart = 2;
+            }
+        }
     }
 }

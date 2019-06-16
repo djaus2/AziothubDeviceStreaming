@@ -37,6 +37,26 @@ namespace UWPXamlApp
             });
         }
 
+        private void ActionCommand(bool isChecked,string val, int value,  int cmd )
+        {
+            Task.Run(async () => {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    switch (cmd)
+                    {
+                        case 0:
+                            chkAutoStart.IsChecked = isChecked;
+                            break;
+                        case 1:
+                            chKeepDeviceListening.IsChecked = isChecked;
+                            break;
+                    }
+                    
+                });
+            });
+        }
+
+
         private void ButtonCanceLDevice_Click(object sender, RoutedEventArgs e)
         {
             DeviceStream_Device.deviceStream_Device?.Cancel();
@@ -50,9 +70,9 @@ namespace UWPXamlApp
                 try
                 {
                     if (!useCustomClass)
-                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate, KeepDeviceListening).GetAwaiter().GetResult();
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening ).GetAwaiter().GetResult();
                     else
-                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate, KeepDeviceListening, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening , new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
                 }
                 catch (TaskCanceledException)
                 {
