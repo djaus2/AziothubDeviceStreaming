@@ -22,7 +22,7 @@ namespace UWPConsoleDeviceApp
             RunDevice(device_cs, 1000000);
 
             Console.WriteLine("Device Done.\n\nPress any key to finish.\n");
-            Console.ReadKey();
+            //Console.ReadKey();
             return 0;
         }
 

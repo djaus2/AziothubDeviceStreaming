@@ -54,8 +54,9 @@ namespace UWPXamlApp
                     msgOut = DeviceAndSvcCurrentSettings.Info.UnKeepDeviceListeningChar + msgOut;
                     break;
                 case 2:
-                    break;
+                    break;;
             }
+            rbNoChangeListening.IsChecked = true;
             switch (DevAutoStart)
             {
                 case 0:
@@ -67,6 +68,7 @@ namespace UWPXamlApp
                 case 2:
                     break;
             }
+            rbNoChangeAutoStart.IsChecked = true;
             bool keepAlive = (chkKeepAlive.IsChecked == true);
             bool responseExpected = (chkExpectResponse.IsChecked == true);
             bool useCustomClass = (ChkUseCustomClassSvc.IsChecked == true);

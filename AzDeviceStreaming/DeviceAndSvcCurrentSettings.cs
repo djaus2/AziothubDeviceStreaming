@@ -38,6 +38,9 @@ namespace AzIoTHubDeviceStreams
         public bool KeepDeviceListening { get => keepDeviceListening; set => keepDeviceListening = value; } 
         public bool AutoStartDevice { get => autoStartDevice; set => autoStartDevice = value; }
 
+        public bool KeepDeviceListeningChanged = false;
+        public bool AutoStartDeviceChanged = false;
+
         // Called to get flags
         /// <summary>
         /// Called on reception of message to get flags
@@ -48,6 +51,8 @@ namespace AzIoTHubDeviceStreams
         {
             KeepAlive = false;
             ResponseExpected = false;
+            KeepDeviceListeningChanged = false;
+            AutoStartDeviceChanged = false;
 
             if (!string.IsNullOrEmpty(msgIn))
             {
@@ -62,10 +67,12 @@ namespace AzIoTHubDeviceStreams
                         {
                             case Info.AutoStartDevice:
                                 AutoStartDevice = true;
+                                AutoStartDeviceChanged = true;
                                 msgIn = msgIn.Substring(1);
                                 break;
                             case Info.KeepDeviceListeningChar:
                                 KeepDeviceListening = true;
+                                KeepDeviceListeningChanged = true;
                                 msgIn = msgIn.Substring(1);
                                 break;
                             case Info.KeppAliveChar:
@@ -78,10 +85,12 @@ namespace AzIoTHubDeviceStreams
                                 break;
                             case Info.UnAutoStartDevice:
                                 AutoStartDevice = false;
+                                AutoStartDeviceChanged = true;
                                 msgIn = msgIn.Substring(1);
                                 break;
                             case Info.UnKeepDeviceListeningChar:
                                 KeepDeviceListening = false;
+                                KeepDeviceListeningChanged = true;
                                 msgIn = msgIn.Substring(1);
                                 break;;
                         }

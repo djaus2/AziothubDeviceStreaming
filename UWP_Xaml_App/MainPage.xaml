@@ -108,7 +108,7 @@
                 </Grid>
             </Border>
         </Popup>
-        <RelativePanel Background="Beige">
+        <RelativePanel >
 
             <Button x:Name="btnSend" 
                 Content="Send using Service" Height="120" Width="340" Click="Button_Click_Svc" Margin="0,10,0,0"/>
@@ -158,7 +158,7 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <RelativePanel Background="LightCyan" >
+        <RelativePanel  >
 
             <Button x:Name="btnListen" 
                 Content="Start Listening as Device"  Height="120" Width="340" Click="Button_Click_Device"/>

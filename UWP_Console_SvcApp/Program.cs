@@ -22,7 +22,7 @@ namespace UWPConsoleSvcApp
             RunSvc(service_cs, device_id, "Hello Word", 100000);
 
             Console.WriteLine("Svc Done.\n\nPress any key to finish.\n");
-            Console.ReadKey();
+            //Console.ReadKey();
             return 0;
         }
 

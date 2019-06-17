@@ -48,7 +48,9 @@ namespace AzIoTHubDeviceStreams
                 DeviceCurrentSettings = deviceCurrentSettings;
             else
                 DeviceCurrentSettings = new DeviceAndSvcCurrentSettings();
+            DeviceCurrentSettings.KeepDeviceListening = KeepDeviceListening;
         }
+
 
         /// <summary>
         /// Method called from app to instantiate this class and start Device Streaming on Device.
@@ -235,8 +237,10 @@ namespace AzIoTHubDeviceStreams
                                                 msgIn = DeviceCurrentSettings.ProcessMsgIn(msgIn);
                                                 respond = DeviceCurrentSettings.ResponseExpected;
                                                 keepAlive = DeviceCurrentSettings.KeepAlive;
-                                                ActionCmdD?.Invoke(DeviceCurrentSettings.AutoStartDevice, "", 0, 0);
-                                                ActionCmdD?.Invoke(DeviceCurrentSettings.KeepDeviceListening, "", 0, 1);
+                                                if (DeviceCurrentSettings.AutoStartDeviceChanged)
+                                                    ActionCmdD?.Invoke(DeviceCurrentSettings.AutoStartDevice, "", 0, 0);
+                                                if (DeviceCurrentSettings.KeepDeviceListeningChanged)
+                                                    ActionCmdD?.Invoke(DeviceCurrentSettings.KeepDeviceListening, "", 0, 1);
                                             }
                                             catch (System.NotImplementedException niex)
                                             {

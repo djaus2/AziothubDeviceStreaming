@@ -45,10 +45,12 @@ namespace UWPXamlApp
                     switch (cmd)
                     {
                         case 0:
-                            chkAutoStart.IsChecked = isChecked;
+                            if (chkAutoStart.IsChecked != isChecked)
+                                chkAutoStart.IsChecked = isChecked;
                             break;
                         case 1:
-                            chKeepDeviceListening.IsChecked = isChecked;
+                            if (chKeepDeviceListening.IsChecked != isChecked)
+                                chKeepDeviceListening.IsChecked = isChecked;
                             break;
                     }
                     
