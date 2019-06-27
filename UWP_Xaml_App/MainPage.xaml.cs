@@ -112,10 +112,22 @@ namespace UWPXamlApp
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
-            Popup_SetConnectionDetails.DataContext = conDetail;
-            Popup_SetConnectionDetails.IsOpen = false;
-            Popup_SetConnectionDetails.IsOpen = true;
+            Control cntrl = (Control)sender;
+            if ("1" == (string)cntrl.Tag)
+            {
+                conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+                Popup_SetConnectionDetails.DataContext = conDetail;
+                Popup_SetConnectionDetails.IsOpen = false;
+                Popup_SetConnectionDetails.IsOpen = true;
+            }
+            else if ("2" == (string)cntrl.Tag)
+            {
+                conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+                Popup_GetConnectionDetails.DataContext = conDetail;
+                Popup_GetConnectionDetails.IsOpen = false;
+                Popup_GetConnectionDetails.IsOpen = true;
+            }
+
         }
 
         public class ConDetail
@@ -202,8 +214,16 @@ namespace UWPXamlApp
         }
         private void DoneSetConnectionDetails_Click(object sender, RoutedEventArgs e)
         {
-            SaveConnectionSettingsToAzureConnections(conDetail);
-            Popup_SetConnectionDetails.IsOpen = false;
+            if (Popup_SetConnectionDetails.IsOpen)
+            {
+                SaveConnectionSettingsToAzureConnections(conDetail);
+                Popup_SetConnectionDetails.IsOpen = false;
+            }
+            else
+            {
+                conDetail.DevString = AzureConnections.MyConnections.AddDeviceAsync(conDetail.ConString, conDetail.DevId);
+                Popup_GetConnectionDetails.IsOpen = false;
+            }
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             if (localSettings.Values.Keys.Contains("ConDetail"))
             {
@@ -219,6 +239,7 @@ namespace UWPXamlApp
         private void CancelSetConnectionDetails_Click(object sender, RoutedEventArgs e)
         {
             Popup_SetConnectionDetails.IsOpen = false;
+            Popup_GetConnectionDetails.IsOpen = false;
         }
 
  
