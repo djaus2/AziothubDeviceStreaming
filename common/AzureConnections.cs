@@ -11,10 +11,10 @@ namespace AzureConnections
     public static class MyConnections
     {
 
-        
-        public static string IoTHubConnectionString { get; set; } = "HostName=djausWithStreams.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=eFIz7j/Kw1nmtPuQl6Rw/duezdCJCEF2Q3tng7TMc0w=";
+
+        public static string IoTHubConnectionString { get; set; } = "";
         public static string DeviceId { get; set; } = "MyDevice";
-        public static string DeviceConnectionString { get; set; } = "HostName=djausWithStreams.azure-devices.net;DeviceId=MyDevice;SharedAccessKey=J2ZP7sGyQ6S7o28caQaoBnsZCTZ3BJcXDzS+AcexCYc=";
+        public static string DeviceConnectionString { get; set; } = "";
 
         public static string AddDeviceAsync(string IoTHubOwnerconnectionString, string deviceId)
         {
