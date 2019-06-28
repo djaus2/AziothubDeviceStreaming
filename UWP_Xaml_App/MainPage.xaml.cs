@@ -44,7 +44,7 @@ namespace UWPXamlApp
             ListviewTransports.ItemsSource = ListEnum;
             ListviewTransports.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
             ListviewTransports.ScrollIntoView(ListviewTransports.SelectedItem);
-
+            AzureConnections.MyConnections.OnStatusUpdateD = OnDeviceSvcUpdate;
 
             if (autoStartDevice)
             {
