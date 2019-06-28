@@ -127,6 +127,18 @@ namespace UWPXamlApp
                 Popup_GetConnectionDetails.IsOpen = false;
                 Popup_GetConnectionDetails.IsOpen = true;
             }
+            else if ("3" == (string)cntrl.Tag)
+            {
+                conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+                Popup_GetConnectionDetails.DataContext = conDetail;
+                Popup_CreateDeviceDetails.IsOpen = false;
+                Popup_CreateDeviceDetails.IsOpen = true;
+            }
+            else if ("4" == (string)cntrl.Tag)
+            {
+                conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+                conDetail.DevString = AzureConnections.MyConnections.RemoveDeviceAsync(conDetail.ConString, conDetail.DevId);
+            }
 
         }
 
@@ -219,10 +231,15 @@ namespace UWPXamlApp
                 SaveConnectionSettingsToAzureConnections(conDetail);
                 Popup_SetConnectionDetails.IsOpen = false;
             }
-            else
+            else if (Popup_GetConnectionDetails.IsOpen)
+            {
+                conDetail.DevString = AzureConnections.MyConnections.GetDeviceAsync(conDetail.ConString, conDetail.DevId);
+                Popup_GetConnectionDetails.IsOpen = false;
+            }
+            else if (Popup_CreateDeviceDetails.IsOpen)
             {
                 conDetail.DevString = AzureConnections.MyConnections.AddDeviceAsync(conDetail.ConString, conDetail.DevId);
-                Popup_GetConnectionDetails.IsOpen = false;
+                Popup_CreateDeviceDetails.IsOpen = false;
             }
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             if (localSettings.Values.Keys.Contains("ConDetail"))
@@ -240,6 +257,7 @@ namespace UWPXamlApp
         {
             Popup_SetConnectionDetails.IsOpen = false;
             Popup_GetConnectionDetails.IsOpen = false;
+            Popup_CreateDeviceDetails.IsOpen = false;
         }
 
  
@@ -283,8 +301,21 @@ namespace UWPXamlApp
                     }
                    
                 }
-                Popup_SetConnectionDetails.DataContext = null;
-                Popup_SetConnectionDetails.DataContext = conDetail;
+                if (Popup_SetConnectionDetails.IsOpen)
+                {
+                    Popup_SetConnectionDetails.DataContext = null;
+                    Popup_SetConnectionDetails.DataContext = conDetail;
+                }
+                else if (Popup_GetConnectionDetails.IsOpen)
+                {
+                    Popup_GetConnectionDetails.DataContext = null;
+                    Popup_GetConnectionDetails.DataContext = conDetail;
+                }
+                else if (Popup_CreateDeviceDetails.IsOpen)
+                {
+                    Popup_CreateDeviceDetails.DataContext = null;
+                    Popup_CreateDeviceDetails.DataContext = conDetail;
+                }
             }
         }
 

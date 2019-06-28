@@ -25,6 +25,8 @@
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="WebCam"  Label="Set Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="1"/>
                 <AppBarButton Icon="AddFriend"  Label="Get Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="2"/>
+                <AppBarButton Icon="AddFriend"  Label="Add new Device to IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="3"/>
+                <AppBarButton Icon="AddFriend"  Label="Delete current Device from IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="4"/>
                 <AppBarSeparator/>
                 <AppBarElementContainer>
                 <Frame x:Name="GrpDevlAutoStart"    >
@@ -54,7 +56,7 @@
                IsLightDismissEnabled="False">
             <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
                 Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-                BorderThickness="2" Width="600" >
+                BorderThickness="2" Width="700" >
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -79,7 +81,7 @@
                         <RowDefinition Height="10" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="100" />
@@ -93,10 +95,10 @@
                                 TextAlignment="Left" Margin="0"/>
                     </Border>
 
-                    <Button Content="Service Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,10,0" Foreground="Blue" FontWeight="Bold" Width="200"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
+                    <Button Content="Service Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="Blue" FontWeight="Bold" Width="300"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
                     <TextBox Name="tbSvcConString" Text="{Binding  Path=ConString, Mode=TwoWay}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
 
-                    <Button Content="Device Connection String:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,10,0"  Foreground="Blue" FontWeight="Bold" Width="200" Click="Button_RemoveDBLQuotes_Click" Tag="1" />
+                    <Button Content="Device Connection String:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0"  Foreground="Blue" FontWeight="Bold" Width="300" Click="Button_RemoveDBLQuotes_Click" Tag="1" />
                     <TextBox Name="tbDeviceConString" Text="{Binding  Path=DevString, Mode=TwoWay}"  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
 
                     
@@ -115,7 +117,7 @@
                IsLightDismissEnabled="False">
             <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
                 Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-                BorderThickness="2" Width="600" >
+                BorderThickness="2" Width="700" >
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -140,28 +142,83 @@
                         <RowDefinition Height="10" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="100" />
                     </Grid.ColumnDefinitions>
                     <Border Background="Green" BorderThickness="1" Height="30" BorderBrush="Black" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
-                        <TextBlock x:Name="ActionEditAthlete2" Text="Get Connection Details" 
+                        <TextBlock x:Name="ActionEditAthlete2" Text="Get connection details for existing Device" 
                                FontStyle="Italic" FontWeight="Bold" Foreground="White"
                                HorizontalAlignment="Center"
                                    Height="30"
                                 TextAlignment="Left" Margin="0"/>
                     </Border>
 
-                    <Button Content="IoTHubOwner Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,10,0" Foreground="Blue" FontWeight="Bold" Width="200"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
+                    <Button Content="IoTHubOwner Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,10,0" Foreground="Blue" FontWeight="Bold" Width="300"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
                     <TextBox Name="tbIoTHubOwnerConString" Text="{Binding  Path=ConString, Mode=TwoWay}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
 
-                    <Button Content="Device Id:" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0"  Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="200" Click="Button_RemoveDBLQuotes_Click" Tag="2"/>
+                    <Button Content="Device Id:" HorizontalAlignment="Right" Grid.Row="5" Grid.Column="0"  Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="300" Click="Button_RemoveDBLQuotes_Click" Tag="2" />
                     <TextBox Name="tbGetDeviceId" Text="{Binding  Path=DevId, Mode=TwoWay}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Background="White"/>
                     <Button x:Name="CancelSetConnectionDetails2" Content="Cancel"  Click="CancelSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
-                    <Button x:Name="PasteAllConnectionDetails2" Content="Paste All"  Click="PasteAllConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="3"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
                     <Button x:Name="DoneSetConnectionDetails2" Content="Update"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                </Grid>
+            </Border>
+        </Popup>
+        <Popup VerticalOffset="10"                x:Name="Popup_CreateDeviceDetails" 
+               HorizontalAlignment="Left" 
+               HorizontalOffset="100"
+               VerticalAlignment="Top"
+               IsLightDismissEnabled="False">
+            <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
+                Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+                BorderThickness="2" Width="700" >
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Violet" Offset="1"/>
+                            <GradientStop Color="Indigo" Offset="0.85"/>
+                            <GradientStop Color="Blue" Offset="0.70"/>
+                            <GradientStop Color="Green" Offset="0.55"/>
+                            <GradientStop Color="Yellow" Offset="0.4"/>
+                            <GradientStop Color="Orange" Offset="0.25"/>
+                            <GradientStop Color="Red" Offset="0"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition  />
+                        <RowDefinition Height="10" />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition Height="10" />
+                        <RowDefinition />
+                        <RowDefinition Height="10" />
+                        <RowDefinition />
+                        <RowDefinition Height="10" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                    </Grid.ColumnDefinitions>
+                    <Border Background="Green" BorderThickness="1" Height="30" BorderBrush="Black" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
+                        <TextBlock x:Name="ActionEditAthlete3" Text="Add new Device to IoTHub" 
+                               FontStyle="Italic" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"
+                                   Height="30"
+                                TextAlignment="Left" Margin="0"/>
+                    </Border>
+
+                    <Button Content="IoTHubOwner Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="Blue" FontWeight="Bold" Width="300"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
+                    <TextBox Name="tbIoTHubOwnerConString3" Text="{Binding  Path=ConString, Mode=TwoWay}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
+
+                    <Button Content="Device Id:" HorizontalAlignment="Right" Grid.Row="5" Grid.Column="0"  Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="300" Click="Button_RemoveDBLQuotes_Click" Tag="2"/>
+                    <TextBox Name="tbGetDeviceId3" Text="{Binding  Path=DevId, Mode=TwoWay}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Background="White"/>
+                    <Button x:Name="CancelSetConnectionDetails3" Content="Cancel"  Click="CancelSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="DoneSetConnectionDetails3" Content="Update"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
                 </Grid>
             </Border>
         </Popup>
