@@ -30,19 +30,19 @@ namespace AzIoTHubDeviceStreams
 
         private String _deviceId;
 
-        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string _msgOut, ActionReceivedText _OnRecvdTextD, ActionReceivedText _OnStatusUpdateD = null, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings svcCurrentSettings = null)
+        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string msgOut, ActionReceivedText onRecvdTextD, ActionReceivedText onStatusUpdateD = null, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings svcCurrentSettings = null)
         {
             _serviceClient = deviceClient;
             _deviceId = deviceId;
-            OnRecvdTextD = _OnRecvdTextD;
-            OnStatusUpdateD = _OnStatusUpdateD;
+            OnRecvdTextD = onRecvdTextD;
+            OnStatusUpdateD = onStatusUpdateD;
             if (svcCurrentSettings != null)
                 SvcCurrentSettings = svcCurrentSettings;
             else
                 SvcCurrentSettings = new DeviceAndSvcCurrentSettings();
             SvcCurrentSettings.KeepAlive = keepAlive;
             SvcCurrentSettings.ResponseExpected = responseExpected;
-            MsgOut = _msgOut; 
+            MsgOut = msgOut; 
         }
 
         public static bool SignalSendMsgOut(string msgOut, bool keepAlive, bool responseExpected)

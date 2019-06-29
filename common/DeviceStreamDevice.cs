@@ -37,13 +37,13 @@ namespace AzIoTHubDeviceStreams
         /// <param name="deviceClient">Instance of class for Device Steaming from the SDK</param>
         /// <param name="_OnRecvText">Callback to handle received message, post stripping of flags</param>
         /// <param name="deviceCurrentSettings">Optional custom class to handle processing of flags</param>
-        public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO _OnRecvdText, ActionCommandD _ActionCommand = null, ActionReceivedText _OnDeviceStatusUpdateD = null, bool _keepDeviceListening = false, DeviceAndSvcCurrentSettings deviceCurrentSettings = null)
+        public DeviceStream_Device(DeviceClient deviceClient, ActionReceivedTextIO onRecvdText, ActionCommandD actionCommand = null, ActionReceivedText onDeviceStatusUpdateD = null, bool keepDeviceListening = false, DeviceAndSvcCurrentSettings deviceCurrentSettings = null)
         {
             this.deviceClient = deviceClient;
-            OnRecvdTextIO = _OnRecvdText;
-            OnDeviceStatusUpdateD = _OnDeviceStatusUpdateD;
-            KeepDeviceListening = _keepDeviceListening;
-            ActionCmdD = _ActionCommand;
+            OnRecvdTextIO = onRecvdText;
+            OnDeviceStatusUpdateD = onDeviceStatusUpdateD;
+            KeepDeviceListening = keepDeviceListening;
+            ActionCmdD = actionCommand;
             if (deviceCurrentSettings != null)
                 DeviceCurrentSettings = deviceCurrentSettings;
             else
@@ -242,7 +242,7 @@ namespace AzIoTHubDeviceStreams
                                                 if (DeviceCurrentSettings.KeepDeviceListeningChanged)
                                                     ActionCmdD?.Invoke(DeviceCurrentSettings.KeepDeviceListening, "", 0, 1);
                                             }
-                                            catch (System.NotImplementedException niex)
+                                            catch (System.NotImplementedException)
                                             {
                                                 errorMsg += "DeviceCurrentSettings not properly Implemented";
                                                 keepAlive = false;
