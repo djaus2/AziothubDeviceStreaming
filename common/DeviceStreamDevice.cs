@@ -56,10 +56,10 @@ namespace AzIoTHubDeviceStreams
         /// Method called from app to instantiate this class and start Device Streaming on Device.
         /// </summary>
         /// <param name="device_cs">Device Id eg "MyDevice"</param>
-        /// <param name="_OnRecvText">Callback to handle received message, post stripping of flags</param>
+        /// <param name="onRecvdTextD">Callback to handle received message, post stripping of flags</param>
         /// <param name="deviceCurrentSettings">Optional custom class to handle processing of flags</param>
         /// <returns>The running task</returns>
-        public static async Task RunDevice(string device_cs, ActionReceivedTextIO _OnRecvText, ActionReceivedText _OnDeviceStatusUpdateD = null, ActionCommandD _ActionCommand =null, bool _keepDeviceListening = false, DeviceAndSvcCurrentSettings deviceCurrentSettings = null)
+        public static async Task RunDevice(string device_cs, ActionReceivedTextIO onRecvdTextD, ActionReceivedText onDeviceStatusUpdateD = null, ActionCommandD actionCommandD =null, bool keepDeviceListening = false, DeviceAndSvcCurrentSettings deviceCurrentSettings = null)
         {
             bool __keepDeviceListening = false;
             do
@@ -75,7 +75,7 @@ namespace AzIoTHubDeviceStreams
                             //return null;
                         }
 
-                        deviceStream_Device = new DeviceStream_Device(deviceClient, _OnRecvText, _ActionCommand, _OnDeviceStatusUpdateD,  _keepDeviceListening, deviceCurrentSettings);
+                        deviceStream_Device = new DeviceStream_Device(deviceClient, onRecvdTextD, actionCommandD, onDeviceStatusUpdateD,  keepDeviceListening, deviceCurrentSettings);
                         if (deviceStream_Device == null)
                         {
                             System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamClient!");

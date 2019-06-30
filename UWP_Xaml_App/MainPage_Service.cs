@@ -45,29 +45,7 @@ namespace UWPXamlApp
         {
             string msgOut = tbSvcMsgOut.Text;
 
-            switch (DevKeepListening)
-            {
-                case 0:
-                    msgOut = DeviceAndSvcCurrentSettings.Info.KeepDeviceListeningChar + msgOut;
-                        break;
-                case 1:
-                    msgOut = DeviceAndSvcCurrentSettings.Info.UnKeepDeviceListeningChar + msgOut;
-                    break;
-                case 2:
-                    break;;
-            }
             rbNoChangeListening.IsChecked = true;
-            switch (DevAutoStart)
-            {
-                case 0:
-                    msgOut = DeviceAndSvcCurrentSettings.Info.AutoStartDevice + msgOut;
-                    break;
-                case 1:
-                    msgOut = DeviceAndSvcCurrentSettings.Info.UnAutoStartDevice+ msgOut;
-                    break;
-                case 2:
-                    break;
-            }
             rbNoChangeAutoStart.IsChecked = true;
             bool keepAlive = (chkKeepAlive.IsChecked == true);
             bool responseExpected = (chkExpectResponse.IsChecked == true);
@@ -82,9 +60,10 @@ namespace UWPXamlApp
                     try
                     {
                         if (!useCustomClass)
-                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, OnDeviceSvcUpdate, keepAlive, responseExpected).GetAwaiter().GetResult();
+                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, DevKeepListening, DevAutoStart,  OnDeviceSvcUpdate, keepAlive, responseExpected).GetAwaiter().GetResult();
+
                         else
-                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, OnDeviceSvcUpdate, keepAlive, responseExpected, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
+                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, DevKeepListening, DevAutoStart, OnDeviceSvcUpdate, keepAlive, responseExpected,  new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
                     }
                     catch (TaskCanceledException)
                     {

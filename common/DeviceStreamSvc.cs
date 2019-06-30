@@ -28,9 +28,12 @@ namespace AzIoTHubDeviceStreams
 
         DeviceAndSvcCurrentSettings SvcCurrentSettings = null;
 
+        public int DevKeepListening { get; set; } = 2;
+        public int DevAutoStart { get; set; } = 2;
+
         private String _deviceId;
 
-        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string msgOut, ActionReceivedText onRecvdTextD, ActionReceivedText onStatusUpdateD = null, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings svcCurrentSettings = null)
+        public DeviceStream_Svc(ServiceClient deviceClient, String deviceId, string msgOut, ActionReceivedText onRecvdTextD, int devKeepListening = 2, int devAutoStart = 2,ActionReceivedText onStatusUpdateD = null, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings svcCurrentSettings = null)
         {
             _serviceClient = deviceClient;
             _deviceId = deviceId;
@@ -42,6 +45,8 @@ namespace AzIoTHubDeviceStreams
                 SvcCurrentSettings = new DeviceAndSvcCurrentSettings();
             SvcCurrentSettings.KeepAlive = keepAlive;
             SvcCurrentSettings.ResponseExpected = responseExpected;
+            DevKeepListening = devKeepListening;
+            DevAutoStart = devAutoStart;
             MsgOut = msgOut; 
         }
 
@@ -65,7 +70,7 @@ namespace AzIoTHubDeviceStreams
             return false;
         }
 
-        public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText _OnRecvdTextD, ActionReceivedText _OnStatusUpdateD=null, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings deviceAndSvcCurrentSettings = null )
+        public static async Task RunSvc(string s_connectionString, String deviceId, string msgOut, ActionReceivedText onRecvdTextD, int devKeepListening=2, int devAutoStart=2, ActionReceivedText oOnStatusUpdate=null, bool keepAlive = false, bool responseExpected = true, DeviceAndSvcCurrentSettings deviceAndSvcCurrentSettings = null )
         {
             if (deviceStream_Svc != null)
             {
@@ -87,7 +92,7 @@ namespace AzIoTHubDeviceStreams
 
                         //Attach keepalive and respond info if set
 
-                        deviceStream_Svc = new DeviceStream_Svc(serviceClient, deviceId, msgOut, _OnRecvdTextD, _OnStatusUpdateD, keepAlive,responseExpected, deviceAndSvcCurrentSettings);
+                        deviceStream_Svc = new DeviceStream_Svc(serviceClient, deviceId, msgOut, onRecvdTextD,  devKeepListening , devAutoStart , oOnStatusUpdate, keepAlive,responseExpected, deviceAndSvcCurrentSettings);
                         if (deviceStream_Svc == null)
                         {
                             System.Diagnostics.Debug.WriteLine("Failed to create DeviceStreamSvc!");
@@ -217,8 +222,8 @@ namespace AzIoTHubDeviceStreams
                                         bool caught = false;
                                         try
                                         {
-                                          MsgOut = SvcCurrentSettings.ProcessMsgOut(MsgOut, SvcCurrentSettings.KeepAlive, SvcCurrentSettings.ResponseExpected);
-                                        } catch (NotImplementedException nex)
+                                          MsgOut = SvcCurrentSettings.ProcessMsgOut(MsgOut, SvcCurrentSettings.KeepAlive, SvcCurrentSettings.ResponseExpected, DevKeepListening , DevAutoStart );
+                                        } catch (NotImplementedException )
                                         {
                                             errorMsg += "DeviceCurrentSettings not properly implemented";
                                             keepAlive = false;

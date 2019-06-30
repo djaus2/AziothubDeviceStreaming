@@ -11,14 +11,14 @@ namespace AzIoTHubDeviceStreams
         {
             //Signals from svc to device 
             //Prepended to sent message if relevant state required
-            public const  char KeppAliveChar = '`';
+            public const  char KeepAliveChar = '`';
             public const  char RespondChar = '~';
             public const char KeepDeviceListeningChar = '@';
             public const char UnKeepDeviceListeningChar = '#';
             public const char AutoStartDevice = '$';
             public const char UnAutoStartDevice = '%';
             public const char Delimeter = '!';
-            public static List<char> SpecialsKs = new List<char> { KeppAliveChar , RespondChar , KeepDeviceListeningChar , UnKeepDeviceListeningChar, AutoStartDevice, UnAutoStartDevice , Delimeter };
+            public static List<char> SpecialsKs = new List<char> { KeepAliveChar , RespondChar , KeepDeviceListeningChar , UnKeepDeviceListeningChar, AutoStartDevice, UnAutoStartDevice , Delimeter };
 
         }
 
@@ -75,7 +75,7 @@ namespace AzIoTHubDeviceStreams
                                 KeepDeviceListeningChanged = true;
                                 msgIn = msgIn.Substring(1);
                                 break;
-                            case Info.KeppAliveChar:
+                            case Info.KeepAliveChar:
                                 KeepAlive = true;
                                 msgIn = msgIn.Substring(1);
                                 break;
@@ -148,15 +148,47 @@ namespace AzIoTHubDeviceStreams
         /// <param name="keepAlive"></param>
         /// <param name="responseExpected"></param>
         /// <returns>Message to be sent</returns>
-        public virtual string ProcessMsgOut(string msgOut, bool keepAlive = false, bool responseExpected = true)
+        public virtual string ProcessMsgOut(string msgOut, bool keepAlive = false, bool responseExpected = true, int DevKeepListening=2,int DevAutoStart=2)
         {
             KeepAlive = keepAlive;
             ResponseExpected = responseExpected;
             //Prepend message with indicative chars (for device to interpret as abvoe) if relevant flags are true
             if (keepAlive)
-                msgOut = Info.KeppAliveChar + msgOut;
+                msgOut = Info.KeepAliveChar + msgOut;
             if (responseExpected)
                 msgOut = Info.RespondChar + msgOut;
+            switch (DevKeepListening)
+            {
+                case 0:
+                    msgOut = DeviceAndSvcCurrentSettings.Info.KeepDeviceListeningChar + msgOut;
+                    KeepDeviceListening = false;
+                    KeepDeviceListeningChanged = true;
+                    break;
+                case 1:
+                    msgOut = DeviceAndSvcCurrentSettings.Info.UnKeepDeviceListeningChar + msgOut;
+                    KeepDeviceListening = true;
+                    KeepDeviceListeningChanged = true;
+                    break;
+                case 2:
+                    KeepDeviceListeningChanged = false;
+                    break; ;
+            }
+            switch (DevAutoStart)
+            {
+                case 0:
+                    msgOut = DeviceAndSvcCurrentSettings.Info.AutoStartDevice + msgOut;
+                    AutoStartDevice = false;
+                    AutoStartDeviceChanged = true;
+                    break;
+                case 1:
+                    msgOut = DeviceAndSvcCurrentSettings.Info.UnAutoStartDevice + msgOut;
+                    AutoStartDevice = true;
+                    AutoStartDeviceChanged = true;
+                    break;
+                case 2:
+                    AutoStartDeviceChanged = false;
+                    break;
+            }
             return msgOut;
         }
 

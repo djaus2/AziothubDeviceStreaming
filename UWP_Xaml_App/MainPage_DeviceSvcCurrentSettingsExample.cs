@@ -24,15 +24,15 @@ namespace UWPXamlApp
         public string Name { get; set; } = "MainPage_DeviceSvcCurrentSettingsExample";
         public override string ProcessMsgIn(string msgIn)
         {
-            if (msgIn[0] == Info.KeppAliveChar)
+            if (msgIn[0] == Info.KeepAliveChar)
                 KeepAlive = true;
             else
                 KeepAlive = false;
             //etc.
-            throw new NotImplementedException("NotImplemnted: DeviceSvcCurrentSettingsExample.ProcessMsgIn()");
+            throw new NotImplementedException("NotImplemented: DeviceSvcCurrentSettingsExample.ProcessMsgIn()");
         }
 
-        public override string ProcessMsgOut(string msgOut, bool keepAlive = false, bool responseExpected = true)
+        public override string ProcessMsgOut(string msgOut, bool keepAlive = false, bool responseExpected = true, int DevKeepListening = 2, int DevAutoStart = 2)
         {
             KeepAlive = keepAlive;
             ResponseExpected = responseExpected;
