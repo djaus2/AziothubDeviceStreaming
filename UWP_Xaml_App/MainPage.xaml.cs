@@ -444,5 +444,17 @@ namespace UWPXamlApp
                     DevAutoStart = 2;
             }
         }
+
+
+        private int iGroupDeviceAction = 2;
+        private void GroupDeviceAction_Checked(object sender, RoutedEventArgs e)
+        {
+            string dm = Convert.ToString(((RadioButton)sender)?.Tag);
+            if (!string.IsNullOrEmpty(dm))
+            {
+                if (!int.TryParse(dm, out iGroupDeviceAction))
+                    iGroupDeviceAction = 2;
+            }
+        }
     }
 }

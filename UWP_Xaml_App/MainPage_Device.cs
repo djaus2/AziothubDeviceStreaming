@@ -15,7 +15,38 @@ namespace UWPXamlApp
         private string OnDeviceRecvText(string msgIn)
         {
             //Perform device side processing here. Eg read sensors.
-            string msgOut = msgIn.ToUpper();
+            string msgOut = msgIn;
+            switch (iGroupDeviceAction)
+            {
+                case 0:
+                    msgOut = msgIn;
+                    break;
+                case 1:
+                    msgOut = msgIn.ToUpper();
+                    break;
+                case 2:
+                    switch (msgIn.ToLower())
+                    {
+                        case "temp":
+                            msgOut = "45 C";
+                            break;
+                        case "press":
+                            msgOut = "1034.0 hPa";
+                            break;
+                        case "humi":
+                            msgOut = "67%";
+                            break;
+                        default:
+                            msgOut = "Invalid request";
+                            break;
+                    }
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+           
 
             Task.Run(async () => {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>

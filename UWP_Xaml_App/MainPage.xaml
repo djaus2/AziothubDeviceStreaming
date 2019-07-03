@@ -270,6 +270,20 @@
                     <TextBlock x:Name="tbDeviceStatus" Text="Hello" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0"/>
                 </StackPanel>
             </CommandBar.Content>
+            <CommandBar.SecondaryCommands>
+                <AppBarElementContainer>
+                    <Frame x:Name="GroupDeviceAction"    >
+                        <StackPanel>
+                            <RadioButton x:Name = "rbecho" Margin = "0" Checked="GroupDeviceAction_Checked"  GroupName = "GroupDeviceAction" Content="Echo"  Tag="0" />
+                            <RadioButton x:Name = "rbNoUppercase" Margin = "0" Checked = "GroupDeviceAction_Checked" IsChecked ="True"  GroupName = "GroupDeviceAction" Content="Uppercase" Tag="1"/>
+                            <RadioButton x:Name = "rbSimEnvironment" Margin = "0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="Sim Environ" Tag="2" />
+                            <RadioButton x:Name = "rbRPI" Margin = "0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="RPI Environ" Tag="3" />
+                            <RadioButton x:Name = "rbDragonBoard" Margin = "0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="DB410c Environ" Tag="4" />
+                            <RadioButton x:Name = "rbMinnowBoardMax" Margin = "0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="BMB Environ" Tag="5" />
+                        </StackPanel>
+                    </Frame>
+                </AppBarElementContainer>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
 
         <RelativePanel  >
