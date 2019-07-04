@@ -14,7 +14,7 @@
 
     <StackPanel Height="863" VerticalAlignment="Top">
         <TextBlock Text="Sportronics: UWP Azure IoT Hub Device Streaming" Margin ="100,20,20,20" Foreground="Blue" FontSize="32" FontWeight="Bold"/>
-        <CommandBar x:Name="SvcC" Background="Brown" Margin="0" Height="30" Foreground="AntiqueWhite"  >
+        <CommandBar x:Name="SvcCommands" Background="Brown" Margin="0" Height="30" Foreground="AntiqueWhite"  >
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Service Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
@@ -29,7 +29,7 @@
                 <AppBarButton Icon="AddFriend"  Label="Delete current Device from IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="4"/>
                 <AppBarSeparator/>
                 <AppBarElementContainer>
-                <Frame x:Name="GrpDevlAutoStart"    >
+                <Frame x:Name="GrpDevlAutoStart" >
                     <StackPanel>
                         <RadioButton x:Name = "rbAutoStart" Margin = "0" Checked="RbAutoStart_Checked"  GroupName = "DevAutoStart" Content="Send to Device: Auto Start"  Tag="0" />
                         <RadioButton x:Name = "rbNoAutoStart" Margin = "0" Checked = "RbAutoStart_Checked" GroupName = "DevAutoStart" Content="Send to Device: No Auto Start" Tag="1"/>
@@ -263,7 +263,7 @@
         </RelativePanel>
     
 
-        <CommandBar Background="DarkCyan" Margin="0,10,0,10" Height="30" >
+        <CommandBar Background="DarkCyan" Margin="0,10,0,10" Height="30" x:Name="DeviceProcessingModeCommands" >
             <CommandBar.Content >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Device Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
@@ -271,15 +271,26 @@
                 </StackPanel>
             </CommandBar.Content>
             <CommandBar.SecondaryCommands>
-                <AppBarElementContainer>
-                    <Frame x:Name="GroupDeviceAction"    >
+                <AppBarElementContainer x:Name="abec1">
+                    <Frame x:Name="frmGroupDeviceAction"    >
                         <StackPanel>
-                            <RadioButton x:Name = "rbecho" Margin = "0" Checked="GroupDeviceAction_Checked"  GroupName = "GroupDeviceAction" Content="Echo"  Tag="0" />
-                            <RadioButton x:Name = "rbNoUppercase" Margin = "0" Checked = "GroupDeviceAction_Checked" IsChecked ="True"  GroupName = "GroupDeviceAction" Content="Uppercase" Tag="1"/>
-                            <RadioButton x:Name = "rbSimEnvironment" Margin = "0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="Sim Environ" Tag="2" />
-                            <RadioButton x:Name = "rbRPI" Margin = "0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="RPI Environ" Tag="3" />
-                            <RadioButton x:Name = "rbDragonBoard" Margin = "0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="DB410c Environ" Tag="4" />
-                            <RadioButton x:Name = "rbMinnowBoardMax" Margin = "0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="BMB Environ" Tag="5" />
+                            <TextBlock Text="Transport:" Foreground="Blue"/>
+                            <ListView   x:Name="ListviewTransports2" RelativePanel.Below="tbDeiceMsgOut" RelativePanel.AlignLeftWith="tbDeiceMsgOut" RelativePanel.AlignTopWith="lbTransports"
+                         ScrollViewer.IsVerticalRailEnabled="True"
+                        Margin="0" ItemsSource="{Binding ListEnum}" Background="Beige" SelectionChanged="ListviewTransports_SelectionChanged">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" HorizontalAlignment="Left"  Margin="10,0,0,0" Padding="0"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <TextBlock Text="Device Processing:" Foreground="Blue"/>
+                            <RadioButton x:Name = "rbecho" Margin = "20,0,0,0" Checked="GroupDeviceAction_Checked"  GroupName = "GroupDeviceAction" Content="Echo"  Tag="0" />
+                            <RadioButton x:Name = "rbNoUppercase" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" IsChecked ="True"  GroupName = "GroupDeviceAction" Content="Uppercase" Tag="1"/>
+                            <RadioButton x:Name = "rbSimEnvironment" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="Sim Environ" Tag="2" />
+                            <RadioButton x:Name = "rbRPI" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="RPI Environ" Tag="3" />
+                            <RadioButton x:Name = "rbDragonBoard" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="DB410c Environ" Tag="4" />
+                            <RadioButton x:Name = "rbMinnowBoardMax" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="BMB Environ" Tag="5" />
                         </StackPanel>
                     </Frame>
                 </AppBarElementContainer>
@@ -320,16 +331,7 @@
                      Height="84" Margin="20,20,0,20" Text="Dev Out" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True" />
             <TextBlock x:Name="lbTransports" HorizontalAlignment="Left" RelativePanel.Below="tbDeiceMsgOut" RelativePanel.AlignRightWith="lblDeviceSend"
                        Height="28" Margin="20,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Text="Select Device Transport:"/>
-            <ListView   x:Name="ListviewTransports" RelativePanel.Below="tbDeiceMsgOut" RelativePanel.AlignLeftWith="tbDeiceMsgOut" RelativePanel.AlignTopWith="lbTransports"
-                        Width="300" Height="120" ScrollViewer.IsVerticalRailEnabled="True"
-                        Margin="20,20,0,20" ItemsSource="{Binding ListEnum}" Background="Beige" SelectionChanged="ListviewTransports_SelectionChanged">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" HorizontalAlignment="Left"  Margin="20,0,0,0" Padding="0"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <TextBlock x:Name="lblNb2" RelativePanel.Below="ListviewTransports" RelativePanel.AlignLeftWith="lblNb" FontStyle="Italic" FontWeight="Bold"
+            <TextBlock x:Name="lblNb2" RelativePanel.Below="chkAutoStart" RelativePanel.AlignLeftWith="lblNb" FontStyle="Italic" FontWeight="Bold"
                 Text="Nb2: Run in Visual Studio, Debug mode and note Debug messages in Output Window." Margin="20,20,0,0"  />
             <Button x:Name="btnCancelDevice" Content="Cancel Device" RelativePanel.Below="lblNb" RelativePanel.AlignRightWith="btnListen"
                     Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLDevice_Click"/>
@@ -341,14 +343,4 @@
 
     </StackPanel>
 
-    <!--<Page.BottomAppBar>
-        <CommandBar Background="DarkCyan" Margin="0" Height="30" >
-            <CommandBar.Content >
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Device Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
-                    <TextBlock x:Name="DeviceStatus" Text="Hello" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0"/>
-                </StackPanel>
-            </CommandBar.Content>
-        </CommandBar>
-    </Page.BottomAppBar>-->
 </Page>

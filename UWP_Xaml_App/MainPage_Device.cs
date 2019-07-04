@@ -25,15 +25,15 @@ namespace UWPXamlApp
                     msgOut = msgIn.ToUpper();
                     break;
                 case 2:
-                    switch (msgIn.ToLower())
+                    switch (msgIn.Substring(0,3).ToLower())
                     {
-                        case "temp":
+                        case "tem":
                             msgOut = "45 C";
                             break;
-                        case "press":
+                        case "pre":
                             msgOut = "1034.0 hPa";
                             break;
-                        case "humi":
+                        case "hum":
                             msgOut = "67%";
                             break;
                         default:
@@ -42,8 +42,10 @@ namespace UWPXamlApp
                     }
                     break;
                 case 3:
+                    msgOut = "Coming. Not yet implemented. This is a pace holder for now.";
                     break;
                 case 4:
+                    msgOut = "Coming. Not yet implemented. This is a pace holder for now.";
                     break;
             }
            

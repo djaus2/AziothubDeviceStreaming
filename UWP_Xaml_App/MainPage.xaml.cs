@@ -41,9 +41,10 @@ namespace UWPXamlApp
             service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
             device_id = AzureConnections.MyConnections.DeviceId;
             device_cs = AzureConnections.MyConnections.DeviceConnectionString;
-            ListviewTransports.ItemsSource = ListEnum;
-            ListviewTransports.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
-            ListviewTransports.ScrollIntoView(ListviewTransports.SelectedItem);
+
+            ListviewTransports2.ItemsSource = ListEnum;
+            ListviewTransports2.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
+            ListviewTransports2.ScrollIntoView(ListviewTransports2.SelectedItem);
             AzureConnections.MyConnections.OnStatusUpdateD = OnDeviceSvcUpdate;
 
             if (autoStartDevice)
@@ -54,9 +55,9 @@ namespace UWPXamlApp
 
         private void ListviewTransports_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ListviewTransports.SelectedIndex != -1)
+            if (ListviewTransports2.SelectedIndex != -1)
             {
-                AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType = (Microsoft.Azure.Devices.Client.TransportType) ListviewTransports.SelectedItem;
+                AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType = (Microsoft.Azure.Devices.Client.TransportType)ListviewTransports2.SelectedItem;
                 System.Diagnostics.Debug.WriteLine(string.Format("Using Device Transport {0}", AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType));
             }
         }
@@ -430,6 +431,7 @@ namespace UWPXamlApp
             {
                 if (!int.TryParse(dm, out DevKeepListening))
                     DevKeepListening = 2;
+                SvcCommands.IsOpen = false;
             }
 
         }
@@ -442,6 +444,7 @@ namespace UWPXamlApp
             {
                 if (!int.TryParse(dm, out DevAutoStart))
                     DevAutoStart = 2;
+                SvcCommands.IsOpen = false;
             }
         }
 
@@ -454,7 +457,9 @@ namespace UWPXamlApp
             {
                 if (!int.TryParse(dm, out iGroupDeviceAction))
                     iGroupDeviceAction = 2;
+                DeviceProcessingModeCommands.IsOpen = false;
             }
+            
         }
     }
 }
