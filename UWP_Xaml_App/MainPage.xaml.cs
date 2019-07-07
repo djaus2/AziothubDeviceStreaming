@@ -42,6 +42,8 @@ namespace UWPXamlApp
             device_id = AzureConnections.MyConnections.DeviceId;
             device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
+            rbNoUppercase.IsChecked = true;
+
             ListviewTransports2.ItemsSource = ListEnum;
             ListviewTransports2.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
             ListviewTransports2.ScrollIntoView(ListviewTransports2.SelectedItem);
@@ -456,7 +458,7 @@ namespace UWPXamlApp
             if (!string.IsNullOrEmpty(dm))
             {
                 if (!int.TryParse(dm, out iGroupDeviceAction))
-                    iGroupDeviceAction = 2;
+                    iGroupDeviceAction = 1;
                 DeviceProcessingModeCommands.IsOpen = false;
             }
             

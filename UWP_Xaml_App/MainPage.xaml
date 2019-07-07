@@ -286,8 +286,8 @@
                             </ListView>
                             <TextBlock Text="Device Processing:" Foreground="Blue"/>
                             <RadioButton x:Name = "rbecho" Margin = "20,0,0,0" Checked="GroupDeviceAction_Checked"  GroupName = "GroupDeviceAction" Content="Echo"  Tag="0" />
-                            <RadioButton x:Name = "rbNoUppercase" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" IsChecked ="True"  GroupName = "GroupDeviceAction" Content="Uppercase" Tag="1"/>
-                            <RadioButton x:Name = "rbSimEnvironment" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="Sim Environ" Tag="2" />
+                            <RadioButton x:Name = "rbNoUppercase" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" IsChecked ="False"  GroupName = "GroupDeviceAction" Content="Uppercase" Tag="1"/>
+                            <RadioButton x:Name = "rbSimEnvironment" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" IsChecked="True" GroupName = "GroupDeviceAction" Content="Sim Environ" Tag="2" />
                             <RadioButton x:Name = "rbRPI" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="RPI Environ" Tag="3" />
                             <RadioButton x:Name = "rbDragonBoard" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="DB410c Environ" Tag="4" />
                             <RadioButton x:Name = "rbMinnowBoardMax" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="BMB Environ" Tag="5" />
@@ -329,8 +329,6 @@
             <TextBox x:Name="tbDeiceMsgOut" RelativePanel.RightOf="lblDeviceSend" RelativePanel.AlignTopWith="lblDeviceSend" RelativePanel.AlignLeftWith="tbDeviceMsgIn"
                      AcceptsReturn="True"
                      Height="84" Margin="20,20,0,20" Text="Dev Out" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True" />
-            <TextBlock x:Name="lbTransports" HorizontalAlignment="Left" RelativePanel.Below="tbDeiceMsgOut" RelativePanel.AlignRightWith="lblDeviceSend"
-                       Height="28" Margin="20,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top"  Text="Select Device Transport:"/>
             <TextBlock x:Name="lblNb2" RelativePanel.Below="chkAutoStart" RelativePanel.AlignLeftWith="lblNb" FontStyle="Italic" FontWeight="Bold"
                 Text="Nb2: Run in Visual Studio, Debug mode and note Debug messages in Output Window." Margin="20,20,0,0"  />
             <Button x:Name="btnCancelDevice" Content="Cancel Device" RelativePanel.Below="lblNb" RelativePanel.AlignRightWith="btnListen"
