@@ -2,9 +2,8 @@
 In the previous version of this repository, some issues were raised wrt refactoring of the Azure IoTHub SDK Device Streaming Echo sample functionality as .Net Core and UWP reusable libraries. These issues have been resolved and the library is now presented as a .Net Standard library that can be used in .Net Core, UWP and Xamarin apps (last yet to be tested). The library implements the device and service functionality of IoT Hub Device Streaming that can be used in UWP and other types apps.
 <!--more-->
 
-My blog on this: [djaus2/AziothubDeviceStreaming](https://davidjones.sportronics.com.au/2020-06-09-Azure-IoT-Hub-Device-Streaming-A-Libray-azure.html)<br>
+My blog on this: [AziothubDeviceStreaming Lib](https://davidjones.sportronics.com.au/azure/Azure-IoT-Hub-Device-Streaming-A-Library-azure.html)<br>
 Link to [the previous version of the repository](https://github.com/djaus2/AziothubDeviceStreaming/tree/master_original)<br>
-Link to [the blog on the previous version of this repository.](https://davidjones.sportronics.com.au//Azure-IoT-Hub-Device-Streaming-azure.html)<br>
 
 # We have a solution!
 The main problem, as discussed previously, was that the developed Device Streaming library, regardless of the SDK .Net Framework used (UWP, .Net Core or .Net Standard), did not support the AMQP transport (Device-IoTHub) when used with a UWP app. It was determined that the Nuget installation of Microsoft.Azure.Device.Client (Device Streaming requires the latest preview version) implicitly installed an earlier version of Microsoft.Azure.Ampq 2.3.7, whereas version 2.4.2 was required. This was resolved by explicitly installing Microsoft.Azure.Amqp version (2.4.2) using Nuget.
