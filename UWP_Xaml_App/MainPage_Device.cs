@@ -173,6 +173,13 @@ namespace UWPXamlApp
         private void ChAutoStart_Checked(object sender, RoutedEventArgs e)
         {
             AutoStartDevice = (bool)((CheckBox)sender)?.IsChecked;
+            if (AutoStartDevice)
+                Task.Run(async () => {
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        chKeepDeviceListening.IsChecked = true;
+                    });
+                });           
         }
     }
 }
