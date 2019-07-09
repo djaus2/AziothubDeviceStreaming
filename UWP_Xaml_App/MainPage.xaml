@@ -56,7 +56,7 @@
                IsLightDismissEnabled="False">
             <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
                 Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-                BorderThickness="2" Width="700" >
+                BorderThickness="2" Width="1000" >
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -83,9 +83,9 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
                     </Grid.ColumnDefinitions>
                     <Border Background="Green" BorderThickness="1" Height="30" BorderBrush="Black" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
                         <TextBlock x:Name="ActionEditAthlete" Text="Edit Connection Details" 
@@ -117,7 +117,7 @@
                IsLightDismissEnabled="False">
             <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
                 Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-                BorderThickness="2" Width="700" >
+                BorderThickness="2" Width="1000" >
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -144,9 +144,9 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
                     </Grid.ColumnDefinitions>
                     <Border Background="Green" BorderThickness="1" Height="30" BorderBrush="Black" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
                         <TextBlock x:Name="ActionEditAthlete2" Text="Get connection details for existing Device" 
@@ -173,7 +173,7 @@
                IsLightDismissEnabled="False">
             <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
                 Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-                BorderThickness="2" Width="700" >
+                BorderThickness="2" Width="1000" >
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -200,9 +200,9 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="200" />
                     </Grid.ColumnDefinitions>
                     <Border Background="Green" BorderThickness="1" Height="30" BorderBrush="Black" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
                         <TextBlock x:Name="ActionEditAthlete3" Text="Add new Device to IoTHub" 
