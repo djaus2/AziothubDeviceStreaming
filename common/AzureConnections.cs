@@ -65,10 +65,21 @@ namespace AzureConnections
 
         public static string RemoveDeviceAsync(string IoTHubOwnerconnectionString, string deviceId)
         {
+            if (deviceId=="")
+            {
+                OnStatusUpdateD?.Invoke(string.Format("RemoveDeviceAsync: Device Not deleted. Blank DeviceId."));
+
+                return "";
+            }
+            else if (IoTHubOwnerconnectionString == "")
+            {
+                OnStatusUpdateD?.Invoke(string.Format(string.Format("RemoveDeviceAsync: Device {0} Not deleted. Blank IoTHubOwnerconnectionString.", deviceId)));
+
+                return "";
+            }
             RegistryManager registryManager = RegistryManager.CreateFromConnectionString(IoTHubOwnerconnectionString);
             registryManager.OpenAsync().GetAwaiter().GetResult();
             Device device = null;
-
             try
             {
                 device = registryManager.GetDeviceAsync(deviceId).GetAwaiter().GetResult();
@@ -77,18 +88,23 @@ namespace AzureConnections
                     registryManager.RemoveDeviceAsync(device).GetAwaiter().GetResult();
                 }
                 else
-                    OnStatusUpdateD?.Invoke("RemoveDeviceAsync: Not deleted. Unable to find Device.");
+                {
+                    OnStatusUpdateD?.Invoke(string.Format("RemoveDeviceAsync: Device {0} Not deleted. Unable to find Device.", deviceId));
+                    return "";
+                }
 
                 device = null;
+                OnStatusUpdateD?.Invoke(string.Format("RemoveDeviceAsync: Device {0} Deleted.", deviceId));
+
             }
             catch (Microsoft.Azure.Devices.Common.Exceptions.DeviceNotFoundException)
             {
-                OnStatusUpdateD?.Invoke("RemoveDeviceAsync: Not deleted. Unable to find Device.");
+                OnStatusUpdateD?.Invoke(string.Format("RemoveDeviceAsync: Device {0} Not deleted. Unable to find Device.", deviceId));
             }
             catch (Exception ex)
             {
-                OnStatusUpdateD?.Invoke("RemoveDeviceAsync: Device deletion failed: " +  ex.Message);
-                System.Diagnostics.Debug.WriteLine("RemoveDeviceAsync: Device deletion failed: ", ex.Message);
+                OnStatusUpdateD?.Invoke(string.Format("RemoveDeviceAsync: Device {0} deletion failed: {1} " , deviceId, ex.Message));
+                System.Diagnostics.Debug.WriteLine(string.Format("RemoveDeviceAsync: Device {0} deletion failed: {1} ", deviceId, ex.Message));
                 device = null;
             }
             

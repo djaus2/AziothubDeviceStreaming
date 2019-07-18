@@ -10,6 +10,11 @@
 
     <Page.Resources>
         <local:EnumToStringConverter  x:Key="EnumToStringConverter"/>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" x:Key="PopupBG">
+            <GradientStop Color="Violet" Offset="1"/>
+            <GradientStop Color="Indigo" Offset="0.55"/>
+            <GradientStop Color="Blue" Offset="0"/>
+        </LinearGradientBrush>
     </Page.Resources>
 
     <StackPanel Height="863" VerticalAlignment="Top">
@@ -23,10 +28,12 @@
             </CommandBar.Content>
 
             <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="WebCam"  Label="Set Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="1"/>
-                <AppBarButton Icon="AddFriend"  Label="Get Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="2"/>
-                <AppBarButton Icon="AddFriend"  Label="Add new Device to IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="3"/>
-                <AppBarButton Icon="AddFriend"  Label="Delete current Device from IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="4"/>
+                <AppBarButton Icon="Setting"  Label="SET Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="1"/>
+                <AppBarButton Icon="Permissions"  Label="GET Device Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="2"/>
+                <AppBarButton Icon="Add"  Label="ADD new Device to IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="3"/>
+                <AppBarButton Icon="Delete"  Label="DELETE current Device from IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="4"/>
+                <AppBarSeparator/>
+                <AppBarButton Icon="AddFriend"  Label="ADD new IoTHub to Azure Group" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="5"/>
                 <AppBarSeparator/>
                 <AppBarElementContainer>
                 <Frame x:Name="GrpDevlAutoStart" >
@@ -56,19 +63,8 @@
                IsLightDismissEnabled="False">
             <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
                 Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-                BorderThickness="2" Width="1000" >
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Grid.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Violet" Offset="1"/>
-                            <GradientStop Color="Indigo" Offset="0.85"/>
-                            <GradientStop Color="Blue" Offset="0.70"/>
-                            <GradientStop Color="Green" Offset="0.55"/>
-                            <GradientStop Color="Yellow" Offset="0.4"/>
-                            <GradientStop Color="Orange" Offset="0.25"/>
-                            <GradientStop Color="Red" Offset="0"/>
-                        </LinearGradientBrush>
-                    </Grid.Background>
+                BorderThickness="2" Width="700" >
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource PopupBG}">
                     <Grid.RowDefinitions>
                         <RowDefinition  />
                         <RowDefinition Height="10" />
@@ -83,30 +79,32 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
                     </Grid.ColumnDefinitions>
                     <Border Background="Green" BorderThickness="1" Height="30" BorderBrush="Black" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
-                        <TextBlock x:Name="ActionEditAthlete" Text="Edit Connection Details" 
+                        <TextBlock x:Name="tbPopupTitleSet" Text="Edit Connection Details" 
                                FontStyle="Italic" FontWeight="Bold" Foreground="White"
                                HorizontalAlignment="Center"
                                    Height="30"
                                 TextAlignment="Left" Margin="0"/>
                     </Border>
 
-                    <Button Content="Service Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="Blue" FontWeight="Bold" Width="300"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
+                    <Button Content="Service Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="300"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
                     <TextBox Name="tbSvcConString" Text="{Binding  Path=ConString, Mode=TwoWay}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
 
-                    <Button Content="Device Connection String:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0"  Foreground="Blue" FontWeight="Bold" Width="300" Click="Button_RemoveDBLQuotes_Click" Tag="1" />
+                    <Button Content="Device Connection String:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0"  Foreground="White" FontWeight="Bold" Width="300" Click="Button_RemoveDBLQuotes_Click" Tag="1" />
                     <TextBox Name="tbDeviceConString" Text="{Binding  Path=DevString, Mode=TwoWay}"  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
 
                     
                     <Button Content="Device Id:" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0"  Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="200" Click="Button_RemoveDBLQuotes_Click" Tag="2"/>
                     <TextBox Name="tbDeviceId" Text="{Binding  Path=DevId, Mode=TwoWay}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Background="White"/>
+                    <TextBlock Text="Click on entity to paste value." Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="White" FontStyle="Italic" />
                     <Button x:Name="CancelSetConnectionDetails" Content="Cancel"  Click="CancelSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="ClearSetConnectionDetails" Content="Clear All"  Click="ClearSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="2"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
                     <Button x:Name="PasteAllConnectionDetails" Content="Paste All"  Click="PasteAllConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="3"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
-                    <Button x:Name="DoneSetConnectionDetails" Content="Update"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="DoneSetConnectionDetails" Content="Set"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
                 </Grid>
             </Border>
         </Popup>
@@ -117,19 +115,8 @@
                IsLightDismissEnabled="False">
             <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
                 Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-                BorderThickness="2" Width="1000" >
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Grid.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Violet" Offset="1"/>
-                            <GradientStop Color="Indigo" Offset="0.85"/>
-                            <GradientStop Color="Blue" Offset="0.70"/>
-                            <GradientStop Color="Green" Offset="0.55"/>
-                            <GradientStop Color="Yellow" Offset="0.4"/>
-                            <GradientStop Color="Orange" Offset="0.25"/>
-                            <GradientStop Color="Red" Offset="0"/>
-                        </LinearGradientBrush>
-                    </Grid.Background>
+                BorderThickness="2" Width="700" >
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource PopupBG}">
                     <Grid.RowDefinitions>
                         <RowDefinition  />
                         <RowDefinition Height="10" />
@@ -144,25 +131,26 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
                     </Grid.ColumnDefinitions>
                     <Border Background="Green" BorderThickness="1" Height="30" BorderBrush="Black" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
-                        <TextBlock x:Name="ActionEditAthlete2" Text="Get connection details for existing Device" 
+                        <TextBlock x:Name="tbPopupTitleGet" Text="Get Device Connection Details for existing Device from IoT Hub" 
                                FontStyle="Italic" FontWeight="Bold" Foreground="White"
                                HorizontalAlignment="Center"
                                    Height="30"
                                 TextAlignment="Left" Margin="0"/>
                     </Border>
 
-                    <Button Content="IoTHubOwner Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,10,0" Foreground="Blue" FontWeight="Bold" Width="300"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
+                    <Button Content="IoTHubOwner Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="300"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
                     <TextBox Name="tbIoTHubOwnerConString" Text="{Binding  Path=ConString, Mode=TwoWay}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
-
                     <Button Content="Device Id:" HorizontalAlignment="Right" Grid.Row="5" Grid.Column="0"  Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="300" Click="Button_RemoveDBLQuotes_Click" Tag="2" />
-                    <TextBox Name="tbGetDeviceId" Text="{Binding  Path=DevId, Mode=TwoWay}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Background="White"/>
+                    <TextBox Name="tbDeviceId2" Text="{Binding  Path=DevId, Mode=TwoWay}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Background="White"/>
+                    <TextBlock Text="Click on entity to paste value." Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="White" FontStyle="Italic" />
                     <Button x:Name="CancelSetConnectionDetails2" Content="Cancel"  Click="CancelSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
-                    <Button x:Name="DoneSetConnectionDetails2" Content="Update"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="ClearSetConnectionDetails2" Content="Clear All"  Click="ClearSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="2"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="DoneSetConnectionDetails2" Content="Get"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
                 </Grid>
             </Border>
         </Popup>
@@ -173,19 +161,8 @@
                IsLightDismissEnabled="False">
             <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
                 Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
-                BorderThickness="2" Width="1000" >
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Grid.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Violet" Offset="1"/>
-                            <GradientStop Color="Indigo" Offset="0.85"/>
-                            <GradientStop Color="Blue" Offset="0.70"/>
-                            <GradientStop Color="Green" Offset="0.55"/>
-                            <GradientStop Color="Yellow" Offset="0.4"/>
-                            <GradientStop Color="Orange" Offset="0.25"/>
-                            <GradientStop Color="Red" Offset="0"/>
-                        </LinearGradientBrush>
-                    </Grid.Background>
+                BorderThickness="2" Width="700" >
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource PopupBG}">
                     <Grid.RowDefinitions>
                         <RowDefinition  />
                         <RowDefinition Height="10" />
@@ -200,25 +177,72 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
                     </Grid.ColumnDefinitions>
                     <Border Background="Green" BorderThickness="1" Height="30" BorderBrush="Black" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
-                        <TextBlock x:Name="ActionEditAthlete3" Text="Add new Device to IoTHub" 
+                        <TextBlock x:Name="tbPopupTitleSetAdd" Text="Add new Device to IoTHub" 
                                FontStyle="Italic" FontWeight="Bold" Foreground="White"
                                HorizontalAlignment="Center"
                                    Height="30"
                                 TextAlignment="Left" Margin="0"/>
                     </Border>
 
-                    <Button Content="IoTHubOwner Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="Blue" FontWeight="Bold" Width="300"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
+                    <Button Content="IoTHubOwner Connection String:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="300"  Click="Button_RemoveDBLQuotes_Click" Tag="0"/>
                     <TextBox Name="tbIoTHubOwnerConString3" Text="{Binding  Path=ConString, Mode=TwoWay}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
 
                     <Button Content="Device Id:" HorizontalAlignment="Right" Grid.Row="5" Grid.Column="0"  Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="300" Click="Button_RemoveDBLQuotes_Click" Tag="2"/>
-                    <TextBox Name="tbGetDeviceId3" Text="{Binding  Path=DevId, Mode=TwoWay}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Background="White"/>
+                    <TextBox Name="tbDeviceId3" Text="{Binding  Path=DevId, Mode=TwoWay}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Background="White"/>
+                    <TextBlock Text="Click on entity to paste value." Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="White" FontStyle="Italic" />
                     <Button x:Name="CancelSetConnectionDetails3" Content="Cancel"  Click="CancelSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
-                    <Button x:Name="DoneSetConnectionDetails3" Content="Update"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="ClearSetConnectionDetails3" Content="Clear All"  Click="ClearSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="2"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="DoneSetConnectionDetails3" Content="Add"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                </Grid>
+            </Border>
+        </Popup>
+        <Popup VerticalOffset="10"                x:Name="Popup_Delete" 
+               HorizontalAlignment="Left" 
+               HorizontalOffset="100"
+               VerticalAlignment="Top"
+               IsLightDismissEnabled="False">
+            <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" 
+                Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
+                BorderThickness="2" Width="700" >
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource PopupBG}" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition  />
+                        <RowDefinition Height="10" />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition Height="10" />
+                        <RowDefinition />
+                        <RowDefinition Height="10" />
+                        <RowDefinition />
+                        <RowDefinition Height="10" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="100" />
+                    </Grid.ColumnDefinitions>
+                    <Border Background="Green" BorderThickness="1" Height="30" BorderBrush="Black" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="5">
+                        <TextBlock x:Name="tbPopupTitleDelete" Text="Confirm current Device Deletion on IoTHub?" 
+                               FontStyle="Italic" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center"
+                                   Height="30"
+                                TextAlignment="Left" Margin="0"/>
+                    </Border>
+
+                    <TextBlock Text="IoTHubOwner Connection String:  " Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="10,0,10,0" Foreground="White" FontWeight="Bold" Grid.ColumnSpan="2" Tag="0"/>
+                    <TextBox Name="tbSvcConString4" Text="{Binding  Path=ConString, Mode=OneTime}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" IsReadOnly="True" Background="Beige" />
+
+                    <TextBlock Text="Device Id:" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"  Margin="0,0,10,0" Foreground="White" FontWeight="Bold"   Tag="2"/>
+                    <TextBox Name="tbDeviceId4" Text="{Binding  Path=DevId, Mode=OneTime}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" IsReadOnly="True" Background="Beige" />
+                    <Button x:Name="CancelSetConnectionDetails4" Content="Cancel"  Click="CancelSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
+                    <Button x:Name="DoneSetConnectionDetails4" Content="Delete"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
                 </Grid>
             </Border>
         </Popup>
@@ -263,7 +287,7 @@
         </RelativePanel>
     
 
-        <CommandBar Background="DarkCyan" Margin="0,10,0,10" Height="30" x:Name="DeviceProcessingModeCommands" >
+        <CommandBar  Background="DarkCyan" Margin="0,10,0,10" Height="30" x:Name="DeviceProcessingModeCommands" >
             <CommandBar.Content >
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Device Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
@@ -274,7 +298,7 @@
                 <AppBarElementContainer x:Name="abec1">
                     <Frame x:Name="frmGroupDeviceAction"    >
                         <StackPanel>
-                            <TextBlock Text="Transport:" Foreground="Blue"/>
+                            <TextBlock Text="Device Transport:" Foreground="Blue"/>
                             <ListView   x:Name="ListviewTransports2" RelativePanel.Below="tbDeiceMsgOut" RelativePanel.AlignLeftWith="tbDeiceMsgOut" RelativePanel.AlignTopWith="lbTransports"
                          ScrollViewer.IsVerticalRailEnabled="True"
                         Margin="0" ItemsSource="{Binding ListEnum}" Background="Beige" SelectionChanged="ListviewTransports_SelectionChanged">
@@ -285,12 +309,19 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                             <TextBlock Text="Device Processing:" Foreground="Blue"/>
-                            <RadioButton x:Name = "rbecho" Margin = "20,0,0,0" Checked="GroupDeviceAction_Checked"  GroupName = "GroupDeviceAction" Content="Echo"  Tag="0" />
-                            <RadioButton x:Name = "rbNoUppercase" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" IsChecked ="False"  GroupName = "GroupDeviceAction" Content="Uppercase" Tag="1"/>
-                            <RadioButton x:Name = "rbSimEnvironment" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" IsChecked="True" GroupName = "GroupDeviceAction" Content="Sim Environ" Tag="2" />
-                            <RadioButton x:Name = "rbRPI" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="RPI Environ" Tag="3" />
+                            <ListView   x:Name="LstDeviceAction" RelativePanel.Below="tbDeiceMsgOut" RelativePanel.AlignLeftWith="tbDeiceMsgOut" RelativePanel.AlignTopWith="lbTransports"
+                         ScrollViewer.IsVerticalRailEnabled="True"
+                        Margin="0" ItemsSource="{Binding ListEnum2}" Background="Beige" SelectionChanged="DeviceAction_SelectionChanged">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" HorizontalAlignment="Left"  Margin="10,0,0,0" Padding="0"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                              
+                            </ListView>
+                            <!--<RadioButton x:Name = "rbRPI" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="RPI Environ" Tag="3" />
                             <RadioButton x:Name = "rbDragonBoard" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="DB410c Environ" Tag="4" />
-                            <RadioButton x:Name = "rbMinnowBoardMax" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="BMB Environ" Tag="5" />
+                            <RadioButton x:Name = "rbMinnowBoardMax" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="BMB Environ" Tag="5" />-->
                         </StackPanel>
                     </Frame>
                 </AppBarElementContainer>

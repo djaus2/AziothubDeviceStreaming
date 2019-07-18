@@ -1,0 +1,45 @@
+﻿<Page
+    x:Class="UWPXamlApp.NewHubElement"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWPXamlApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
+
+
+    <Grid Height="40">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"  />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="90" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="Comment" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"  FontSize="18" Foreground="Green" FontStyle="Italic" />
+        
+        <Button x:Name="Butt"  Grid.Row="0" Grid.Column="1"  FontSize="18"   Click="Button_Click" Height="50" Width="57"   >
+            <Viewbox MaxHeight="40" MaxWidth="40" >
+                <SymbolIcon Symbol="Copy"/>
+            </Viewbox>
+        </Button>
+        <TextBlock x:Name="Txt" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="3"  FontSize="18"   />
+
+        <Border x:Name="Separator" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"  Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}" Height="4" Margin="0,0,0,5" Padding="0" CornerRadius="0"/>
+
+
+        <TextBlock x:Name="Heading" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" FontSize="18"  FontWeight="Bold" FontStyle="Italic" Foreground="Blue" />
+        <StackPanel x:Name="Link" Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3">
+            <TextBlock Text="{Binding Path=Code}" VerticalAlignment="Top" FontSize="18" Margin="5" FontStyle="Italic" Foreground="Purple"/>
+            <HyperlinkButton x:Name="HyperLink" Content="Install Az CLI." VerticalAlignment="Top" NavigateUri="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest"  FontSize="18"/>
+        </StackPanel>
+        <StackPanel x:Name="Info"  Orientation="Horizontal" Grid.Row="12" Grid.Column="3" Grid.ColumnSpan="1">
+            <TextBlock Text="{Binding Path=Code}" FontSize="18" FontStyle="Italic" Foreground="Purple"  FontWeight="Bold" Width="300"  TextAlignment="Right" />
+            <TextBox x:Name="InfoVal" PlaceholderText="{Binding Path=InfoValue}" FontSize="18" Width="500" TextChanged="InfoVal_TextChanged"  />
+        </StackPanel>
+    </Grid>
+</Page>

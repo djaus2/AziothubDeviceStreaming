@@ -29,10 +29,12 @@ namespace UWPXamlApp
 
 
         public  List<Microsoft.Azure.Devices.Client.TransportType> ListEnum { get { return typeof(Microsoft.Azure.Devices.Client.TransportType).GetEnumValues().Cast<Microsoft.Azure.Devices.Client.TransportType>().ToList(); } }
+        public List<string> ListEnum2 = new List<string> { "Echo", "Uppercase", "Sim Environ" };
 
         public MainPage()
         {
             this.InitializeComponent();
+            this.NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -42,27 +44,22 @@ namespace UWPXamlApp
             device_id = AzureConnections.MyConnections.DeviceId;
             device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
-            rbNoUppercase.IsChecked = true;
+           
 
             ListviewTransports2.ItemsSource = ListEnum;
             ListviewTransports2.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
             ListviewTransports2.ScrollIntoView(ListviewTransports2.SelectedItem);
             AzureConnections.MyConnections.OnStatusUpdateD = OnDeviceSvcUpdate;
-
+            LstDeviceAction.ItemsSource = ListEnum2;
+            LstDeviceAction.SelectedItem = ListEnum2[1];
+            LstDeviceAction.ScrollIntoView(ListEnum2[1]);
             if (autoStartDevice)
             {
                 Button_Click_Device(null, null);
             }
         }
 
-        private void ListviewTransports_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ListviewTransports2.SelectedIndex != -1)
-            {
-                AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType = (Microsoft.Azure.Devices.Client.TransportType)ListviewTransports2.SelectedItem;
-                System.Diagnostics.Debug.WriteLine(string.Format("Using Device Transport {0}", AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType));
-            }
-        }
+
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -133,14 +130,20 @@ namespace UWPXamlApp
             else if ("3" == (string)cntrl.Tag)
             {
                 conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
-                Popup_GetConnectionDetails.DataContext = conDetail;
+                Popup_CreateDeviceDetails.DataContext = conDetail;
                 Popup_CreateDeviceDetails.IsOpen = false;
                 Popup_CreateDeviceDetails.IsOpen = true;
             }
             else if ("4" == (string)cntrl.Tag)
             {
                 conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
-                conDetail.DevString = AzureConnections.MyConnections.RemoveDeviceAsync(conDetail.ConString, conDetail.DevId);
+                Popup_Delete.DataContext = conDetail;
+                Popup_Delete.IsOpen = false;
+                Popup_Delete.IsOpen = true;
+            }//Popup_NewIoTHub
+            else if ("5" == (string)cntrl.Tag)
+            {
+                this.Frame.Navigate(typeof(NewHub), null);
             }
 
         }
@@ -244,6 +247,15 @@ namespace UWPXamlApp
                 conDetail.DevString = AzureConnections.MyConnections.AddDeviceAsync(conDetail.ConString, conDetail.DevId);
                 Popup_CreateDeviceDetails.IsOpen = false;
             }
+            else if (Popup_Delete.IsOpen)
+            {
+                conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+                conDetail.DevString = AzureConnections.MyConnections.RemoveDeviceAsync(conDetail.ConString, conDetail.DevId);
+                Popup_Delete.IsOpen = false;
+                conDetail.DevId = "";
+                conDetail.DevString = "";
+            }
+
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             if (localSettings.Values.Keys.Contains("ConDetail"))
             {
@@ -261,6 +273,7 @@ namespace UWPXamlApp
             Popup_SetConnectionDetails.IsOpen = false;
             Popup_GetConnectionDetails.IsOpen = false;
             Popup_CreateDeviceDetails.IsOpen = false;
+            Popup_Delete.IsOpen = false;
         }
 
  
@@ -423,6 +436,30 @@ namespace UWPXamlApp
                 }
             }
         }
+
+
+        private void ClearSetConnectionDetails_Click(object sender, RoutedEventArgs e)
+        {
+           
+            if (Popup_SetConnectionDetails.IsOpen)
+            {
+                tbSvcConString.Text = ""; //This only needs to be Service Connection String
+                tbDeviceConString.Text = "";
+                tbDeviceId.Text = "";
+            }
+            else if (Popup_GetConnectionDetails.IsOpen)
+            {
+                tbIoTHubOwnerConString.Text = "";  //Needs to be Owner Connection string
+                tbDeviceId2.Text = "";
+            }
+            else if (Popup_CreateDeviceDetails.IsOpen)
+            {
+                tbIoTHubOwnerConString3.Text = ""; //Needs to be Owner Connection string.
+                tbDeviceId3.Text = "";
+            }
+        }
+
+
 
     }
 }

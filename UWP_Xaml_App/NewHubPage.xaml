@@ -1,0 +1,47 @@
+﻿<Page
+    x:Class="UWPXamlApp.NewHub"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWPXamlApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
+    <ScrollViewer>
+        <StackPanel>
+            
+            <TextBlock Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1"  HorizontalAlignment="Left" Text="Create an IoT hub using the Azure Cli" FontSize="36" FontWeight="Bold" Width="628" />
+
+            <local:NewHubElement DisplayMode="heading"   Code="Getting started:" />
+            <local:NewHubElement DisplayMode="link"   Code="You need an Azure Subscription:"
+                                 Url="https://azure.microsoft.com/en-au/free/" UrlText="Get your free Azure account now."/>
+            <local:NewHubElement DisplayMode="link"   Code="You need Azure Cli (Azure Command Line Interface) installed:"
+                                 Url="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest" UrlText="Install Az Cli"/>
+            <local:NewHubElement DisplayMode="link"   Code="Find out more about theese Az Cli commands"
+                                 Url="https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-create-using-cli" UrlText="Reference for these commands. (You'll find a link to other methods here)"/>
+            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="heading"   Code="Info:" />
+            <local:NewHubElement DisplayMode="comment"   Code="Enter a new or Existing Resource Group Name. And enter a unique IoTHub Name. Nb: The scripts get auto updated with this info." />
+            <local:NewHubElement x:Name="NG"  DisplayMode="info" InfoValue="Enter new or Existing Resource Group Name" Code="Resource Group Name: " />
+            <local:NewHubElement x:Name="NH"  DisplayMode="info" InfoValue="Enter unique IoTHub Name"  Code="IoTHubName: " />
+            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="comment"   Code="Open a new PowerShell or Command Shell. Copy each az of the command by pressing its Copy button, paste it into the shell and run it." />
+            <local:NewHubElement DisplayMode="heading"   Code="Log into Azure:" />
+            <local:NewHubElement DisplayMode="comment" Code="The command below will open a browser window." />
+            <local:NewHubElement x:Name="Login"  DisplayMode="code"     Code="az login" />
+            <local:NewHubElement DisplayMode="heading"   Code="Create new Resource Group (Optional)" />
+            <local:NewHubElement x:Name="NGCode"   DisplayMode="code"     Code="az group create --name GroupName --location centralus" />
+            <local:NewHubElement DisplayMode="comment"   Code="Location needs to be CentralUS for DeviceStreaming Preview." />
+            <local:NewHubElement DisplayMode="heading"   Code="Create new IoTHub:" />
+            <local:NewHubElement x:Name="NHCode"   DisplayMode="code"      Code="az iot hub create --name IoTHubName    --resource-group ResourceGroupName --sku F1" />
+            <local:NewHubElement DisplayMode="link"   Code="Hub can be Free (F1) or Standard (S1) but not Basic for DeviceStreaming. You can only haveone Free hub per subscription. Use one of F1 or S1."
+                                 Url="https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-scaling" UrlText="About IoTHub Tiers"/>
+            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="heading"   Code="Cleanup:" />
+            <local:NewHubElement DisplayMode="comment" Code="Nb: Deleteing Group deletes IoTHub as well." />
+            <local:NewHubElement x:Name="DelHub"   DisplayMode="code"      Code="az iot hub delete --name IoTHubName   --resource-group ResourceGroupName" />
+            <local:NewHubElement x:Name="DelGrp"   DisplayMode="code"      Code="az group delete --name ResourceGroupName" />
+            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

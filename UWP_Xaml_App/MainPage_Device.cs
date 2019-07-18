@@ -182,18 +182,29 @@ namespace UWPXamlApp
                 });           
         }
 
-        private int iGroupDeviceAction = 2;
-        private void GroupDeviceAction_Checked(object sender, RoutedEventArgs e)
+        
+        private void ListviewTransports_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string dm = Convert.ToString(((RadioButton)sender)?.Tag);
-            if (!string.IsNullOrEmpty(dm))
+            if (ListviewTransports2.SelectedIndex != -1)
             {
-                if (!int.TryParse(dm, out iGroupDeviceAction))
-                    iGroupDeviceAction = 1;
+                AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType = (Microsoft.Azure.Devices.Client.TransportType)ListviewTransports2.SelectedItem;
+                System.Diagnostics.Debug.WriteLine(string.Format("Device Transport set to: {0}", AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType));
                 DeviceProcessingModeCommands.IsOpen = false;
+                OnDeviceStatusUpdate(string.Format("Device Transport set to: {0}", AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType));
             }
-
         }
+
+        private int iGroupDeviceAction = 2;
+        private void DeviceAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LstDeviceAction.SelectedIndex != -1)
+            {
+                iGroupDeviceAction = LstDeviceAction.SelectedIndex;
+                DeviceProcessingModeCommands.IsOpen = false;
+                OnDeviceStatusUpdate(string.Format("Device Processing set to: {0}", ListEnum2[iGroupDeviceAction]));
+            }
+        }
+
 
     }
 }

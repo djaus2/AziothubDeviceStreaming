@@ -45,8 +45,8 @@ namespace UWPXamlApp
         {
             string msgOut = tbSvcMsgOut.Text;
 
-            //rbNoChangeListening.IsChecked = true;
-            //rbNoChangeAutoStart.IsChecked = true;
+            rbNoChangeListening.IsChecked = true;
+            rbNoChangeAutoStart.IsChecked = true;
             bool keepAlive = (chkKeepAlive.IsChecked == true);
             bool responseExpected = (chkExpectResponse.IsChecked == true);
             bool useCustomClass = (ChkUseCustomClassSvc.IsChecked == true);
