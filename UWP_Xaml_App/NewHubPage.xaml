@@ -10,9 +10,15 @@
     <ScrollViewer>
         <StackPanel>
             
+
             <TextBlock Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1"  HorizontalAlignment="Left" Text="Create an IoT hub using the Azure Cli" FontSize="36" FontWeight="Bold" Width="628" />
 
+
+
+
             <local:NewHubElement DisplayMode="heading"   Code="Getting started:" />
+            <local:NewHubElement DisplayMode="comment"   Code="For Device Streaming you need an Azure Resource Group, an IOT Hub and IoT Hub Device. You create the Group and Hub here."/>
+            <local:NewHubElement DisplayMode="comment"   Code="Nb: With an Az login and existing Hub name you can use this page to just get its connection string."/>
             <local:NewHubElement DisplayMode="link"   Code="You need an Azure Subscription:"
                                  Url="https://azure.microsoft.com/en-au/free/" UrlText="Get your free Azure account now."/>
             <local:NewHubElement DisplayMode="link"   Code="You need Azure Cli (Azure Command Line Interface) installed:"
@@ -21,7 +27,7 @@
                                  Url="https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-create-using-cli" UrlText="Reference for these commands. (You'll find a link to other methods here)"/>
             <local:NewHubElement DisplayMode="sep" Color="Red"   />
             <local:NewHubElement DisplayMode="heading"   Code="Info:" />
-            <local:NewHubElement DisplayMode="comment"   Code="Enter a new or Existing Resource Group Name. And enter a unique IoTHub Name. Nb: The scripts get auto updated with this info." />
+            <local:NewHubElement DisplayMode="comment"   Code="Enter a new or Existing Resource Group Name. And enter a unique IoTHub Name. Nb: The Az scripts (that you copy) get auto updated with this info." />
             <local:NewHubElement x:Name="NG"  DisplayMode="info" InfoValue="Enter new or Existing Resource Group Name" Code="Resource Group Name: " />
             <local:NewHubElement x:Name="NH"  DisplayMode="info" InfoValue="Enter unique IoTHub Name"  Code="IoTHubName: " />
             <local:NewHubElement DisplayMode="sep" Color="Red"   />
@@ -33,9 +39,25 @@
             <local:NewHubElement x:Name="NGCode"   DisplayMode="code"     Code="az group create --name GroupName --location centralus" />
             <local:NewHubElement DisplayMode="comment"   Code="Location needs to be CentralUS for DeviceStreaming Preview." />
             <local:NewHubElement DisplayMode="heading"   Code="Create new IoTHub:" />
-            <local:NewHubElement x:Name="NHCode"   DisplayMode="code"      Code="az iot hub create --name IoTHubName    --resource-group ResourceGroupName --sku F1" />
-            <local:NewHubElement DisplayMode="link"   Code="Hub can be Free (F1) or Standard (S1) but not Basic for DeviceStreaming. You can only haveone Free hub per subscription. Use one of F1 or S1."
+            <local:NewHubElement DisplayMode="link"   Code="Hub can be Free (F1) or Standard (S1) but not Basic for DeviceStreaming. You can only have one Free hub per subscription. Use one of F1 or S1."
                                  Url="https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-scaling" UrlText="About IoTHub Tiers"/>
+            <StackPanel Orientation="Horizontal">
+                <local:NewHubElement DisplayMode="comment"   Code="IoTHub SKU: " />
+                <RadioButton x:Name = "rbF1" Margin = "40,0,0,5"  IsChecked ="True" Checked="RbF1_Checked" GroupName = "DeviceSKU" Content="F1" Tag="0" FontSize="18" VerticalAlignment="Center"/>
+                <RadioButton x:Name = "rbS1" Margin = "20,0,0,5" Checked = "RbF1_Checked"  GroupName = "DeviceSKU" Content="S1" Tag="1" FontSize="18" VerticalAlignment="Center"/>
+            </StackPanel>
+            <local:NewHubElement x:Name="NHCode"   DisplayMode="code"      Code="az iot hub create --name IoTHubName    --resource-group ResourceGroupName --sku F1" />
+           
+            <local:NewHubElement DisplayMode="heading"   Code="Get Hub Connection Details for the App:" />
+            <local:NewHubElement x:Name="HubOwnerConString"   DisplayMode="code"      Code="az iot hub show-connection-string --name MyIoTHub --policy-name iothubowner --key primary" />
+            <local:NewHubElement x:Name="HubServoceConString"   DisplayMode="code"      Code="az iot hub show-connection-string --name MyIotHub --policy-name service --key primary" />
+            <local:NewHubElement x:Name="Multicom"   DisplayMode="multi"
+                Code = "To create a new Device connection to the Hub you need the iothubowner ConnectionString. To run the DeviceStreaming functionality you only need the Service ConnectionString but can use the iothubowner ConnectionString. To create a new Device, return and choose [ADD New IoT Hub Device ...] from the Service menu."
+            />
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Toggle Above" Margin="40,0,0,0" Click="Button_Click_2"/>
+                <Button Content="Paste ConnectionString" Margin="40,0,0,0" Click="Button_Click_1"/>
+            </StackPanel>
             <local:NewHubElement DisplayMode="sep" Color="Red"   />
             <local:NewHubElement DisplayMode="heading"   Code="Cleanup:" />
             <local:NewHubElement DisplayMode="comment" Code="Nb: Deleteing Group deletes IoTHub as well." />

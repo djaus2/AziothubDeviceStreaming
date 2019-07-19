@@ -29,10 +29,10 @@ namespace UWPXamlApp
         private string code = "";
 
         public ValueChanged ValueChanged { get; set; } = null;
-        public enum Mode { code, heading, link, info, comment, sep }
+        public enum Mode { code, heading, link, info, comment, sep, multi }
         public Mode DisplayMode { get; set; } = NewHubElement.Mode.code;
 
-        public string Code { get => code; set  { code = value; Txt.Text = code; } }
+        public string Code { get => code; set  { code = value; Txt.Text = code; MultiComment.Text = code; /*MultiComment2.Text = code;*/ } }
         public string Url { get; set; } = "";
         public string UrlText { get; set; } = "";
 
@@ -64,6 +64,7 @@ namespace UWPXamlApp
             Heading.Visibility = (DisplayMode == Mode.heading) ? Visibility.Visible : Visibility.Collapsed;
             Link.Visibility = (DisplayMode == Mode.link) ? Visibility.Visible : Visibility.Collapsed;
             Info.Visibility = (DisplayMode == Mode.info) ? Visibility.Visible : Visibility.Collapsed;
+            MultiComment.Visibility = (DisplayMode == Mode.multi) ? Visibility.Visible : Visibility.Collapsed;
 
             if (DisplayMode == Mode.link)
             {
@@ -78,12 +79,29 @@ namespace UWPXamlApp
             {
                 Separator.Background = new SolidColorBrush(Color);
             }
+            else if (DisplayMode == Mode.link)
+            {
+                MultiComment.Text = Code;
+                //MultiComment2.Text = Code;
+                //MultiComment.Visibility = Visibility.Visible;
+                //MultiComment2.Visibility = Visibility.Collapsed;
+            }
             this.DataContext = this;
         }
 
         private void InfoVal_TextChanged(object sender, TextChangedEventArgs e)
         {
             ValueChanged?.Invoke(InfoVal.Text);
+        }
+
+        public void MultiCommentExpand(object sender, RoutedEventArgs e)
+        {
+            //if (MultiComment.Visibility == Visibility.Visible)
+            //{
+            //    Visibility temp = MultiComment1.Visibility;
+            //    MultiComment1.Visibility = MultiComment2.Visibility;
+            //    MultiComment2.Visibility = temp;
+            //}
         }
     }
 }

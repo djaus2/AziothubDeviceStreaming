@@ -34,29 +34,43 @@ namespace UWPXamlApp
         public MainPage()
         {
             this.InitializeComponent();
+            IsFirstTime = true;
             this.NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
+
+        private bool IsFirstTime = false;
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadConSettings();
+            if (IsFirstTime)
+                LoadConSettings();
+            else
+            {
+                //Last two items are cleared because new Hub has no devices.
+                if (""== AzureConnections.MyConnections.DeviceId+ AzureConnections.MyConnections.DeviceConnectionString)
+                    SaveSettingsToAppData();
+            }
+
             service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
             device_id = AzureConnections.MyConnections.DeviceId;
             device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
-           
 
-            ListviewTransports2.ItemsSource = ListEnum;
-            ListviewTransports2.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
-            ListviewTransports2.ScrollIntoView(ListviewTransports2.SelectedItem);
-            AzureConnections.MyConnections.OnStatusUpdateD = OnDeviceSvcUpdate;
-            LstDeviceAction.ItemsSource = ListEnum2;
-            LstDeviceAction.SelectedItem = ListEnum2[1];
-            LstDeviceAction.ScrollIntoView(ListEnum2[1]);
-            if (autoStartDevice)
+            if (IsFirstTime)
             {
-                Button_Click_Device(null, null);
+                ListviewTransports2.ItemsSource = ListEnum;
+                ListviewTransports2.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
+                ListviewTransports2.ScrollIntoView(ListviewTransports2.SelectedItem);
+                AzureConnections.MyConnections.OnStatusUpdateD = OnDeviceSvcUpdate;
+                LstDeviceAction.ItemsSource = ListEnum2;
+                LstDeviceAction.SelectedItem = ListEnum2[1];
+                LstDeviceAction.ScrollIntoView(ListEnum2[1]);
+                if (autoStartDevice)
+                {
+                    Button_Click_Device(null, null);
+                }
             }
+            IsFirstTime = false;
         }
 
 
@@ -255,7 +269,11 @@ namespace UWPXamlApp
                 conDetail.DevId = "";
                 conDetail.DevString = "";
             }
+            SaveSettingsToAppData();
+        }
 
+        private void SaveSettingsToAppData()
+        {
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             if (localSettings.Values.Keys.Contains("ConDetail"))
             {
@@ -265,7 +283,7 @@ namespace UWPXamlApp
             composite["ConString"] = conDetail.ConString;
             composite["DevString"] = conDetail.DevString;
             composite["DevId"] = conDetail.DevId;
-            localSettings.Values.Add("ConDetail", composite);           
+            localSettings.Values.Add("ConDetail", composite);
         }
 
         private void CancelSetConnectionDetails_Click(object sender, RoutedEventArgs e)

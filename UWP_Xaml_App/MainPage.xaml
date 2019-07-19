@@ -17,7 +17,7 @@
         </LinearGradientBrush>
     </Page.Resources>
 
-    <StackPanel Height="863" VerticalAlignment="Top">
+    <StackPanel x:Name="Page" Height="863" VerticalAlignment="Top">
         <TextBlock Text="Sportronics: UWP Azure IoT Hub Device Streaming" Margin ="100,20,20,20" Foreground="Blue" FontSize="32" FontWeight="Bold"/>
         <CommandBar x:Name="SvcCommands" Background="Brown" Margin="0" Height="30" Foreground="AntiqueWhite"  >
             <CommandBar.Content>

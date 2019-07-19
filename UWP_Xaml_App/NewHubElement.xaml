@@ -9,9 +9,9 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
 
 
-    <Grid Height="40">
+    <Grid Height="40" >
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"  />
+            <RowDefinition MinHeight="35"  />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40" />
@@ -19,6 +19,14 @@
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+
+        <!--<StackPanel x:Name="MultiComment" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"  Margin="0,5,10,5" Orientation="Horizontal" >-->
+        <TextBlock x:Name="MultiComment" FontSize="18" FontStyle="Italic"   Foreground="Green"   TextWrapping="NoWrap"  Margin="0" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
+                TextTrimming="WordEllipsis" 
+                 Text="{Binding Path=Code}"  />
+            <!--<TextBox x:Name="MultiComment2" BorderThickness="0" FontSize="18"  FontStyle="Italic"  IsColorFontEnabled="True" Foreground="Green"   TextWrapping="Wrap"  AcceptsReturn="True" Height="300"
+                 Text="{Binding Path=Code}" Visibility="Visible" Margin="0,0,50,0" />-->
+        <!--</StackPanel>-->
 
         <TextBlock x:Name="Comment" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"  FontSize="18" Foreground="Green" FontStyle="Italic" />
         
@@ -41,5 +49,6 @@
             <TextBlock Text="{Binding Path=Code}" FontSize="18" FontStyle="Italic" Foreground="Purple"  FontWeight="Bold" Width="300"  TextAlignment="Right" />
             <TextBox x:Name="InfoVal" PlaceholderText="{Binding Path=InfoValue}" FontSize="18" Width="500" TextChanged="InfoVal_TextChanged"  />
         </StackPanel>
+
     </Grid>
 </Page>

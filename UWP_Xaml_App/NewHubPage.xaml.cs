@@ -55,6 +55,15 @@ namespace UWPXamlApp
             get { return string.Format("az group delete --name {0}", ResourceGroupName); }
         }
 
+        public string iotownerconstring {
+            get { return string.Format("az iot hub show-connection-string --name {0} --policy-name iothubowner --key primary  --resource-group {1}", IoTHubName, ResourceGroupName); }
+        }
+
+        public string serviceconstring
+        {
+            get { return string.Format("az iot hub show-connection-string --name {0} --policy-name service --key primary  --resource-group {1}", IoTHubName, ResourceGroupName); }
+        }
+
         public NewHub()
         {
 
@@ -79,6 +88,12 @@ namespace UWPXamlApp
                     NHCode.Code = NewHubCode;
                     DelHub.Code = DeleteHubCode;
                     DelGrp.Code = DeleteGroupCode;
+                    HubOwnerConString.Code = iotownerconstring;
+                    HubServoceConString.Code = serviceconstring;
+                    Multicom.Code = "To create a new Device connection to the Hub you need the iothubowner ConnectionString."
+                    +"To run the DeviceStreaming functionality you only need the Service ConnectionString but can use the iothubowner ConnectionString. " 
+                    +"To create a new Device, return and choose [ADD New IoT Hub Device ...] from the Service menu.";
+
                 });
             });
         }
@@ -112,5 +127,46 @@ namespace UWPXamlApp
             Update();
         }
 
+
+        private void RbF1_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is Control)
+            {
+                if (((Control)sender).Tag != null)
+                {
+                        string tag = (string)((Control)sender).Tag;
+                    if (!string.IsNullOrEmpty(tag))
+                    {
+                        switch (tag)
+                        {
+                            case "0":
+                                sku1 = "F1";
+                                break;
+                            case "1":
+                                sku1 = "S1";
+                                break;
+                        }
+                        Update();
+                    }
+                }
+            }
+        }
+
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var cb = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
+            string HubconString = await cb.GetTextAsync();
+            if (!string.IsNullOrEmpty(HubconString))
+            {
+                AzureConnections.MyConnections.IoTHubConnectionString = HubconString;
+                AzureConnections.MyConnections.DeviceConnectionString = "";
+                AzureConnections.MyConnections.DeviceId = "";
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Multicom.MultiCommentExpand(null,null);
+        }
     }
 }
