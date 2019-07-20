@@ -35,6 +35,7 @@
             <local:NewHubElement DisplayMode="heading"   Code="Log into Azure:" />
             <local:NewHubElement DisplayMode="comment" Code="The command below will open a browser window." />
             <local:NewHubElement x:Name="Login"  DisplayMode="code"     Code="az login" />
+
             <local:NewHubElement DisplayMode="heading"   Code="Create new Resource Group (Optional)" />
             <local:NewHubElement x:Name="NGCode"   DisplayMode="code"     Code="az group create --name GroupName --location centralus" />
             <local:NewHubElement DisplayMode="comment"   Code="Location needs to be CentralUS for DeviceStreaming Preview." />
@@ -63,6 +64,17 @@
             <local:NewHubElement DisplayMode="comment" Code="Nb: Deleteing Group deletes IoTHub as well." />
             <local:NewHubElement x:Name="DelHub"   DisplayMode="code"      Code="az iot hub delete --name IoTHubName   --resource-group ResourceGroupName" />
             <local:NewHubElement x:Name="DelGrp"   DisplayMode="code"      Code="az group delete --name ResourceGroupName" />
+            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="heading"   Code="Some Az Cli Footnotes (wrt Gotchas):" />
+            <local:NewHubElement DisplayMode="comment" Code="If you have more than one Azure Subscription you might run into problems."/>
+            <local:NewHubElement DisplayMode="comment" Code=" If that is the situation then run the following command,(Replace Subscription-1 with the name shown in the login if different): " />
+            <local:NewHubElement DisplayMode="link"     Code="az account set --subscription Subscription-1"
+                                 Url="https://docs.microsoft.com/en-us/cli/azure/account?view=azure-cli-latest " UrlText="Reference"/>
+            <local:NewHubElement DisplayMode="comment" Code="Also check default settings:" />
+            <local:NewHubElement DisplayMode="code"     Code="az configure"/>
+            <local:NewHubElement DisplayMode="link" Code="And to remove the default group, for example:"
+                                 Url="https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az-configure " UrlText="Reference"/>
+            <local:NewHubElement DisplayMode="code"    Code="az configure --defaults group=''"/>
             <local:NewHubElement DisplayMode="sep" Color="Red"   />
         </StackPanel>
     </ScrollViewer>
