@@ -32,7 +32,7 @@ namespace UWPXamlApp
         public enum Mode { code, heading, link, info, comment, sep, multi }
         public Mode DisplayMode { get; set; } = NewHubElement.Mode.code;
 
-        public string Code { get => code; set  { code = value; Txt.Text = code; MultiComment.Text = code; /*MultiComment2.Text = code;*/ } }
+        public string Code { get => code; set  { code = value; Txt.Text = code; /*MultiComment.Text = code;*/ /*MultiComment2.Text = code;*/ } }
         public string Url { get; set; } = "";
         public string UrlText { get; set; } = "";
 
@@ -64,7 +64,7 @@ namespace UWPXamlApp
             Heading.Visibility = (DisplayMode == Mode.heading) ? Visibility.Visible : Visibility.Collapsed;
             Link.Visibility = (DisplayMode == Mode.link) ? Visibility.Visible : Visibility.Collapsed;
             Info.Visibility = (DisplayMode == Mode.info) ? Visibility.Visible : Visibility.Collapsed;
-            MultiComment.Visibility = (DisplayMode == Mode.multi) ? Visibility.Visible : Visibility.Collapsed;
+            //MultiComment.Visibility = (DisplayMode == Mode.multi) ? Visibility.Visible : Visibility.Collapsed;
 
             if (DisplayMode == Mode.link)
             {
@@ -81,7 +81,7 @@ namespace UWPXamlApp
             }
             else if (DisplayMode == Mode.link)
             {
-                MultiComment.Text = Code;
+               // MultiComment.Text = Code;
                 //MultiComment2.Text = Code;
                 //MultiComment.Visibility = Visibility.Visible;
                 //MultiComment2.Visibility = Visibility.Collapsed;

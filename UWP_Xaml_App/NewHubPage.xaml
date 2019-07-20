@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
-    <ScrollViewer>
+    <ScrollViewer VerticalScrollBarVisibility="Visible">
         <StackPanel>
             
 
@@ -52,11 +52,13 @@
             <local:NewHubElement DisplayMode="heading"   Code="Get Hub Connection Details for the App:" />
             <local:NewHubElement x:Name="HubOwnerConString"   DisplayMode="code"      Code="az iot hub show-connection-string --name MyIoTHub --policy-name iothubowner --key primary" />
             <local:NewHubElement x:Name="HubServoceConString"   DisplayMode="code"      Code="az iot hub show-connection-string --name MyIotHub --policy-name service --key primary" />
-            <local:NewHubElement x:Name="Multicom"   DisplayMode="multi"
-                Code = "To create a new Device connection to the Hub you need the iothubowner ConnectionString. To run the DeviceStreaming functionality you only need the Service ConnectionString but can use the iothubowner ConnectionString. To create a new Device, return and choose [ADD New IoT Hub Device ...] from the Service menu."
+            <local:NewHubElement   DisplayMode="comment"
+                Code = "To create a new Device connection to the Hub you need the iothubowner ConnectionString. To run the DeviceStreaming functionality you only need the Service ConnectionString ..."/>
+            <local:NewHubElement    DisplayMode="comment"
+                Code = "...but can use the iothubowner ConnectionString. To create a new Device, return and choose [ADD New IoT Hub Device ...] from the Service menu."
             />
             <StackPanel Orientation="Horizontal">
-                <Button Content="Toggle Above" Margin="40,0,0,0" Click="Button_Click_2"/>
+                <!--<Button Content="Toggle Above" Margin="40,0,0,0" Click="Button_Click_2"/>-->
                 <Button Content="Paste ConnectionString" Margin="40,0,0,0" Click="Button_Click_1"/>
             </StackPanel>
             <local:NewHubElement DisplayMode="sep" Color="Red"   />

@@ -11,7 +11,7 @@
 
     <Grid Height="40" >
         <Grid.RowDefinitions>
-            <RowDefinition MinHeight="35"  />
+            <!--<RowDefinition MinHeight="30"  />-->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40" />
@@ -20,34 +20,34 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!--<StackPanel x:Name="MultiComment" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"  Margin="0,5,10,5" Orientation="Horizontal" >-->
-        <TextBlock x:Name="MultiComment" FontSize="18" FontStyle="Italic"   Foreground="Green"   TextWrapping="NoWrap"  Margin="0" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
+        <!--<StackPanel x:Name="MultiComment" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"  Margin="0,5,10,5" Orientation="Horizontal" >--><!--
+        <TextBlock x:Name="MultiComment" FontSize="16" FontStyle="Italic"   Foreground="Green"   TextWrapping="NoWrap"  Margin="0" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
                 TextTrimming="WordEllipsis" 
                  Text="{Binding Path=Code}"  />
-            <!--<TextBox x:Name="MultiComment2" BorderThickness="0" FontSize="18"  FontStyle="Italic"  IsColorFontEnabled="True" Foreground="Green"   TextWrapping="Wrap"  AcceptsReturn="True" Height="300"
+            --><!--<TextBox x:Name="MultiComment2" BorderThickness="0" FontSize="16"  FontStyle="Italic"  IsColorFontEnabled="True" Foreground="Green"   TextWrapping="Wrap"  AcceptsReturn="True" Height="300"
                  Text="{Binding Path=Code}" Visibility="Visible" Margin="0,0,50,0" />-->
         <!--</StackPanel>-->
 
-        <TextBlock x:Name="Comment" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"  FontSize="18" Foreground="Green" FontStyle="Italic" />
+        <TextBlock x:Name="Comment" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"  FontSize="16" Foreground="Green" FontStyle="Italic" Margin="0"/>
         
-        <Button x:Name="Butt"  Grid.Row="0" Grid.Column="1"  FontSize="18"   Click="Button_Click" Height="50" Width="57"   >
+        <Button x:Name="Butt"  Grid.Row="0" Grid.Column="1"  FontSize="16"   Click="Button_Click" Height="40" Width="57"   >
             <Viewbox MaxHeight="40" MaxWidth="40" >
                 <SymbolIcon Symbol="Copy"/>
             </Viewbox>
         </Button>
-        <TextBlock x:Name="Txt" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="3"  FontSize="18"   />
+        <TextBlock x:Name="Txt" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="3"  FontSize="16"   />
 
         <Border x:Name="Separator" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"  Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}" Height="4" Margin="0,0,0,5" Padding="0" CornerRadius="0"/>
 
 
-        <TextBlock x:Name="Heading" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" FontSize="18"  FontWeight="Bold" FontStyle="Italic" Foreground="Blue" />
+        <TextBlock x:Name="Heading" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" FontSize="18"  FontWeight="Bold" FontStyle="Italic" Foreground="Blue"  Margin="0,10,0,0"/>
         <StackPanel x:Name="Link" Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3">
-            <TextBlock Text="{Binding Path=Code}" VerticalAlignment="Top" FontSize="18" Margin="5" FontStyle="Italic" Foreground="Purple"/>
-            <HyperlinkButton x:Name="HyperLink" Content="Install Az CLI." VerticalAlignment="Top" NavigateUri="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest"  FontSize="18"/>
+            <TextBlock Text="{Binding Path=Code}" VerticalAlignment="Center"  FontSize="16" Margin="0" FontStyle="Italic" Foreground="Purple" />
+            <HyperlinkButton x:Name="HyperLink" Content="Install Az CLI." VerticalAlignment="Center" NavigateUri="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest"  FontSize="16" Margin="10,0,0,0"/>
         </StackPanel>
         <StackPanel x:Name="Info"  Orientation="Horizontal" Grid.Row="12" Grid.Column="3" Grid.ColumnSpan="1">
-            <TextBlock Text="{Binding Path=Code}" FontSize="18" FontStyle="Italic" Foreground="Purple"  FontWeight="Bold" Width="300"  TextAlignment="Right" />
-            <TextBox x:Name="InfoVal" PlaceholderText="{Binding Path=InfoValue}" FontSize="18" Width="500" TextChanged="InfoVal_TextChanged"  />
+            <TextBlock Text="{Binding Path=Code}" FontSize="16" FontStyle="Italic" Foreground="Purple"  FontWeight="Bold" Width="300"  TextAlignment="Right" />
+            <TextBox x:Name="InfoVal" PlaceholderText="{Binding Path=InfoValue}" FontSize="16" Width="500" TextChanged="InfoVal_TextChanged"  />
         </StackPanel>
 
     </Grid>

@@ -90,9 +90,9 @@ namespace UWPXamlApp
                     DelGrp.Code = DeleteGroupCode;
                     HubOwnerConString.Code = iotownerconstring;
                     HubServoceConString.Code = serviceconstring;
-                    Multicom.Code = "To create a new Device connection to the Hub you need the iothubowner ConnectionString."
-                    +"To run the DeviceStreaming functionality you only need the Service ConnectionString but can use the iothubowner ConnectionString. " 
-                    +"To create a new Device, return and choose [ADD New IoT Hub Device ...] from the Service menu.";
+                    //Multicom.Code = "To create a new Device connection to the Hub you need the iothubowner ConnectionString."
+                    //+"To run the DeviceStreaming functionality you only need the Service ConnectionString but can use the iothubowner ConnectionString. " 
+                    //+"To create a new Device, return and choose [ADD New IoT Hub Device ...] from the Service menu.";
 
                 });
             });
@@ -166,7 +166,7 @@ namespace UWPXamlApp
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Multicom.MultiCommentExpand(null,null);
+            
         }
     }
 }
