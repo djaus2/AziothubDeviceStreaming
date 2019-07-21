@@ -21,26 +21,33 @@ namespace DeviceDNCoreApp
         static string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
         //If true uses the original mode
-        private static bool basicMode = true;
+        private static bool basicMode = false;
         //For tuture expansion:
         private static bool useCustomClass = false;
         
 
         public static int Main(string[] args)
         {
-            AzureConnections.MyConnections.DeviceId = "MyNewDevice";
-            AzureConnections.MyConnections.DeviceConnectionString = "HostName=MyNewHub.azure-devices.net;DeviceId=MyNewDevice;SharedAccessKey=uuEXJ2WfzGE5/otMfsmkMhax/bpPCdN/fdcsz4jAw5k=";
+            AzureConnections.MyConnections.DeviceId = ""; //Set these
+            AzureConnections.MyConnections.DeviceConnectionString = "";
             Console.WriteLine("Device starting.\n");
 
-            RunDevice(device_cs, 1000000);
+            RunDevice(device_cs, 10000000);
 
             Console.WriteLine("Device Done.\n\nPress any key to finish.\n");
             Console.ReadKey();
             return 0;
         }
 
+ 
+        private static string AppendMsg ="";
         private static string OnDeviceRecvTextIO(string msgIn)
         {
+            if (AppendMsg != "")
+            {
+                Console.WriteLine("Recvd: " + AppendMsg);
+                AppendMsg = "";
+            }
             Console.WriteLine("Recvd: " + msgIn);
             //Perform device side processing here. Eg read sensors.
             string msgOut = msgIn;
@@ -137,7 +144,9 @@ namespace DeviceDNCoreApp
 
         private static void OnDeviceStatusUpdate(string recvTxt)
         {
-            Console.WriteLine(string.Format("StatusUpDate:{0}" + recvTxt));
+            //AppendMsg += recvTxt +"\r\n";
+            System.Diagnostics.Debug.WriteLine(recvTxt);
+            Console.WriteLine(recvTxt);
         }
     }
 }

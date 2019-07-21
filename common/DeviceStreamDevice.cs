@@ -211,6 +211,7 @@ namespace AzIoTHubDeviceStreams
                                     updateMsg = string.Format("Device got stream: Name={0}. Socket open.", streamRequest.Name);
                                     UpdateStatus(updateMsg);
 
+                                 
                                     bool keepAlive = false;
                                     do
                                     { 
@@ -226,6 +227,12 @@ namespace AzIoTHubDeviceStreams
                                         else
                                         {
                                             string msgIn = Encoding.UTF8.GetString(buffer, 0, receiveResult.Count);
+                                            if (msgIn.Contains("~!@#$%^&"))
+                                            {
+                                                deviceStream_Device.DeviceCurrentSettings.KeepAlive = false;
+                                                deviceStream_Device.DeviceCurrentSettings.KeepDeviceListening = false;
+                                            }
+
 
                                             updateMsg = string.Format("Device Received stream data: {0}.", msgIn);
                                             UpdateStatus(updateMsg);
