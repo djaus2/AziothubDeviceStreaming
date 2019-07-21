@@ -12,7 +12,8 @@ namespace UWPXamlApp
 {
     sealed partial class MainPage : Page
     {
-        private string OnDeviceRecvText(string msgIn)
+        private bool basicMode = false;
+        private string OnDeviceRecvTextIO(string msgIn)
         {
             //Perform device side processing here. Eg read sensors.
             string msgOut = msgIn;
@@ -104,10 +105,12 @@ namespace UWPXamlApp
             {
                 try
                 {
+                    if (basicMode)
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO).GetAwaiter().GetResult();
                     if (!useCustomClass)
-                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening ).GetAwaiter().GetResult();
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening ).GetAwaiter().GetResult();
                     else
-                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvText, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening , new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
+                        DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening , new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
                 }
                 catch (TaskCanceledException)
                 {

@@ -9,11 +9,27 @@ namespace DeviceDNCoreApp
 {
     public static class Program
     {
+        private static int iGroupDeviceAction = 1;
+
+        public static bool KeepDeviceListening { get; private set; } = true;
+
+        private static bool autoStartDevice = true;
+        //The next is superfulous as this device app will always autostart.
+        private static bool AutoStartDevice { get => autoStartDevice; set { autoStartDevice = value; if (value) KeepDeviceListening = true; } }
         static string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
         static string device_id = AzureConnections.MyConnections.DeviceId;
         static string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
+
+        //If true uses the original mode
+        private static bool basicMode = true;
+        //For tuture expansion:
+        private static bool useCustomClass = false;
+        
+
         public static int Main(string[] args)
         {
+            AzureConnections.MyConnections.DeviceId = "MyNewDevice";
+            AzureConnections.MyConnections.DeviceConnectionString = "HostName=MyNewHub.azure-devices.net;DeviceId=MyNewDevice;SharedAccessKey=uuEXJ2WfzGE5/otMfsmkMhax/bpPCdN/fdcsz4jAw5k=";
             Console.WriteLine("Device starting.\n");
 
             RunDevice(device_cs, 1000000);
@@ -23,20 +39,58 @@ namespace DeviceDNCoreApp
             return 0;
         }
 
-        private static string OnrecvTextIO( string msgIn)
+        private static string OnDeviceRecvTextIO(string msgIn)
         {
             Console.WriteLine("Recvd: " + msgIn);
-            string msgOut = msgIn.ToUpper();
+            //Perform device side processing here. Eg read sensors.
+            string msgOut = msgIn;
+            switch (iGroupDeviceAction)
+            {
+                case 0:
+                    msgOut = msgIn;
+                    break;
+                case 1:
+                    msgOut = msgIn.ToUpper();
+                    break;
+                case 2:
+                    switch (msgIn.Substring(0, 3).ToLower())
+                    {
+                        case "tem":
+                            msgOut = "45 C";
+                            break;
+                        case "pre":
+                            msgOut = "1034.0 hPa";
+                            break;
+                        case "hum":
+                            msgOut = "67%";
+                            break;
+                        default:
+                            msgOut = "Invalid request";
+                            break;
+                    }
+                    break;
+                case 3:
+                    msgOut = "Coming. Not yet implemented. This is a pace holder for now.";
+                    break;
+                case 4:
+                    msgOut = "Coming. Not yet implemented. This is a pace holder for now.";
+                    break;
+            }
             Console.WriteLine("Sent: " + msgOut);
             return msgOut;
         }
 
-        private static void RunDevice(string device_cs,double ts)
+        private static void RunDevice(string device_cs, double ts)
         {
             DeviceStreamingCommon.DeviceTimeout = TimeSpan.FromMilliseconds(ts);
             try
             {
-                DeviceStream_Device.RunDevice(device_cs, OnrecvTextIO).GetAwaiter().GetResult(); 
+                if (basicMode)
+                    DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO).GetAwaiter().GetResult();
+                else if (!useCustomClass)
+                    DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening).GetAwaiter().GetResult();
+                else
+                    DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
             }
             //catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
             //{
@@ -63,6 +117,27 @@ namespace DeviceDNCoreApp
                     System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): Timeout");
                 }
             }
+        }
+
+
+        private static void ActionCommand(bool flag, string msg, int al, int cmd)
+        {
+            switch (cmd)
+            {
+                case 0:
+                    //if (chkAutoStart.IsChecked != isChecked)
+                    //    chkAutoStart.IsChecked = isChecked;
+                    break;
+                case 1:
+                    //if (chKeepDeviceListening.IsChecked != isChecked)
+                    //    chKeepDeviceListening.IsChecked = isChecked;
+                    break;
+            }
+        }
+
+        private static void OnDeviceStatusUpdate(string recvTxt)
+        {
+            Console.WriteLine(string.Format("StatusUpDate:{0}" + recvTxt));
         }
     }
 }
