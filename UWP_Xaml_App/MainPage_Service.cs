@@ -45,8 +45,14 @@ namespace UWPXamlApp
         {
             string msgOut = tbSvcMsgOut.Text;
 
+            //Store these current values then reset. These vales are passed to the device and remain so until changed.
+            //Whereas 
+            int devAutoStart = DevAutoStart;
+            int devKeepListening = DevKeepListening;
             rbNoChangeListening.IsChecked = true;
             rbNoChangeAutoStart.IsChecked = true;
+
+            //These values are passed if true with each connection. If not passed then the device clears them.
             bool keepAlive = (chkKeepAlive.IsChecked == true);
             bool responseExpected = (chkExpectResponse.IsChecked == true);
             bool useCustomClass = (ChkUseCustomClassSvc.IsChecked == true);
@@ -59,11 +65,13 @@ namespace UWPXamlApp
                 {
                     try
                     {
-                        if (!useCustomClass)
-                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, DevKeepListening, DevAutoStart, OnDeviceSvcUpdate, keepAlive, responseExpected).GetAwaiter().GetResult();
+                        if(basicMode)
+                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText).GetAwaiter().GetResult();
+                        else if (!useCustomClass)
+                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, devKeepListening, devAutoStart, OnDeviceSvcUpdate, keepAlive, responseExpected).GetAwaiter().GetResult();
 
                         else
-                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, DevKeepListening, DevAutoStart, OnDeviceSvcUpdate, keepAlive, responseExpected, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
+                            DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, devKeepListening, devAutoStart, OnDeviceSvcUpdate, keepAlive, responseExpected, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
                     }
                     catch (TaskCanceledException)
                     {
@@ -76,16 +84,6 @@ namespace UWPXamlApp
                     catch (Exception ex)
                     {
                         System.Diagnostics.Debug.WriteLine("Error App.RunSvc(): " + ex.Message);
-                    }
-                    finally
-                    {
-                        Task.Run(async () => {
-                            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                            {
-                                rbNoChangeListening.IsChecked = true;
-                                rbNoChangeAutoStart.IsChecked = true;
-                            });
-                        });
                     }
                 });
 

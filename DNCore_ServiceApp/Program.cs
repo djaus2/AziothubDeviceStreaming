@@ -9,14 +9,27 @@ namespace ServiceDNCoreApp
 {
     public static class Program
     {
-        static string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
-        static string device_id = AzureConnections.MyConnections.DeviceId;
-        static string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
+        private static bool basicMode = true;
+        private static bool UseCustomClass = false;
+        private static bool ResponseExpected = true;
+        private static bool KeepAlive = false;
 
-        static string msgOut = "Hello World";
+        private static string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
+        private static string device_id = AzureConnections.MyConnections.DeviceId;
+        private static string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
+
+        private static string msgOut = "Hello World";
+
+        private static int DevKeepListening = 2; //No action
+        private static int DevAutoStart=2; //No action
 
         public static int Main(string[] args)
         {
+            //Set these here:
+            service_cs = "";
+            device_id = "";
+            AzureConnections.MyConnections.DeviceConnectionString = service_cs;
+            AzureConnections.MyConnections.DeviceId = device_id;
             Console.WriteLine("Svc: Starting.\n");
             Console.WriteLine("Sending :" + msgOut);
             RunSvc(service_cs, device_id, msgOut, 100000);
@@ -26,19 +39,41 @@ namespace ServiceDNCoreApp
             return 0;
         }
 
-        private static void OnrecvText(string msg)
+        private static void OnSvcRecvText(string msg)
         {
             Console.WriteLine("Recvd back: " + msg);
         }
 
-        private static void RunSvc(string servvicecs, string devid,string msgOut,double ts)
+        private static void OnDeviceSvcUpdate(string recvTxt)
         {
+            if (!string.IsNullOrEmpty(recvTxt))
+                Console.WriteLine("Update: " + recvTxt);
+        }
+
+        private static void RunSvc(string servvice_cs, string device_id,string msgOut,double ts)
+        {
+            int devAutoStart = DevAutoStart;
+            int devKeepListening = DevKeepListening;
+            DevAutoStart = 2;
+            DevKeepListening = 2;
+
+            bool useCustomClass = UseCustomClass;
+            bool keepAlive = KeepAlive;
+            bool responseExpected = ResponseExpected;
 
             DeviceStreamingCommon.DeviceTimeout = TimeSpan.FromMilliseconds(ts);
 
             try
             {
-                DeviceStream_Svc.RunSvc(servvicecs, devid,msgOut, OnrecvText).GetAwaiter().GetResult();
+                DeviceStream_Svc.RunSvc(servvice_cs, device_id,msgOut, OnSvcRecvText).GetAwaiter().GetResult();
+                if (basicMode)
+                    DeviceStream_Svc.RunSvc(Program.service_cs, Program.device_id, msgOut, OnSvcRecvText).GetAwaiter().GetResult();
+                else if (!useCustomClass)
+                    DeviceStream_Svc.RunSvc(Program.service_cs, Program.device_id, msgOut, OnSvcRecvText, devKeepListening, devAutoStart, OnDeviceSvcUpdate, keepAlive, responseExpected).GetAwaiter().GetResult();
+
+                else
+                    DeviceStream_Svc.RunSvc(Program.service_cs, Program.device_id, msgOut, OnSvcRecvText, devKeepListening, devAutoStart, OnDeviceSvcUpdate, keepAlive, responseExpected, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
+
             }
             //catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
             //{
@@ -65,6 +100,8 @@ namespace ServiceDNCoreApp
                     System.Diagnostics.Debug.WriteLine("0 Error App.RunSvc(): Timeout");
                 }
             }           
-        } 
+        }
+
+
     }
 }

@@ -28,7 +28,8 @@ namespace DeviceDNCoreApp
 
         public static int Main(string[] args)
         {
-            AzureConnections.MyConnections.DeviceId = ""; //Set these
+            //Set these here:
+            AzureConnections.MyConnections.DeviceId = ""; 
             AzureConnections.MyConnections.DeviceConnectionString = "";
             Console.WriteLine("Device starting.\n");
 
