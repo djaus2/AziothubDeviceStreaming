@@ -12,7 +12,7 @@ namespace UWPXamlApp
 {
     sealed partial class MainPage : Page
     {
-        private bool basicMode = false;
+
         private string OnDeviceRecvTextIO(string msgIn)
         {
             //Perform device side processing here. Eg read sensors.
@@ -100,14 +100,16 @@ namespace UWPXamlApp
 
         private async void Button_Click_Device(object sender, RoutedEventArgs e)
         {
-            bool useCustomClass = (chkUseCustomClassDevice.IsChecked == true);           
+
+            bool deviceBasicMode = (rbDeviceModeBasic.IsChecked == true);
+            bool deviceUseCustomClass = (rbDeviceModeExp.IsChecked == true);           
             await Task.Run(() =>
             {
                 try
                 {
-                    if (basicMode)
+                    if (deviceBasicMode)
                         DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO).GetAwaiter().GetResult();
-                    if (!useCustomClass)
+                    if (!deviceUseCustomClass)
                         DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening ).GetAwaiter().GetResult();
                     else
                         DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening , new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();

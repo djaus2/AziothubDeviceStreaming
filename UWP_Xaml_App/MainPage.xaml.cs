@@ -91,38 +91,6 @@ namespace UWPXamlApp
             }
         }
 
-        private bool checkboxActive = false;
-        private void ChkUseCustomClassSvc_Checked(object sender, RoutedEventArgs e)
-        {
-            if (!checkboxActive)
-            {
-                CheckBox cb = (CheckBox)sender;
-            if (cb != null)
-            {
-                checkboxActive = true;
-                if (cb.IsChecked == true)
-                    chkUseCustomClassDevice.IsChecked = true;
-            }
-            }
-            else
-                checkboxActive = false;
-        }
-
-        private void ChkUseCustomClassDevice_Checked(object sender, RoutedEventArgs e)
-        {
-            if (!checkboxActive)
-            {
-                CheckBox cb = (CheckBox)sender;
-                if (cb != null)
-                {
-                    checkboxActive = true;
-                    if (cb.IsChecked == true)
-                        ChkUseCustomClassSvc.IsChecked = true;
-                }
-            }
-            else
-                checkboxActive = false;
-        }
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
@@ -476,8 +444,6 @@ namespace UWPXamlApp
                 tbDeviceId3.Text = "";
             }
         }
-
-
 
     }
 }

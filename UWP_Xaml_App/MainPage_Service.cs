@@ -45,6 +45,8 @@ namespace UWPXamlApp
         {
             string msgOut = tbSvcMsgOut.Text;
 
+            
+
             //Store these current values then reset. These vales are passed to the device and remain so until changed.
             //Whereas 
             int devAutoStart = DevAutoStart;
@@ -55,8 +57,8 @@ namespace UWPXamlApp
             //These values are passed if true with each connection. If not passed then the device clears them.
             bool keepAlive = (chkKeepAlive.IsChecked == true);
             bool responseExpected = (chkExpectResponse.IsChecked == true);
-            bool useCustomClass = (ChkUseCustomClassSvc.IsChecked == true);
-
+            bool svcCustomClassMode = (rbSvcModeExp.IsChecked == true);
+            bool svcBasicMode = (rbSvcModeBasic.IsChecked == true);
 
 
             if (!DeviceStream_Svc.SignalSendMsgOut(msgOut, keepAlive, responseExpected))
@@ -65,9 +67,9 @@ namespace UWPXamlApp
                 {
                     try
                     {
-                        if(basicMode)
+                        if(svcBasicMode)
                             DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText).GetAwaiter().GetResult();
-                        else if (!useCustomClass)
+                        else if (!svcCustomClassMode)
                             DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, devKeepListening, devAutoStart, OnDeviceSvcUpdate, keepAlive, responseExpected).GetAwaiter().GetResult();
 
                         else

@@ -10,7 +10,7 @@
   <Identity
     Name="61795Spotrtronics.DeviceStreaming"
     Publisher="CN=B04DFAC7-365A-45B0-8B00-97A2B852DA4B"
-    Version="1.0.7.0" />
+    Version="1.0.8.0" />
 
   <mp:PhoneIdentity PhoneProductId="8db84959-cd0f-4e40-8f26-7da928990aa5" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

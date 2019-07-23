@@ -22,7 +22,10 @@
         <CommandBar x:Name="SvcCommands" Background="Brown" Margin="0" Height="30" Foreground="AntiqueWhite"  >
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Service Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
+                    <RadioButton x:Name = "rbSvcModeBasic" FontSize="12" Foreground="White" Margin = "10,0,0,0"   GroupName = "SvcMode" Content="Basic Mode"  Tag="0" Width="100"  />
+                        <RadioButton x:Name = "rbSvcModeFeature" FontSize="12" Foreground="White" Margin = "10,0,0,0"  IsChecked ="True"  GroupName = "SvcMode" Content="Features Mode" Tag="1" Width="100" />
+                    <RadioButton x:Name = "rbSvcModeExp" Margin = "0" FontSize="12" Foreground="White"   GroupName = "SvcMode" Content="Experimental" Tag="2" Width="100" />
+                    <TextBlock Text="Service Status:"  Margin="10,0,0,0" Foreground="Yellow" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic" FontWeight="Bold" />
                     <TextBlock x:Name="tbSvcStatus" Text="Hello" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0"/>
                 </StackPanel>
             </CommandBar.Content>
@@ -256,9 +259,6 @@
             <CheckBox x:Name="chkExpectResponse" Content="Expect response." IsChecked="True" 
                       RelativePanel.Below="chkKeepAlive" Margin="20,10,0,0"
                       />
-            <CheckBox x:Name="ChkUseCustomClassSvc" Content="Use Custom Flags Class" IsChecked="False"
-                      RelativePanel.Below="chkExpectResponse" Margin="20,10,0,0" Checked="ChkUseCustomClassSvc_Checked"
-                      />
             <Button x:Name="btnCancelSvc" Content="Cancel Svc&#xD;&#xA;" RelativePanel.Below="btnSend" RelativePanel.AlignRightWith="btnSend"
                     Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLSvc_Click"/>
 
@@ -290,7 +290,10 @@
         <CommandBar  Background="DarkCyan" Margin="0,10,0,10" Height="30" x:Name="DeviceProcessingModeCommands" >
             <CommandBar.Content >
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Device Status:" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic"/>
+                    <RadioButton x:Name = "rbDeviceModeBasic" FontSize="12" Foreground="AntiqueWhite" Margin = "10,0,0,0"  GroupName = "DeviceMode" Content="Basic Mode"  Tag="0" Width="80"  />
+                    <RadioButton x:Name = "rbDeviceModeFeature" FontSize="12" Foreground="AntiqueWhite" Margin = "10,0,0,0"   IsChecked ="True"  GroupName = "DeviceMode" Content="Features Mode" Tag="1" Width="100" />
+                    <RadioButton x:Name = "rbDeviceModeExp" Margin = "0" FontSize="12" Foreground="AntiqueWhite"   GroupName = "DeviceMode" Content="Experimental" Tag="2" Width="100" />
+                    <TextBlock Text="Device Status:" Foreground="Yellow" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic" FontWeight="Bold"/>
                     <TextBlock x:Name="tbDeviceStatus" Text="Hello" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0"/>
                 </StackPanel>
             </CommandBar.Content>
@@ -333,12 +336,10 @@
             <Button x:Name="btnListen" 
                 Content="Start Listening as Device"  Height="120" Width="340" Click="Button_Click_Device"/>
             <TextBlock x:Name="lblNb" RelativePanel.Below="btnListen" RelativePanel.AlignLeftWith="btnListen" FontStyle="Italic" FontWeight="Bold"
-                Text="Nb: Device only active for one recieved message if NOT KeepAlive." Margin="20,20,0,0"  />
-            <CheckBox x:Name="chkUseCustomClassDevice" Content="Use Custom Flags Class" IsChecked="False"
-                      RelativePanel.Below="lblNb" Margin="20,10,0,0" Checked="ChkUseCustomClassDevice_Checked"
-                      />
+                Text="Nb: Device only active for one received message if NOT KeepAlive." Margin="20,20,0,0"  />
+            
             <CheckBox x:Name="chKeepDeviceListening" Content="Keep device listening" 
-                      RelativePanel.Below="chkUseCustomClassDevice" Margin="20,10,0,0" Checked="ChKeepDeviceListening_Checked" Unchecked="ChKeepDeviceListening_Checked"
+                      RelativePanel.Below="lblNb" Margin="20,10,0,0" Checked="ChKeepDeviceListening_Checked" Unchecked="ChKeepDeviceListening_Checked"
                       />
             <CheckBox x:Name="chkAutoStart" Content="Auto start Device" 
                       RelativePanel.Below="chKeepDeviceListening" Margin="20,10,0,0" Checked="ChAutoStart_Checked" Unchecked="ChAutoStart_Checked"
@@ -360,8 +361,7 @@
             <TextBox x:Name="tbDeiceMsgOut" RelativePanel.RightOf="lblDeviceSend" RelativePanel.AlignTopWith="lblDeviceSend" RelativePanel.AlignLeftWith="tbDeviceMsgIn"
                      AcceptsReturn="True"
                      Height="84" Margin="20,20,0,20" Text="Dev Out" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True" />
-            <TextBlock x:Name="lblNb2" RelativePanel.Below="chkAutoStart" RelativePanel.AlignLeftWith="lblNb" FontStyle="Italic" FontWeight="Bold"
-                Text="Nb2: Run in Visual Studio, Debug mode and note Debug messages in Output Window." Margin="20,20,0,0"  />
+     
             <Button x:Name="btnCancelDevice" Content="Cancel Device" RelativePanel.Below="lblNb" RelativePanel.AlignRightWith="btnListen"
                     Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLDevice_Click"/>
          
