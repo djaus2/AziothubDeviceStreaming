@@ -45,7 +45,8 @@ namespace UWPXamlApp
             }
         }
 
-        public override string ProcessMsgOut(string msgOut, bool keepAlive = false, bool responseExpected = true, int DevKeepListening = 2, int DevAutoStart = 2
+
+        public override string ProcessMsgOut(string msgOut, bool keepAlive = false, bool responseExpected = true, int DevKeepListening = 2, int DevAutoStart = 2)
         {
             if (plugin == null)
             {
