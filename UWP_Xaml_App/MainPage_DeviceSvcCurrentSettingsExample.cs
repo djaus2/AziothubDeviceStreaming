@@ -66,8 +66,8 @@ namespace UWPXamlApp
     {
         public string ProcessMsgIn(string msgIn)
         {
-            if(instance==null)
-               return  "device error1";
+            if (instance == null)
+                return "device error1";
             if (processMsgIn == null)
                 return "device error2";
             return (string)processMsgIn?.Invoke(instance, new string[] { msgIn });
@@ -91,25 +91,25 @@ namespace UWPXamlApp
         //Also: https://docs.microsoft.com/en-us/dotnet/framework/misc/how-to-run-partially-trusted-code-in-a-sandbox?view=netframework-4.8
         public Load_DeviceAndSvcCurrentSettings(string path)
         {
-            // load assembly
-            var assemblyWithReport = Assembly.LoadFrom(path);
+            //// load assembly
+            //var assemblyWithReport = Assembly.LoadFrom(path);
 
-            // or another Loadxx to get the assembly you'd 
-            // like, whether it's referenced or not
+            //// or another Loadxx to get the assembly you'd 
+            //// like, whether it's referenced or not
 
-            // load type
-            var deviceSvcCurrentSettings = assemblyWithReport.GetTypes().ToList()
-               .Where(t => t.Name == "DeviceSvcCurrentSettings").Single();
+            //// load type
+            //var deviceSvcCurrentSettings = assemblyWithReport.GetTypes().ToList()
+            //   .Where(t => t.Name == "DeviceSvcCurrentSettings").Single();
 
-            // create instance of type
-            instance = Activator.CreateInstance(deviceSvcCurrentSettings);
+            //// create instance of type
+            //instance = Activator.CreateInstance(deviceSvcCurrentSettings);
 
-            // get getrecords method of the type
-            processMsgIn = deviceSvcCurrentSettings.GetMethod("ProcessMsgIn");
-            processMsgOut = deviceSvcCurrentSettings.GetMethod("ProcessMsgOut");
+            //// get getrecords method of the type
+            //processMsgIn = deviceSvcCurrentSettings.GetMethod("ProcessMsgIn");
+            //processMsgOut = deviceSvcCurrentSettings.GetMethod("ProcessMsgOut");
 
-            // invoke getrecords method on the instance
-            //object result = ProcessMsgIn.Invoke(instance, null);
+            //// invoke getrecords method on the instance
+            ////object result = ProcessMsgIn.Invoke(instance, null);
         }
     }
 }

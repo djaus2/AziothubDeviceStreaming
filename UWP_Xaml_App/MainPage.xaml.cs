@@ -29,7 +29,7 @@ namespace UWPXamlApp
 
 
         public  List<Microsoft.Azure.Devices.Client.TransportType> ListEnum { get { return typeof(Microsoft.Azure.Devices.Client.TransportType).GetEnumValues().Cast<Microsoft.Azure.Devices.Client.TransportType>().ToList(); } }
-        public List<string> ListEnum2 = new List<string> { "Echo", "Uppercase", "Sim Environ" };
+        public List<string> ListEnum2 = new List<string> { "Echo", "Uppercase", "Sim Environ", "Sim Device" };
 
         public MainPage()
         {
@@ -445,5 +445,9 @@ namespace UWPXamlApp
             }
         }
 
+        private void DeviceProcessingModeCommands_Opening(object sender, object e)
+        {
+
+        }
     }
 }
