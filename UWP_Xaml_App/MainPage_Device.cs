@@ -44,7 +44,7 @@ namespace UWPXamlApp
                     }
                     break;
                 case 3:
-                    msgOut  = "SIMDEV_" + simulated_device.SimulatedDevice.Run().GetAwaiter().GetResult();
+                    msgOut  = AzIoTHubDeviceStreams.DeviceStreamingCommon.DeiceInSimuatedDeviceModeStrn + simulated_device.SimulatedDevice.Run().GetAwaiter().GetResult();
                     message = simulated_device.SimulatedDevice.Message;
                     break;
                 case 4:
@@ -209,7 +209,7 @@ namespace UWPXamlApp
                 iGroupDeviceAction = LstDeviceAction.SelectedIndex;
                 DeviceProcessingModeCommands.IsOpen = false;
                 OnDeviceStatusUpdate(string.Format("Device Processing set to: {0}", ListEnum2[iGroupDeviceAction]));
-                if(ListEnum2[iGroupDeviceAction] == "Sim Device")
+                if(ListEnum2[iGroupDeviceAction] == "Sim Telemetry")
                     simulated_device.SimulatedDevice.Configure(AzureConnections.MyConnections.DeviceConnectionString, true, AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType, false);
             }
         }

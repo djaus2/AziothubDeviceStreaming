@@ -285,7 +285,7 @@
                 Text="Service-Message In:" Margin="20,20,0,0"  />
             <TextBox x:Name="tbSvcMsgIn" RelativePanel.RightOf="lblRecv" RelativePanel.AlignTopWith="lblRecv" RelativePanel.AlignLeftWith="tbSvcMsgOut"
                      AcceptsReturn="True"
-                     HorizontalAlignment="Left" Height="84" Margin="20,20,0,20" Text="Msg Recv'd" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True"/>
+                     HorizontalAlignment="Left" Height="180" Margin="20,20,0,20" Text="Msg Recv'd" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True"/>
 
         </RelativePanel>
     

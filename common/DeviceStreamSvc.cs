@@ -15,6 +15,7 @@ namespace AzIoTHubDeviceStreams
     
     public class DeviceStream_Svc
     {
+        
 
         //Microsoft.Azure.Devices.ServiceClient ;
         private ServiceClient _serviceClient;
@@ -242,20 +243,17 @@ namespace AzIoTHubDeviceStreams
                                                 System.ArraySegment<byte> ReceiveBuffer = new ArraySegment<byte>(receiveBuffer);
 
                                                 var receiveResult = await stream.ReceiveAsync(ReceiveBuffer, cancellationTokenSourceTimeout.Token).ConfigureAwait(false);
-                                                //byte[] longer = ReceiveBuffer.Array;
-                                                //byte[] shortArray = longer.Take(receiveResult.Count).ToArray();
-                                                //Microsoft.Azure.Devices.Client.Message message = null;
-                                                //message = new Microsoft.Azure.Devices.Client.Message(shortArray);
 
                                                 MsgIn = Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count);
-                                                string subStrn = "SIMDEV_";
+                                                string subStrn = AzIoTHubDeviceStreams.DeviceStreamingCommon.DeiceInSimuatedDeviceModeStrn;
                                                 int subStrnLen = subStrn.Length;
                                                 if (MsgIn.Substring(0,subStrnLen) == subStrn)
                                                 {
                                                     MsgIn = MsgIn.Substring(subStrnLen);
-                                                    AzIoTHubModules.IoTMessage mess = AzIoTHubModules.IoTMessage.Deserialsie(MsgIn);
-                                                    Microsoft.Azure.Devices.Client.Message message = mess.ToMessage();
-                                                    Microsoft.Azure.EventHubs.EventData eventData = mess.ToEventData();
+                                                    AzIoTHubModules.IoTMessage iotHubMessage = AzIoTHubModules.IoTMessage.Deserialsie(MsgIn);
+                                                    Microsoft.Azure.Devices.Client.Message message = iotHubMessage.ToMessage();
+                                                    Microsoft.Azure.EventHubs.EventData eventData = AzIoTHubModules.IoTMessage.ToEventData(message);
+                                                    MsgIn = AzIoTHubModules.IoTMessage.EventData_ToString(eventData);
                                                 }
                                                 keepAlive = false;
                                                 if (SvcCurrentSettings != null)

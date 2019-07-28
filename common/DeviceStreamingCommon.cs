@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AzIoTHubDeviceStreams
 {
-
+    
     public delegate void ActionReceivedText(string recvTxt);
 
     public delegate string  ActionReceivedTextIO(string msgIn, out Microsoft.Azure.Devices.Client.Message message);
@@ -18,6 +18,7 @@ namespace AzIoTHubDeviceStreams
     public delegate void ActionCommandD(bool flag, string msg, int al, int cmd);
     public static class DeviceStreamingCommon
     {
+        public const string DeiceInSimuatedDeviceModeStrn = "SIMDEV_";
         public static TransportType s_transportType = TransportType.Amqp;
 
         public static Microsoft.Azure.Devices.Client.TransportType device_transportType = Microsoft.Azure.Devices.Client.TransportType.Mqtt;

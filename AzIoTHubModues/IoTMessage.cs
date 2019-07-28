@@ -107,6 +107,21 @@ namespace AzIoTHubModules
             }
         }
 
+        public static EventData ToEventData(Message message)
+        {
+            try
+            {
+                EventData eventData = new EventData(message.GetBytes());
+                foreach (var prop in message.Properties)
+                    eventData.Properties.Add(prop.Key, prop.Value);
+                return eventData;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public string Serialise()
         {
             return JsonConvert.SerializeObject(this);
@@ -132,6 +147,35 @@ namespace AzIoTHubModules
                 return null;
             }
 
+        }
+
+        public static string EventData_ToString(EventData eventData)
+        {
+            string response = "";
+            if (eventData == null)
+                response = "Null";
+            else
+            {
+                string data = "";
+                if (eventData.Body != null)
+                    data = Encoding.UTF8.GetString(eventData.Body.Array);
+                response += string.Format("Message received on partition {0}:", 0);
+                response += string.Format("\r\n  {0}:", data);
+                response += string.Format("\r\nApplication properties (set by device):");
+                if (eventData.Properties != null)
+                    foreach (var prop in eventData.Properties)
+                    {
+                        response += string.Format("\r\n  {0}: {1}", prop.Key, prop.Value);
+                    }
+                response += string.Format("\r\nSystem properties (set by IoT Hub):");
+                if (eventData.SystemProperties != null)
+                    foreach (var prop in eventData.SystemProperties)
+                    {
+                        response += string.Format("\r\n  {0}: {1}\r\n", prop.Key, prop.Value);
+                    }
+                
+            }
+            return response;
         }
 
 
