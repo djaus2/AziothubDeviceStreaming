@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Devices.Client;
 using System;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -182,6 +183,7 @@ namespace AzIoTHubDeviceStreams
             string updateMsg = "";
             byte[] buffer = new byte[1024];
             ClientWebSocket webSocket = null;
+            byte[] sendBuffer;
             try
             {
                 using (cancellationTokenSourceTimeout = new CancellationTokenSource(DeviceStreamingCommon.DeviceTimeout))
@@ -252,10 +254,11 @@ namespace AzIoTHubDeviceStreams
                                             }
 
                                             string msgOut = msgIn;
+                                            Message sendMessage = null;
                                             try
                                             {
                                                 if (OnRecvdTextIO != null)
-                                                    msgOut = OnRecvdTextIO(msgIn);
+                                                    msgOut = OnRecvdTextIO(msgIn, out sendMessage);
                                             }
                                             catch (Exception exx)
                                             {
@@ -266,9 +269,24 @@ namespace AzIoTHubDeviceStreams
 
                                             if (respond)
                                             {
-                                                byte[] sendBuffer = Encoding.UTF8.GetBytes(msgOut);
+                                                
+                                                //if (sendMessage == null)
+                                                //{
+                                                    sendBuffer = Encoding.UTF8.GetBytes(msgOut);
+                                                    await webSocket.SendAsync(new ArraySegment<byte>(sendBuffer, 0, sendBuffer.Length), WebSocketMessageType.Binary, true, cancellationTokenSourceTimeout.Token).ConfigureAwait(false);
+                                                //}
+                                                //else
+                                                //{
+                                                    
+                                                //    sendBuffer = sendMessage.GetBytes();
+                                                //    var xx = new ArraySegment<byte>(sendBuffer, 0, sendBuffer.Length);
+                                                //    byte[] longer = xx.Array;
+                                                //    byte[] shortArray = longer.Take(sendBuffer.Length).ToArray();
+                                                //    Microsoft.Azure.Devices.Client.Message message = null;
+                                                //    message = new Microsoft.Azure.Devices.Client.Message(shortArray);
+                                                //    await webSocket.SendAsync(xx, WebSocketMessageType.Binary, true, cancellationTokenSourceTimeout.Token).ConfigureAwait(false);
+                                                //}
 
-                                                await webSocket.SendAsync(new ArraySegment<byte>(sendBuffer, 0, sendBuffer.Length), WebSocketMessageType.Binary, true, cancellationTokenSourceTimeout.Token).ConfigureAwait(false);
                                                 updateMsg = string.Format("Device Sent stream data: {0}", Encoding.UTF8.GetString(sendBuffer, 0, sendBuffer.Length));
                                                 UpdateStatus(updateMsg);
                                             }

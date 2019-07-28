@@ -13,7 +13,7 @@ namespace AzIoTHubDeviceStreams
 
     public delegate void ActionReceivedText(string recvTxt);
 
-    public delegate string  ActionReceivedTextIO(string msgIn);
+    public delegate string  ActionReceivedTextIO(string msgIn, out Microsoft.Azure.Devices.Client.Message message);
 
     public delegate void ActionCommandD(bool flag, string msg, int al, int cmd);
     public static class DeviceStreamingCommon

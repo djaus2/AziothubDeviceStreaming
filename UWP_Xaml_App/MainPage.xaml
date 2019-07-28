@@ -262,6 +262,9 @@
             <Button x:Name="btnCancelSvc" Content="Cancel Svc&#xD;&#xA;" RelativePanel.Below="btnSend" RelativePanel.AlignRightWith="btnSend"
                     Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLSvc_Click"/>
 
+            <Button x:Name="btnTelemSvc" Content="Cancel Svc&#xD;&#xA;" RelativePanel.Below="btnCancelSvc" RelativePanel.AlignRightWith="btnSend"
+                    Margin="20,10,0,0" Height="104" Width="139" Click="BtnTelemSvc_Click_1"/>
+
             <TextBlock x:Name="lblSvcTimeout" RelativePanel.RightOf="btnSend" Width="220" TextAlignment="Right"
                 Margin="20,20,0,0"  ><Run Text="Service-Timeout"/><Run Text=" "/><Run Text="(ms):"/></TextBlock>
 
@@ -364,7 +367,10 @@
      
             <Button x:Name="btnCancelDevice" Content="Cancel Device" RelativePanel.Below="lblNb" RelativePanel.AlignRightWith="btnListen"
                     Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLDevice_Click"/>
-         
+
+            <Button x:Name="btnTelemDevice" Content="Telemetry" RelativePanel.Below="btnCancelDevice" RelativePanel.AlignRightWith="btnListen"
+                    Margin="20,10,0,0" Height="104" Width="139" Click="BtnTelemDevice_Click"/>
+
         </RelativePanel>
 
     

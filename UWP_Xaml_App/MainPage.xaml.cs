@@ -449,5 +449,39 @@ namespace UWPXamlApp
         {
 
         }
+
+        bool IsRunningTelem = false;
+        private void BtnTelemDevice_Click(object sender, RoutedEventArgs e)
+        {
+            if(IsRunningTelem)
+            {
+                IsRunningTelem = false;
+                simulated_device.SimulatedDevice.ContinueLoop = false;
+                return;
+            }
+            IsRunningTelem = true;
+            simulated_device.SimulatedDevice.Configure(AzureConnections.MyConnections.DeviceConnectionString, false, AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType, true, TelemMsg);
+            string msg = simulated_device.SimulatedDevice.Run().GetAwaiter().GetResult();
+        }
+
+        private void TelemMsg(string msg)
+        {
+            Task.Run(async () => {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    tbDeiceMsgOut.Text = msg;
+                });
+            });
+        }
+
+        private void BtnTelemSvc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void BtnTelemSvc_Click_1(object sender, RoutedEventArgs e)
+        {
+            await read_d2c_messages.ReadDeviceToCloudMessages.Run(AzureConnections.MyConnections.IoTHubConnectionString, null);
+        }
     }
 }

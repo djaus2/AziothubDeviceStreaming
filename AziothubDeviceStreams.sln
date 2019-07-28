@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNStandard_DeviceApp", "DNS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DNStandard_ServiceApp", "DNStandard_ServiceApp\DNStandard_ServiceApp.csproj", "{4297BAFB-5973-4935-AD41-7AA74C6D6A22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzIoTHubModues", "AzIoTHubModues\AzIoTHubModues.csproj", "{F6B57A33-866E-4189-B93D-0FA270E156E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzIoTHubModules", "AzIoTHubModues\AzIoTHubModules.csproj", "{F6B57A33-866E-4189-B93D-0FA270E156E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

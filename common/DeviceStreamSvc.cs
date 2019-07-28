@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Linq;
 using System.Net.Sockets;
 using System.Net.WebSockets;
 using System.Text;
@@ -241,9 +242,21 @@ namespace AzIoTHubDeviceStreams
                                                 System.ArraySegment<byte> ReceiveBuffer = new ArraySegment<byte>(receiveBuffer);
 
                                                 var receiveResult = await stream.ReceiveAsync(ReceiveBuffer, cancellationTokenSourceTimeout.Token).ConfigureAwait(false);
+                                                //byte[] longer = ReceiveBuffer.Array;
+                                                //byte[] shortArray = longer.Take(receiveResult.Count).ToArray();
+                                                //Microsoft.Azure.Devices.Client.Message message = null;
+                                                //message = new Microsoft.Azure.Devices.Client.Message(shortArray);
 
                                                 MsgIn = Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count);
-
+                                                string subStrn = "SIMDEV_";
+                                                int subStrnLen = subStrn.Length;
+                                                if (MsgIn.Substring(0,subStrnLen) == subStrn)
+                                                {
+                                                    MsgIn = MsgIn.Substring(subStrnLen);
+                                                    AzIoTHubModules.IoTMessage mess = AzIoTHubModules.IoTMessage.Deserialsie(MsgIn);
+                                                    Microsoft.Azure.Devices.Client.Message message = mess.ToMessage();
+                                                    Microsoft.Azure.EventHubs.EventData eventData = mess.ToEventData();
+                                                }
                                                 keepAlive = false;
                                                 if (SvcCurrentSettings != null)
                                                     keepAlive = this.SvcCurrentSettings.KeepAlive;

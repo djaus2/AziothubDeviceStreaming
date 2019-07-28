@@ -12,8 +12,11 @@ using System.Threading.Tasks;
 
 namespace simulated_device
 {
+   
     public class SimulatedDevice
     {
+        public delegate void ActionReceivedText(string recvTxt);
+
         private static DeviceClient s_deviceClient;
 
         // The device connection string to authenticate the device with your IoT hub.
@@ -24,6 +27,9 @@ namespace simulated_device
         public static bool ContinueLoop {get; set;}=false;
 
         public static string MessageString { get; set; } = "";
+
+        public static Microsoft.Azure.Devices.Client.Message Message = null;
+        public static string IOTMess { get; set; } = "";
 
         // Async method to send simulated telemetry
         private static async Task SendDeviceToCloudMessagesAsync()
@@ -45,19 +51,31 @@ namespace simulated_device
                     humidity = currentHumidity
                 };
                 MessageString = JsonConvert.SerializeObject(telemetryDataPoint);
-                var message = new Message(Encoding.ASCII.GetBytes(MessageString));
+                
+                Message = new Message(Encoding.ASCII.GetBytes(MessageString));
 
+                //Stuff:
+                //var mess2 = Encoding.ASCII.GetBytes(MessageString);
+                //var qwe = Message.GetBytes();
+                //string MessageString2= Encoding.UTF8.GetString(qwe, 0, qwe.Length);
                 // Add a custom application property to the message.
                 // An IoT hub can filter on these properties without access to the message body.
-                message.Properties.Add("temperatureAlert", (currentTemperature > 30) ? "true" : "false");
+
+                Message.Properties.Add("temperatureAlert", (currentTemperature > 30) ? "true" : "false");
+                Message.Properties.Add("temperatureAlert2", (currentTemperature > 40) ? "true" : "false");
+                AzIoTHubModules.IoTMessage iotmessage = new AzIoTHubModules.IoTMessage(Message);
+                MessageString = iotmessage.Serialise();
+
+                
 
                 System.Diagnostics.Debug.WriteLine("{0} > Sending message: {1}", DateTime.Now, MessageString);
+                OnDeviceStatusUpdateD?.Invoke(string.Format("{0} > Sending message: {1}", DateTime.Now, MessageString));
 
                 // Send the telemetry message
                 if (!IsDeviceStreaming)
                 {
-                    await s_deviceClient.SendEventAsync(message);
-                    await Task.Delay(1000);
+                    await s_deviceClient.SendEventAsync(Message);
+                    await Task.Delay(Delay);
                 }
                 else
                 {
@@ -67,13 +85,18 @@ namespace simulated_device
             }
         }
 
+        private static int Delay = 1000;
         private static bool IsDeviceStreaming = false;
 
         public static bool IsConfigured { get; set; } = false;
 
-        
-        public static void Configure(string device_cs, bool isDeviceStreaming, TransportType transportType, bool loop)
+        private static ActionReceivedText OnDeviceStatusUpdateD;
+
+
+        public static void Configure(string device_cs, bool isDeviceStreaming, TransportType transportType, bool loop, ActionReceivedText onDeviceStatusUpdateD = null, int delay=1000)
         {
+            Delay = delay;
+            OnDeviceStatusUpdateD = onDeviceStatusUpdateD;
             IsDeviceStreaming = isDeviceStreaming;
 
             s_connectionString = device_cs;

@@ -13,8 +13,9 @@ namespace UWPXamlApp
     sealed partial class MainPage : Page
     {
 
-        private string OnDeviceRecvTextIO(string msgIn)
+        private string OnDeviceRecvTextIO(string msgIn, out Microsoft.Azure.Devices.Client.Message message )
         {
+            message = null;
             //Perform device side processing here. Eg read sensors.
             string msgOut = msgIn;
             switch (iGroupDeviceAction)
@@ -43,7 +44,8 @@ namespace UWPXamlApp
                     }
                     break;
                 case 3:
-                    msgOut  = simulated_device.SimulatedDevice.Run().GetAwaiter().GetResult();
+                    msgOut  = "SIMDEV_" + simulated_device.SimulatedDevice.Run().GetAwaiter().GetResult();
+                    message = simulated_device.SimulatedDevice.Message;
                     break;
                 case 4:
                     msgOut = "Coming. Not yet implemented. This is a pace holder for now.";
