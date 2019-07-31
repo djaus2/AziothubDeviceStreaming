@@ -115,6 +115,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DeviceSvcCurrentSettings_Example.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -143,6 +144,10 @@
     <ProjectReference Include="..\AzDeviceStreaming\AzDeviceStreaming.csproj">
       <Project>{daa4a52e-c175-4b0a-921d-050db55874e2}</Project>
       <Name>AzDeviceStreaming</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AzIoTHubModues\AzIoTHubModules.csproj">
+      <Project>{f6b57a33-866e-4189-b93d-0fa270e156e5}</Project>
+      <Name>AzIoTHubModules</Name>
     </ProjectReference>
     <ProjectReference Include="..\AzureConnections\AzureConnections.csproj">
       <Project>{02549731-8979-48bb-bd26-d313828c3aac}</Project>

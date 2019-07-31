@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "DNCore_OrigEchoSample_ServiceClientStreaming": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "IOTHUB_CONN_STRING_CSHARP": "Value2",
+        "DEVICE_ID": "Value1"
+      }
+    }
+  }
+}

@@ -456,12 +456,12 @@ namespace UWPXamlApp
             if(IsRunningTelem)
             {
                 IsRunningTelem = false;
-                simulated_device.SimulatedDevice.ContinueLoop = false;
+                SimulatedDevice_ns.SimulatedDevice.ContinueLoop = false;
                 return;
             }
             IsRunningTelem = true;
-            simulated_device.SimulatedDevice.Configure(AzureConnections.MyConnections.DeviceConnectionString, false, AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType, true, TelemMsg);
-            string msg = simulated_device.SimulatedDevice.Run().GetAwaiter().GetResult();
+            SimulatedDevice_ns.SimulatedDevice.Configure(AzureConnections.MyConnections.DeviceConnectionString, false, AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType, true, TelemMsg);
+            string msg = SimulatedDevice_ns.SimulatedDevice.Run().GetAwaiter().GetResult();
         }
 
         private void TelemMsg(string msg)
@@ -482,6 +482,15 @@ namespace UWPXamlApp
         private async void BtnTelemSvc_Click_1(object sender, RoutedEventArgs e)
         {
             await read_d2c_messages.ReadDeviceToCloudMessages.Run(AzureConnections.MyConnections.IoTHubConnectionString, null);
+        }
+
+        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            Environment.SetEnvironmentVariable("IOTHUB_DEVICE_CONN_STRING", AzureConnections.MyConnections.IoTHubConnectionString, EnvironmentVariableTarget.User);
+            var xxx = Environment.GetEnvironmentVariable("IOTHUB_DEVICE_CONN_STRING");
+
+            Environment.SetEnvironmentVariable("DEVICE_ID", AzureConnections.MyConnections.DeviceId);
+            Environment.SetEnvironmentVariable("IOTHUB_CONN_STRING_CSHARP", AzureConnections.MyConnections.IoTHubConnectionString);
         }
     }
 }

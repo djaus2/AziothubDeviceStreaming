@@ -18,7 +18,7 @@ namespace UWPXamlApp
             message = null;
             //Perform device side processing here. Eg read sensors.
             string msgOut = msgIn;
-            switch (iGroupDeviceAction)
+            switch (DeviceAction)
             {
                 case 0:
                     msgOut = msgIn;
@@ -44,8 +44,8 @@ namespace UWPXamlApp
                     }
                     break;
                 case 3:
-                    msgOut  = AzIoTHubDeviceStreams.DeviceStreamingCommon.DeiceInSimuatedDeviceModeStrn + simulated_device.SimulatedDevice.Run().GetAwaiter().GetResult();
-                    message = simulated_device.SimulatedDevice.Message;
+                    msgOut  = AzIoTHubDeviceStreams.DeviceStreamingCommon.DeiceInSimuatedDeviceModeStrn + SimulatedDevice_ns.SimulatedDevice.Run().GetAwaiter().GetResult();
+                    message = SimulatedDevice_ns.SimulatedDevice.Message;
                     break;
                 case 4:
                     msgOut = "Coming. Not yet implemented. This is a pace holder for now.";
@@ -201,16 +201,16 @@ namespace UWPXamlApp
             }
         }
 
-        private int iGroupDeviceAction = 2;
+        private int DeviceAction = 2;
         private void DeviceAction_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LstDeviceAction.SelectedIndex != -1)
             {
-                iGroupDeviceAction = LstDeviceAction.SelectedIndex;
+                DeviceAction = LstDeviceAction.SelectedIndex;
                 DeviceProcessingModeCommands.IsOpen = false;
-                OnDeviceStatusUpdate(string.Format("Device Processing set to: {0}", ListEnum2[iGroupDeviceAction]));
-                if(ListEnum2[iGroupDeviceAction] == "Sim Telemetry")
-                    simulated_device.SimulatedDevice.Configure(AzureConnections.MyConnections.DeviceConnectionString, true, AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType, false);
+                OnDeviceStatusUpdate(string.Format("Device Processing set to: {0}", ListEnum2[DeviceAction]));
+                if(ListEnum2[DeviceAction] == "Sim Telemetry")
+                    SimulatedDevice_ns.SimulatedDevice.Configure(AzureConnections.MyConnections.DeviceConnectionString, true, AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType, false);
             }
         }
 

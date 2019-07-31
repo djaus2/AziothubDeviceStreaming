@@ -16,7 +16,7 @@ namespace DeviceClientStreamingDNCoreSample
         // - pass this value as a command-prompt argument
         // - set the IOTHUB_DEVICE_CONN_STRING environment variable 
         // - create a launchSettings.json (see launchSettings.json.template) containing the variable
-        private static string s_deviceConnectionString = Environment.GetEnvironmentVariable("IOTHUB_DEVICE_CONN_STRING");
+        private static string s_deviceConnectionString;// = Environment.GetEnvironmentVariable("IOTHUB_DEVICE_CONN_STRING");
 
         // Select one of the following transports used by DeviceClient to connect to IoT Hub.
         private static TransportType s_transportType = TransportType.Amqp;

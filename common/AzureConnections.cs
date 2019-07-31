@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Client.Exceptions;
+//using Windows.Security.Cryptography;
+//using Windows.Security.Cryptography.Core;
+//using Windows.Storage.Streams;
 
 namespace AzureConnections
 {
@@ -13,15 +16,127 @@ namespace AzureConnections
         public delegate void ActionReceivedText(string recvTxt);
         public static ActionReceivedText OnStatusUpdateD { get; set; } = null;
 
+        public static string DeviceId { get; set; } = "MyNewDevice";
+
         public static string IoTHubConnectionString { get; set; } = "";
-        public static string DeviceId { get; set; } = "MyDevice";
+
         public static string DeviceConnectionString { get; set; } = "";
+
+
+
+        public static int DeviceAction = 1; //Uppercase. See OnDeviceRecvTextIO() below for options
+
+        public static bool basicMode { get; set; } = true;
+        public  static bool UseCustomClass { get; set; } = false;
+        public  static bool ResponseExpected { get; set; } = true;
+        public  static bool KeepAlive { get; set; } = false;
+
+        public static bool KeepDeviceListening { get; set; }  = true;
+        private static bool autoStartDevice  = true;
+        public static bool AutoStartDevice { get => autoStartDevice; set { autoStartDevice = value; if (value) KeepDeviceListening = true; } }
+
+
+
+        //private static IBuffer GetMD5Hash(string key)
+        //{
+        //    IBuffer bufferUTF8Msg = CryptographicBuffer.ConvertStringToBinary(key, BinaryStringEncoding.Utf8);
+        //    HashAlgorithmProvider hashAlgorithmProvider = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
+        //    IBuffer hashBuffer = hashAlgorithmProvider.HashData(bufferUTF8Msg);
+        //    if (hashBuffer.Length != hashAlgorithmProvider.HashLength)
+        //    {
+        //        throw new Exception("There was an error creating the hash");
+        //    }
+        //    return hashBuffer;
+        //}    
+
+        //public static string GenerateKeyWithPassword(string password, int resultKeyLength = 68)
+        //{
+        //    if (password.Length < 6)
+        //        throw new ArgumentException("password length must atleast 6 characters or above");
+        //    string key = "";
+
+        //    var hashKey = GetMD5Hash(password);
+        //    var decryptBuffer = CryptographicBuffer.ConvertStringToBinary(password, BinaryStringEncoding.Utf8);
+        //    var AES = SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithmNames.AesEcbPkcs7);
+        //    var symmetricKey = AES.CreateSymmetricKey(hashKey);
+        //    var encryptedBuffer = CryptographicEngine.Encrypt(symmetricKey, decryptBuffer, null);
+        //    key = CryptographicBuffer.EncodeToBase64String(encryptedBuffer);
+        //    string cleanKey = key.Trim(new char[] { ' ', '\r', '\t', '\n', '/' });
+        //    cleanKey = cleanKey.Replace("/", string.Empty); //.Replace("+", string.Empty).Replace("=", string.Empty);
+        //    key = cleanKey;
+        //    if (key.Length > resultKeyLength)
+        //    {
+        //        key = key.Substring(0,  resultKeyLength);
+        //    }
+        //    if (key.Length == resultKeyLength)
+        //    {
+        //        return key;
+        //    }
+        //    else  
+        //    {
+        //        key = GenerateKeyWithPassword(key, resultKeyLength);
+        //    }
+        //    return key;
+
+        //}
+        public static string GenerateKeyUsingListOfChars(int letterCount = 44)
+        {
+            // Get the number of words and letters per word.
+            int num_letters = letterCount;
+            // Make an array of the letters we will use.
+            char[] letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrsruvwxyz+".ToCharArray();
+            int lettersLength =  letters.Length;
+
+            // Make a word.
+            string word = "";
+
+            //Use Cryptography to generate random numbers rather than Psuedo Random Rand
+            // Deliberate overkill here
+            byte[] randomBytes = new byte[num_letters*256];
+            List<int> rands = new List<int>();
+            do
+            {
+                using (System.Security.Cryptography.RNGCryptoServiceProvider rngCsp = new
+                            System.Security.Cryptography.RNGCryptoServiceProvider())
+                {
+                    // Fill the array with a random value.
+                    rngCsp.GetBytes(randomBytes);
+                }
+
+
+                // Truncate the set of random bytes to being in range 0 .. (lettersLength-1)
+                // Nb Using mod of randomBytes will reduce entropy of the set
+
+                foreach (var x in randomBytes)
+                {
+                    if (x < num_letters)
+                        rands.Add((int)x);
+                    if (rands.Count() >= num_letters)
+                        break;
+                }
+            }
+            while (rands.Count < letterCount);
+
+            int[] randsArray = rands.ToArray();
+
+            // Get random selection of characters from letters
+            for (int j = 0; j < num_letters; j++)
+            {
+                int letter_num = randsArray[j]; ;
+                // Append the letter.
+                word += letters[letter_num];
+            }
+            return word;
+        }
+
+
 
         public static string AddDeviceAsync(string IoTHubOwnerconnectionString, string deviceId)
         {
             RegistryManager registryManager = RegistryManager.CreateFromConnectionString(IoTHubOwnerconnectionString);
             registryManager.OpenAsync().GetAwaiter().GetResult();
             Device device = null;
+           
 
             try
             {

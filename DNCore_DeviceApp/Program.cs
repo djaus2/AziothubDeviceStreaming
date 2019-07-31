@@ -4,33 +4,32 @@
 using System;
 using System.Threading.Tasks;
 using AzIoTHubDeviceStreams;
+using SimulatedDevice_ns;
 
 namespace DeviceDNCoreApp
 {
     public static class Program
     {
-        private static int iGroupDeviceAction = 1;
+        private static int DeviceAction = AzureConnections.MyConnections.DeviceAction;
 
-        public static bool KeepDeviceListening { get; private set; } = true;
+        private static bool basicMode = AzureConnections.MyConnections.basicMode;
+        private static bool UseCustomClass = AzureConnections.MyConnections.UseCustomClass;
+        private static bool ResponseExpected = AzureConnections.MyConnections.ResponseExpected;
+        private static bool KeepAlive = AzureConnections.MyConnections.KeepAlive;
 
-        private static bool autoStartDevice = true;
+        private static string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
+        private static string device_id = AzureConnections.MyConnections.DeviceId;
+        private static string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
+
+        private static bool KeepDeviceListening =  AzureConnections.MyConnections.KeepDeviceListening;
+
         //The next is superfulous as this device app will always autostart.
-        private static bool AutoStartDevice { get => autoStartDevice; set { autoStartDevice = value; if (value) KeepDeviceListening = true; } }
-        static string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
-        static string device_id = AzureConnections.MyConnections.DeviceId;
-        static string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
+        private static bool AutoStartDevice = AzureConnections.MyConnections.AutoStartDevice;
 
-        //If true uses the original mode
-        private static bool basicMode = false;
-        //For tuture expansion:
-        private static bool useCustomClass = false;
-        
 
         public static int Main(string[] args)
         {
-            //Set these here:
-            AzureConnections.MyConnections.DeviceId = ""; 
-            AzureConnections.MyConnections.DeviceConnectionString = "";
+           
             Console.WriteLine("Device starting.\n");
 
             RunDevice(device_cs, 10000000);
@@ -42,17 +41,14 @@ namespace DeviceDNCoreApp
 
  
         private static string AppendMsg ="";
-        private static string OnDeviceRecvTextIO(string msgIn)
+
+
+        private static string OnDeviceRecvTextIO(string msgIn, out Microsoft.Azure.Devices.Client.Message message)
         {
-            if (AppendMsg != "")
-            {
-                Console.WriteLine("Recvd: " + AppendMsg);
-                AppendMsg = "";
-            }
-            Console.WriteLine("Recvd: " + msgIn);
+            message = null;
             //Perform device side processing here. Eg read sensors.
             string msgOut = msgIn;
-            switch (iGroupDeviceAction)
+            switch (DeviceAction)
             {
                 case 0:
                     msgOut = msgIn;
@@ -78,15 +74,22 @@ namespace DeviceDNCoreApp
                     }
                     break;
                 case 3:
-                    msgOut = "Coming. Not yet implemented. This is a pace holder for now.";
+                    msgOut = AzIoTHubDeviceStreams.DeviceStreamingCommon.DeiceInSimuatedDeviceModeStrn + SimulatedDevice_ns.SimulatedDevice.Run().GetAwaiter().GetResult();
+                    message = SimulatedDevice.Message;
                     break;
                 case 4:
                     msgOut = "Coming. Not yet implemented. This is a pace holder for now.";
                     break;
             }
-            Console.WriteLine("Sent: " + msgOut);
+
+            Console.WriteLine(msgIn);
+            Console.WriteLine(msgOut);
+
+            System.Diagnostics.Debug.WriteLine(msgIn);
+            System.Diagnostics.Debug.WriteLine(msgOut);
             return msgOut;
         }
+
 
         private static void RunDevice(string device_cs, double ts)
         {
@@ -95,7 +98,7 @@ namespace DeviceDNCoreApp
             {
                 if (basicMode)
                     DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO).GetAwaiter().GetResult();
-                else if (!useCustomClass)
+                else if (!UseCustomClass)
                     DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening).GetAwaiter().GetResult();
                 else
                     DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO, OnDeviceStatusUpdate, ActionCommand, KeepDeviceListening, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();

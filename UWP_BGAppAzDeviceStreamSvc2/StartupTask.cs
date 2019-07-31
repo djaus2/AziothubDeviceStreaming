@@ -14,22 +14,53 @@ namespace BGAppAzDeviceStreamSvc2
 
     public sealed class StartupTask : IBackgroundTask
     {
-        string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
-        string device_id = AzureConnections.MyConnections.DeviceId;
-        string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
+        private static int DeviceAction = AzureConnections.MyConnections.DeviceAction;
+
+        private static bool basicMode = AzureConnections.MyConnections.basicMode;
+        private static bool UseCustomClass = AzureConnections.MyConnections.UseCustomClass;
+        private static bool ResponseExpected = AzureConnections.MyConnections.ResponseExpected;
+        private static bool KeepAlive = AzureConnections.MyConnections.KeepAlive;
+
+        private static string service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
+        private static string device_id = AzureConnections.MyConnections.DeviceId;
+        private static string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
+
+        private static int DevKeepListening = 2; //No action
+        private static int DevAutoStart = 2; //No action
         public void Run(IBackgroundTaskInstance taskInstance)
         {
-            Console.WriteLine("Svc: Starting.\n");
+            System.Diagnostics.Debug.WriteLine("Svc: Starting.\n");
 
             RunSvc(service_cs, device_id, "Hello Word", 100000);
 
-            Console.WriteLine("Svc Done.\n\nPress any key to finish.\n");
+            System.Diagnostics.Debug.WriteLine("Svc Done.\n\nPress any key to finish.\n");
             //Console.ReadKey();
         }
 
-        private  void OnrecvText(string msg)
+        private  void OnSvcRecvText(string msg)
         {
-            Console.WriteLine(msg);
+            System.Diagnostics.Debug.WriteLine(msg);
+        }
+
+        private static void OnDeviceSvcUpdate(string recvTxt)
+        {
+            if (!string.IsNullOrEmpty(recvTxt))
+                System.Diagnostics.Debug.WriteLine("Update: " + recvTxt);
+        }
+
+        private static void ActionCommand(bool flag, string msg, int al, int cmd)
+        {
+            switch (cmd)
+            {
+                case 0:
+                    //if (chkAutoStart.IsChecked != isChecked)
+                    //    chkAutoStart.IsChecked = isChecked;
+                    break;
+                case 1:
+                    //if (chKeepDeviceListening.IsChecked != isChecked)
+                    //    chKeepDeviceListening.IsChecked = isChecked;
+                    break;
+            }
         }
 
         private  void RunSvc(string servvicecs, string devid, string msgOut, double ts)
@@ -39,7 +70,13 @@ namespace BGAppAzDeviceStreamSvc2
 
             try
             {
-                DeviceStream_Svc.RunSvc(servvicecs, devid, msgOut, OnrecvText).GetAwaiter().GetResult();
+                if (basicMode)
+                    DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText).GetAwaiter().GetResult();
+                else if (!UseCustomClass)
+                    DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, DevKeepListening, DevAutoStart, OnDeviceSvcUpdate, KeepAlive, ResponseExpected).GetAwaiter().GetResult();
+
+                else
+                    DeviceStream_Svc.RunSvc(service_cs, device_id, msgOut, OnSvcRecvText, DevKeepListening, DevAutoStart, OnDeviceSvcUpdate, KeepAlive, ResponseExpected, new DeviceSvcCurrentSettings_Example()).GetAwaiter().GetResult();
             }
             //catch (Microsoft.Azure.Devices.Client.Exceptions.IotHubCommunicationException)
             //{

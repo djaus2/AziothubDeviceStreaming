@@ -247,7 +247,8 @@ namespace AzIoTHubDeviceStreams
                                                 MsgIn = Encoding.UTF8.GetString(receiveBuffer, 0, receiveResult.Count);
                                                 string subStrn = AzIoTHubDeviceStreams.DeviceStreamingCommon.DeiceInSimuatedDeviceModeStrn;
                                                 int subStrnLen = subStrn.Length;
-                                                if (MsgIn.Substring(0,subStrnLen) == subStrn)
+                                                if (MsgIn.Length>= subStrnLen)
+                                                    if (MsgIn.Substring(0,subStrnLen) == subStrn)
                                                 {
                                                     MsgIn = MsgIn.Substring(subStrnLen);
                                                     AzIoTHubModules.IoTMessage iotHubMessage = AzIoTHubModules.IoTMessage.Deserialsie(MsgIn);

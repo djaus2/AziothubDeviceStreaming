@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace simulated_device
+namespace SimulatedDevice_ns
 {
    
     public class SimulatedDevice
