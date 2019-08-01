@@ -55,12 +55,16 @@ namespace AzureConnections
         //    return key;
 
         //}
-        public static string GenerateKeyUsingListOfChars(int letterCount = 44)
+        public static string GenerateKeyUsingListOfChars(int letterCount = 44, char[] Letters=null, bool AppendEqualsAtEnd = true)
         {
             // Get the number of words and letters per word.
             int num_letters = letterCount;
+            if (AppendEqualsAtEnd)
+                num_letters--;
             // Make an array of the letters we will use.
-            char[] letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrsruvwxyz+".ToCharArray();
+            char[] letters = Letters;
+            if (Letters == null)
+                letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrsruvwxyz+".ToCharArray();
             int lettersLength =  letters.Length;
 
             // Make a word.
@@ -102,7 +106,9 @@ namespace AzureConnections
                 // Append the letter.
                 word += letters[letter_num];
             }
-            return word;
+            if (AppendEqualsAtEnd)
+                word += "=";
+                return word;
         }
 
 
