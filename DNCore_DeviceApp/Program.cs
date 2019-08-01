@@ -32,7 +32,7 @@ namespace DeviceDNCoreApp
            
             Console.WriteLine("Device starting.\n");
 
-            RunDevice(device_cs, 10000000);
+            RunDevice(device_cs, 1000000000);
 
             Console.WriteLine("Device Done.\n\nPress any key to finish.\n");
             Console.ReadKey();
@@ -74,6 +74,7 @@ namespace DeviceDNCoreApp
                     }
                     break;
                 case 3:
+                    SimulatedDevice_ns.SimulatedDevice.Configure(AzureConnections.MyConnections.DeviceConnectionString, true, AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType, false);
                     msgOut = AzIoTHubDeviceStreams.DeviceStreamingCommon.DeiceInSimuatedDeviceModeStrn + SimulatedDevice_ns.SimulatedDevice.Run().GetAwaiter().GetResult();
                     message = SimulatedDevice.Message;
                     break;

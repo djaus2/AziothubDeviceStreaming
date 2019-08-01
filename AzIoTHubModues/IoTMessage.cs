@@ -10,25 +10,13 @@ using Newtonsoft.Json;
 namespace AzIoTHubModules
 {
     // A Simple Class to pass Microsoft.Azure.Devices.Client.Message properties
-    public class IoTMessage
+    public class SyntheticIoTMessage
     {
         public string MessageId { get; private set; }
-
-        /*
-         * 
-         MessageString = JsonConvert.SerializeObject(telemetryDataPoint);
-                [NonSerialized]
-                Message = new Message(Encoding.ASCII.GetBytes(MessageString));
-                var qwe = Message.GetBytes();
-                string MessageString2= Encoding.UTF8.GetString(qwe, 0, qwe.Length);
-         */
         public string MessageAsString { get; set; }
-
         [NonSerialized]
         public byte[] bytes;
-
-        public List<Tuple<string,string>> Properties { get; set; }
-  
+        public List<Tuple<string,string>> Properties { get; set; } 
         public string UserId { get; private set; }
         public uint DeliveryCount { get; private set; }
         public DateTime CreationTimeUtc { get; private set; }
@@ -38,12 +26,14 @@ namespace AzIoTHubModules
         public string To { get; private set; }
         public string MessageSchema { get; private set; }
 
-        public IoTMessage()
+        //Needed for serialization:
+        public SyntheticIoTMessage()
         {
 
         }
 
-        public IoTMessage(Message message)
+        // Construct instance of this clas form Microosft.Azure.Devices.Client.Message
+        public SyntheticIoTMessage(Message message)
         {
             try
             {
@@ -125,22 +115,15 @@ namespace AzIoTHubModules
         public string Serialise()
         {
             return JsonConvert.SerializeObject(this);
-            //var serializer = new XmlSerializer(this.GetType());
-            //using (var writer = XmlWriter.Create("message.xml"))
-            //{
-            //    serializer.Serialize(writer, this);
-            //}
         }
 
-        public static IoTMessage Deserialsie(string msg)
+        public static SyntheticIoTMessage Deserialize(string msg)
         {
             try
             {
                 object obj = JsonConvert.DeserializeObject(msg);
-                IoTMessage iMsg = JsonConvert.DeserializeObject<IoTMessage>(msg);
-                //iMsg.Properties = new List<string, string>();
-
-                return (IoTMessage)iMsg;
+                SyntheticIoTMessage iMsg = JsonConvert.DeserializeObject<SyntheticIoTMessage>(msg);
+                return (SyntheticIoTMessage)iMsg;
             }
             catch (Exception)
             {

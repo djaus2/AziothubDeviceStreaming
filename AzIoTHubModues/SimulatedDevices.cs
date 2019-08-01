@@ -63,7 +63,7 @@ namespace SimulatedDevice_ns
 
                 Message.Properties.Add("temperatureAlert", (currentTemperature > 30) ? "true" : "false");
                 Message.Properties.Add("temperatureAlert2", (currentTemperature > 40) ? "true" : "false");
-                AzIoTHubModules.IoTMessage iotmessage = new AzIoTHubModules.IoTMessage(Message);
+                AzIoTHubModules.SyntheticIoTMessage iotmessage = new AzIoTHubModules.SyntheticIoTMessage(Message);
                 MessageString = iotmessage.Serialise();
 
                 

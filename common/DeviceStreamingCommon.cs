@@ -23,8 +23,8 @@ namespace AzIoTHubDeviceStreams
 
         public static Microsoft.Azure.Devices.Client.TransportType device_transportType = Microsoft.Azure.Devices.Client.TransportType.Mqtt;
 
-        public static double DeviceTimeoutDef = 100000;
-        public static double SvcTimeoutDef = 100000;
+        public static double DeviceTimeoutDef = 10000000;
+        public static double SvcTimeoutDef = 10000000;
         public static TimeSpan DeviceTimeout = TimeSpan.FromMilliseconds(DeviceTimeoutDef);
         public static TimeSpan SvcTimeout = TimeSpan.FromMilliseconds(SvcTimeoutDef); 
 

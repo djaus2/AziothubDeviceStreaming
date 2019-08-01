@@ -251,10 +251,10 @@ namespace AzIoTHubDeviceStreams
                                                     if (MsgIn.Substring(0,subStrnLen) == subStrn)
                                                 {
                                                     MsgIn = MsgIn.Substring(subStrnLen);
-                                                    AzIoTHubModules.IoTMessage iotHubMessage = AzIoTHubModules.IoTMessage.Deserialsie(MsgIn);
+                                                    AzIoTHubModules.SyntheticIoTMessage iotHubMessage = AzIoTHubModules.SyntheticIoTMessage.Deserialize(MsgIn);
                                                     Microsoft.Azure.Devices.Client.Message message = iotHubMessage.ToMessage();
-                                                    Microsoft.Azure.EventHubs.EventData eventData = AzIoTHubModules.IoTMessage.ToEventData(message);
-                                                    MsgIn = AzIoTHubModules.IoTMessage.EventData_ToString(eventData);
+                                                    Microsoft.Azure.EventHubs.EventData eventData = AzIoTHubModules.SyntheticIoTMessage.ToEventData(message);
+                                                    MsgIn = AzIoTHubModules.SyntheticIoTMessage.EventData_ToString(eventData);
                                                 }
                                                 keepAlive = false;
                                                 if (SvcCurrentSettings != null)

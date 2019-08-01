@@ -29,7 +29,7 @@ namespace ServiceDNCoreApp
         {
             Console.WriteLine("Svc: Starting.\n");
             Console.WriteLine("Sending :" + msgOut);
-            RunSvc(service_cs, device_id, msgOut, 100000);
+            RunSvc(service_cs, device_id, msgOut, 10000000);
 
             Console.WriteLine("Svc Done.\n\nPress any key to finish.\n");
             Console.ReadKey();
