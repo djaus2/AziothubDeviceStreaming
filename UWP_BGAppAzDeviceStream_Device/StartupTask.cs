@@ -32,7 +32,8 @@ namespace BGAppAzDeviceStream_Device
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
-            Console.WriteLine("Device starting.");
+           
+            Console.WriteLine("Device starting.\n");
 
             RunDevice(device_cs, 1000000);
 
@@ -80,6 +81,7 @@ namespace BGAppAzDeviceStream_Device
                     }
                     break;
                 case 3:
+                    SimulatedDevice_ns.SimulatedDevice.Configure(AzureConnections.MyConnections.DeviceConnectionString, true, AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType, false);
                     msgOut = AzIoTHubDeviceStreams.DeviceStreamingCommon.DeiceInSimuatedDeviceModeStrn + SimulatedDevice_ns.SimulatedDevice.Run().GetAwaiter().GetResult();
                     message = SimulatedDevice.Message;
                     break;
@@ -119,10 +121,9 @@ namespace BGAppAzDeviceStream_Device
         private void RunDevice(string device_cs, double ts)
         {
             DeviceStreamingCommon.DeviceTimeout = TimeSpan.FromMilliseconds(ts);
-
+ 
             try
             {
-
                 if (basicMode)
                     DeviceStream_Device.RunDevice(device_cs, OnDeviceRecvTextIO).GetAwaiter().GetResult();
                 else if (!UseCustomClass)
@@ -154,7 +155,7 @@ namespace BGAppAzDeviceStream_Device
                 {
                     System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): Timeout");
                 }
-            }  
+            }        
         }
     }
 }

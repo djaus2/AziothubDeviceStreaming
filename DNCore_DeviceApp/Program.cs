@@ -1,9 +1,9 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
-using System;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using AzIoTHubDeviceStreams;
+using System.Threading.Tasks;
 using SimulatedDevice_ns;
 
 namespace DeviceDNCoreApp
@@ -32,16 +32,20 @@ namespace DeviceDNCoreApp
            
             Console.WriteLine("Device starting.\n");
 
-            RunDevice(device_cs, 1000000000);
+            RunDevice(device_cs, 1000000);
 
             Console.WriteLine("Device Done.\n\nPress any key to finish.\n");
             Console.ReadKey();
             return 0;
         }
 
- 
-        private static string AppendMsg ="";
-
+        private static string OnrecvTextIO(string msgIn)
+        {
+            Console.WriteLine(msgIn);
+            string msgOut = msgIn.ToUpper();
+            Console.WriteLine(msgOut);
+            return msgOut;
+        }
 
         private static string OnDeviceRecvTextIO(string msgIn, out Microsoft.Azure.Devices.Client.Message message)
         {
@@ -91,10 +95,33 @@ namespace DeviceDNCoreApp
             return msgOut;
         }
 
+        private static void OnDeviceStatusUpdate(string recvTxt)
+        {
+            //AppendMsg += recvTxt +"\r\n";
+            System.Diagnostics.Debug.WriteLine(recvTxt);
+            Console.WriteLine(recvTxt);
+        }
+
+        private static void ActionCommand(bool flag, string msg, int al, int cmd)
+        {
+            switch (cmd)
+            {
+                case 0:
+                    //if (chkAutoStart.IsChecked != isChecked)
+                    //    chkAutoStart.IsChecked = isChecked;
+                    break;
+                case 1:
+                    //if (chKeepDeviceListening.IsChecked != isChecked)
+                    //    chKeepDeviceListening.IsChecked = isChecked;
+                    break;
+            }
+        }
+
 
         private static void RunDevice(string device_cs, double ts)
         {
             DeviceStreamingCommon.DeviceTimeout = TimeSpan.FromMilliseconds(ts);
+ 
             try
             {
                 if (basicMode)
@@ -128,30 +155,7 @@ namespace DeviceDNCoreApp
                 {
                     System.Diagnostics.Debug.WriteLine("0 Error App.RunClient(): Timeout");
                 }
-            }
-        }
-
-
-        private static void ActionCommand(bool flag, string msg, int al, int cmd)
-        {
-            switch (cmd)
-            {
-                case 0:
-                    //if (chkAutoStart.IsChecked != isChecked)
-                    //    chkAutoStart.IsChecked = isChecked;
-                    break;
-                case 1:
-                    //if (chKeepDeviceListening.IsChecked != isChecked)
-                    //    chKeepDeviceListening.IsChecked = isChecked;
-                    break;
-            }
-        }
-
-        private static void OnDeviceStatusUpdate(string recvTxt)
-        {
-            //AppendMsg += recvTxt +"\r\n";
-            System.Diagnostics.Debug.WriteLine(recvTxt);
-            Console.WriteLine(recvTxt);
+            }        
         }
     }
 }
