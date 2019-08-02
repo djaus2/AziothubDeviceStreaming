@@ -12,6 +12,9 @@ namespace UWPConsoleDeviceApp
 {
     public static class Program
     {
+        private static int waitAtEndOfConsoleAppSecs = AzureConnections.MyConnections.WaitAtEndOfConsoleAppSecs;
+        private static int timeout = AzureConnections.MyConnections.Timeout;
+
         private static int DeviceAction = AzureConnections.MyConnections.DeviceAction;
 
         private static bool basicMode = AzureConnections.MyConnections.basicMode;
@@ -33,11 +36,13 @@ namespace UWPConsoleDeviceApp
            
             Console.WriteLine("Device starting.\n");
 
-            RunDevice(device_cs, 1000000);
+            RunDevice(device_cs, timeout);
 
-            Console.WriteLine("Device Done.\n\nPress any key to finish.\n");
-            Console.ReadKey();
-            return 0;
+            Console.WriteLine(string.Format("Device Done.\n\nApp will close in {0} seconds.\n", waitAtEndOfConsoleAppSecs));
+
+            TimeSpan ts = TimeSpan.FromSeconds(waitAtEndOfConsoleAppSecs);
+            Task.Delay(ts).GetAwaiter().GetResult();
+            return 0; ;
         }
 
         private static string OnrecvTextIO(string msgIn)

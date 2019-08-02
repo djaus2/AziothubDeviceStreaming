@@ -14,6 +14,9 @@ namespace BGAppAzDeviceStreamSvc2
 
     public sealed class StartupTask : IBackgroundTask
     {
+        private static int waitAtEndOfConsoleAppSecs = AzureConnections.MyConnections.WaitAtEndOfConsoleAppSecs;
+        private static int timeout = AzureConnections.MyConnections.Timeout;
+
         private static int DeviceAction = AzureConnections.MyConnections.DeviceAction;
 
         private static bool basicMode = AzureConnections.MyConnections.basicMode;
@@ -27,14 +30,19 @@ namespace BGAppAzDeviceStreamSvc2
 
         private static int DevKeepListening = 2; //No action
         private static int DevAutoStart = 2; //No action
+
+        private static string msgOut = "Temp";
+
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             System.Diagnostics.Debug.WriteLine("Svc: Starting.\n");
 
-            RunSvc(service_cs, device_id, "Hello Word", 100000);
+            RunSvc(service_cs, device_id, msgOut, timeout);
 
-            System.Diagnostics.Debug.WriteLine("Svc Done.\n\nPress any key to finish.\n");
-            //Console.ReadKey();
+            System.Diagnostics.Debug.WriteLine(string.Format("Svc Done.\n\nApp will close in {0} seconds.\n", waitAtEndOfConsoleAppSecs));
+
+            TimeSpan ts = TimeSpan.FromSeconds(waitAtEndOfConsoleAppSecs);
+            Task.Delay(ts).GetAwaiter().GetResult();
         }
 
         private  void OnSvcRecvText(string msg)

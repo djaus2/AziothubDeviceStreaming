@@ -13,6 +13,8 @@ namespace AzureConnections
 {
     public static partial class MyConnections
     {
+
+
         //private static IBuffer GetMD5Hash(string key)
         //{
         //    IBuffer bufferUTF8Msg = CryptographicBuffer.ConvertStringToBinary(key, BinaryStringEncoding.Utf8);

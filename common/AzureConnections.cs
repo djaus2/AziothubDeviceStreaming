@@ -11,6 +11,9 @@ namespace AzureConnections
 {
     public static partial class MyConnections
     {
+        public static int WaitAtEndOfConsoleAppSecs { get; set; } = 5; //Secs
+        public static int Timeout { get; set; } = 30000; //30 secs
+
         public delegate void ActionReceivedText(string recvTxt);
         public static ActionReceivedText OnStatusUpdateD { get; set; } = null;
 
@@ -19,7 +22,6 @@ namespace AzureConnections
         public static string IoTHubConnectionString { get; set; } = "";
 
         public static string DeviceConnectionString { get; set; } = "";
-
 
 
         public static int DeviceAction = 3; //Uppercase. See OnDeviceRecvTextIO() below for options

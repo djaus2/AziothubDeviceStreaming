@@ -9,6 +9,9 @@ namespace ServiceDNCoreApp
 {
     public static class Program
     {
+        private static int waitAtEndOfConsoleAppSecs = AzureConnections.MyConnections.WaitAtEndOfConsoleAppSecs;
+        private static int timeout = AzureConnections.MyConnections.Timeout;
+
         private static int DeviceAction = AzureConnections.MyConnections.DeviceAction;
 
         private static bool basicMode = AzureConnections.MyConnections.basicMode;
@@ -20,19 +23,21 @@ namespace ServiceDNCoreApp
         private static string device_id = AzureConnections.MyConnections.DeviceId;
         private static string device_cs = AzureConnections.MyConnections.DeviceConnectionString;
 
-        private static string msgOut = "Temp";
-
         private static int DevKeepListening =  2; //No action
         private static int DevAutoStart=2; //No action
+
+        private static string msgOut = "Temp";
 
         public static int Main(string[] args)
         {
             Console.WriteLine("Svc: Starting.\n");
             Console.WriteLine("Sending :" + msgOut);
-            RunSvc(service_cs, device_id, msgOut, 10000000);
+            RunSvc(service_cs, device_id, msgOut, timeout);
 
-            Console.WriteLine("Svc Done.\n\nPress any key to finish.\n");
-            Console.ReadKey();
+            Console.WriteLine(string.Format("Svc Done.\n\nApp will close in {0} seconds.\n", waitAtEndOfConsoleAppSecs));
+
+            TimeSpan ts = TimeSpan.FromSeconds(waitAtEndOfConsoleAppSecs);
+            Task.Delay(ts).GetAwaiter().GetResult();
             return 0;
         }
 
