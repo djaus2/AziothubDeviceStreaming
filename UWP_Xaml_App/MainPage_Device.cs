@@ -206,7 +206,8 @@ namespace UWPXamlApp
         {
             if (LstDeviceAction.SelectedIndex != -1)
             {
-                DeviceAction = LstDeviceAction.SelectedIndex;
+                AzureConnections.MyConnections.DeviceAction = LstDeviceAction.SelectedIndex;
+                DeviceAction = AzureConnections.MyConnections.DeviceAction;
                 DeviceProcessingModeCommands.IsOpen = false;
                 OnDeviceStatusUpdate(string.Format("Device Processing set to: {0}", ListEnum2[DeviceAction]));
                 if(ListEnum2[DeviceAction] == "Sim Telemetry")

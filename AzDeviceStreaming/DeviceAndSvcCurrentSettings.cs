@@ -56,6 +56,13 @@ namespace AzIoTHubDeviceStreams
 
             if (!string.IsNullOrEmpty(msgIn))
             {
+                int devmode;
+                if (int.TryParse(msgIn.Substring(1,2),out devmode))
+                {
+                    AzureConnections.MyConnections.DeviceAction = devmode;
+
+                }
+                msgIn = msgIn[0] + msgIn.Substring(4);
                 int i = 0;
                 while ((msgIn != "")&& (Info.SpecialsKs.Contains(msgIn[i])))
                 {
@@ -150,6 +157,7 @@ namespace AzIoTHubDeviceStreams
         /// <returns>Message to be sent</returns>
         public virtual string ProcessMsgOut(string msgOut, bool keepAlive = false, bool responseExpected = true, int DevKeepListening=2,int DevAutoStart=2)
         {
+            msgOut = AzureConnections.MyConnections.DeviceAction.ToString("00") + "-" + msgOut;
             KeepAlive = keepAlive;
             ResponseExpected = responseExpected;
             //Prepend message with indicative chars (for device to interpret as abvoe) if relevant flags are true
