@@ -87,7 +87,7 @@ namespace UWPXamlApp
                 tbSvcMsgOut.Width = newWidth;
                 tbDeviceMsgIn.Width = newWidth;
                 tbSvcMsgIn.Width = newWidth;
-                tbDeiceMsgOut.Width = newWidth;
+                tbDeviceMsgOut.Width = newWidth;
             }
         }
 
@@ -124,6 +124,10 @@ namespace UWPXamlApp
                 Popup_Delete.IsOpen = true;
             }//Popup_NewIoTHub
             else if ("5" == (string)cntrl.Tag)
+            {
+                this.Frame.Navigate(typeof(NewHub), null);
+            }
+            else if ("6" == (string)cntrl.Tag)
             {
                 this.Frame.Navigate(typeof(NewHub), null);
             }
@@ -451,7 +455,7 @@ namespace UWPXamlApp
         }
 
         bool IsRunningTelem = false;
-        private void BtnTelemDevice_Click(object sender, RoutedEventArgs e)
+        private async void BtnTelemDevice_Click(object sender, RoutedEventArgs e)
         {
             if(IsRunningTelem)
             {
@@ -461,7 +465,8 @@ namespace UWPXamlApp
             }
             IsRunningTelem = true;
             SimulatedDevice_ns.SimulatedDevice.Configure(AzureConnections.MyConnections.DeviceConnectionString, false, AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType, true, TelemMsg);
-            string msg = SimulatedDevice_ns.SimulatedDevice.Run().GetAwaiter().GetResult();
+            string msg  = await SimulatedDevice_ns.SimulatedDevice.Run();
+
         }
 
         private void TelemMsg(string msg)
@@ -469,7 +474,7 @@ namespace UWPXamlApp
             Task.Run(async () => {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    tbDeiceMsgOut.Text = msg;
+                    tbDeviceMsgOut.Text = msg;
                 });
             });
         }

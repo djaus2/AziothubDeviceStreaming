@@ -57,7 +57,7 @@ namespace UWPXamlApp
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     tbDeviceMsgIn.Text = msgIn;
-                    tbDeiceMsgOut.Text = msgOut;
+                    tbDeviceMsgOut.Text = msgOut;
                 });
             });
             return msgOut;
@@ -68,6 +68,7 @@ namespace UWPXamlApp
             Task.Run(async () => {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
+                    tbDevMode.Text = ListEnum2[AzureConnections.MyConnections.DeviceAction];
                     tbDeviceStatus.Text = msgIn;
                 });
             });
@@ -209,6 +210,7 @@ namespace UWPXamlApp
                 AzureConnections.MyConnections.DeviceAction = LstDeviceAction.SelectedIndex;
                 DeviceAction = AzureConnections.MyConnections.DeviceAction;
                 DeviceProcessingModeCommands.IsOpen = false;
+                tbDevMode.Text = ListEnum2[AzureConnections.MyConnections.DeviceAction];
                 OnDeviceStatusUpdate(string.Format("Device Processing set to: {0}", ListEnum2[DeviceAction]));
                 if(ListEnum2[DeviceAction] == "Sim Telemetry")
                     SimulatedDevice_ns.SimulatedDevice.Configure(AzureConnections.MyConnections.DeviceConnectionString, true, AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType, false);

@@ -23,7 +23,7 @@
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
                     <RadioButton x:Name = "rbSvcModeBasic" FontSize="12" Foreground="White" Margin = "10,0,0,0"   GroupName = "SvcMode" Content="Basic Mode"  Tag="0" Width="100"  />
-                        <RadioButton x:Name = "rbSvcModeFeature" FontSize="12" Foreground="White" Margin = "10,0,0,0"  IsChecked ="True"  GroupName = "SvcMode" Content="Features Mode" Tag="1" Width="100" />
+                    <RadioButton x:Name = "rbSvcModeFeature" FontSize="12" Foreground="White" Margin = "10,0,0,0"  IsChecked ="True"  GroupName = "SvcMode" Content="Features Mode" Tag="1" Width="100" />
                     <RadioButton x:Name = "rbSvcModeExp" Margin = "0" FontSize="12" Foreground="White"   GroupName = "SvcMode" Content="Experimental" Tag="2" Width="100" />
                     <TextBlock Text="Service Status:"  Margin="10,0,0,0" Foreground="Yellow" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic" FontWeight="Bold" />
                     <TextBlock x:Name="tbSvcStatus" Text="Hello" Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0"/>
@@ -36,26 +36,26 @@
                 <AppBarButton Icon="Add"  Label="ADD new Device to IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="3"/>
                 <AppBarButton Icon="Delete"  Label="DELETE current Device from IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="4"/>
                 <AppBarSeparator/>
-                <AppBarButton Icon="AddFriend"  Label="ADD new IoTHub to Azure Group" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="5"/>
+                <AppBarButton Icon="Setting"  Label="Teelmetry Mode" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="5"/>
                 <AppBarSeparator/>
                 <AppBarElementContainer>
-                <Frame x:Name="GrpDevlAutoStart" >
-                    <StackPanel>
-                        <RadioButton x:Name = "rbAutoStart" Margin = "0" Checked="RbAutoStart_Checked"  GroupName = "DevAutoStart" Content="Send to Device: Auto Start"  Tag="0" />
-                        <RadioButton x:Name = "rbNoAutoStart" Margin = "0" Checked = "RbAutoStart_Checked" GroupName = "DevAutoStart" Content="Send to Device: No Auto Start" Tag="1"/>
-                        <RadioButton x:Name = "rbNoChangeAutoStart" Margin = "0" Checked = "RbAutoStart_Checked" IsChecked ="True" GroupName = "DevAutoStart" Content="No change " Tag="2" />
-                    </StackPanel>
-                </Frame>
+                    <Frame x:Name="GrpDevlAutoStart" >
+                        <StackPanel>
+                            <RadioButton x:Name = "rbAutoStart" Margin = "0" Checked="RbAutoStart_Checked"  GroupName = "DevAutoStart" Content="Send to Device: Auto Start"  Tag="0" />
+                            <RadioButton x:Name = "rbNoAutoStart" Margin = "0" Checked = "RbAutoStart_Checked" GroupName = "DevAutoStart" Content="Send to Device: No Auto Start" Tag="1"/>
+                            <RadioButton x:Name = "rbNoChangeAutoStart" Margin = "0" Checked = "RbAutoStart_Checked" IsChecked ="True" GroupName = "DevAutoStart" Content="No change " Tag="2" />
+                        </StackPanel>
+                    </Frame>
                 </AppBarElementContainer>
                 <AppBarSeparator/>
                 <AppBarElementContainer>
-                <Frame x:Name="GrpDevlisten"  >
-                    <StackPanel>
-                        <RadioButton x:Name = "rbKeepListening" Margin = "0" Checked ="RbKeepListening_Checked"  GroupName = "DevKeepListening" Content="Send to Device: Keep Listening" Tag="0"/>
-                        <RadioButton x:Name = "rbUnKeepListening" Margin = "0" Checked = "RbKeepListening_Checked" GroupName = "DevKeepListening" Content="Send to Device: Stop Keep Listening" Tag="1"/>
-                        <RadioButton x:Name = "rbNoChangeListening" Margin = "0" Checked = "RbKeepListening_Checked" IsChecked ="True" GroupName = "DevKeepListening" Content="No change " Tag="2"/>
-                    </StackPanel>
-                </Frame>
+                    <Frame x:Name="GrpDevlisten"  >
+                        <StackPanel>
+                            <RadioButton x:Name = "rbKeepListening" Margin = "0" Checked ="RbKeepListening_Checked"  GroupName = "DevKeepListening" Content="Send to Device: Keep Listening" Tag="0"/>
+                            <RadioButton x:Name = "rbUnKeepListening" Margin = "0" Checked = "RbKeepListening_Checked" GroupName = "DevKeepListening" Content="Send to Device: Stop Keep Listening" Tag="1"/>
+                            <RadioButton x:Name = "rbNoChangeListening" Margin = "0" Checked = "RbKeepListening_Checked" IsChecked ="True" GroupName = "DevKeepListening" Content="No change " Tag="2"/>
+                        </StackPanel>
+                    </Frame>
                 </AppBarElementContainer>
             </CommandBar.SecondaryCommands>
         </CommandBar>
@@ -100,7 +100,7 @@
                     <Button Content="Device Connection String:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0"  Foreground="White" FontWeight="Bold" Width="300" Click="Button_RemoveDBLQuotes_Click" Tag="1" />
                     <TextBox Name="tbDeviceConString" Text="{Binding  Path=DevString, Mode=TwoWay}"  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" Background="White" />
 
-                    
+
                     <Button Content="Device Id:" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="0"  Margin="0,0,10,0" Foreground="White" FontWeight="Bold" Width="200" Click="Button_RemoveDBLQuotes_Click" Tag="2"/>
                     <TextBox Name="tbDeviceId" Text="{Binding  Path=DevId, Mode=TwoWay}"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Background="White"/>
                     <TextBlock Text="Click on entity to paste value." Grid.Row="7" Grid.Column="0" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="White" FontStyle="Italic" />
@@ -252,20 +252,20 @@
         <RelativePanel >
 
             <Button x:Name="btnSend" 
-                Content="Send using Service" Height="120" Width="340" Click="Button_Click_Svc" Margin="0,10,0,0"/>
+                Content="Send using Service" Height="120" Width="340" Click="Button_Click_Svc" Margin="0,10,0,0" Background="Brown" FontWeight="Bold"
+                    Foreground="Yellow"/>
             <CheckBox x:Name="chkKeepAlive" Content="Keep connection alive."
                       RelativePanel.Below="btnSend" Margin="20,10,0,0"
                       />
             <CheckBox x:Name="chkExpectResponse" Content="Expect response." IsChecked="True" 
                       RelativePanel.Below="chkKeepAlive" Margin="20,10,0,0"
                       />
-            <Button x:Name="btnCancelSvc" Content="Cancel Svc&#xD;&#xA;" RelativePanel.Below="btnSend" RelativePanel.AlignRightWith="btnSend"
-                    Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLSvc_Click"/>
+            <Button x:Name="btnCancelSvc" Content="Cancel Svc" RelativePanel.Below="btnSend" RelativePanel.AlignRightWith="btnSend" Background="Red" Foreground="AntiqueWhite"
+                    Margin="20,10,0,0" Height="60" Width="139" Click="ButtonCanceLSvc_Click"/>
 
-            <Button x:Name="btnTelemSvc" Content="Cancel Svc&#xD;&#xA;" RelativePanel.Below="btnCancelSvc" RelativePanel.AlignRightWith="btnSend"
-                    Margin="20,10,0,0" Height="104" Width="139" Click="BtnTelemSvc_Click_1"/>
+            <Button x:Name="btnTelemSvc" Content="Get Telemetry from Hub" RelativePanel.Below="lblRecv" RelativePanel.AlignRightWith="lblRecv" Height="60" Width="180" Click="BtnTelemSvc_Click_1" Margin="0,10,0,0" Background="Blue" Foreground="AntiqueWhite"/>
 
-            <TextBlock x:Name="lblSvcTimeout" RelativePanel.RightOf="btnSend" Width="220" TextAlignment="Right"
+            <TextBlock x:Name="lblSvcTimeout" RelativePanel.RightOf="btnSend" Width="210" TextAlignment="Right"
                 Margin="20,20,0,0"  ><Run Text="Service-Timeout"/><Run Text=" "/><Run Text="(ms):"/></TextBlock>
 
             <TextBox x:Name="tbSvcTimeout" RelativePanel.RightOf="lblSvcTimeout" RelativePanel.AlignTopWith="lblSvcTimeout"
@@ -275,20 +275,20 @@
                 Text="Service-Message Out:" Margin="20,20,0,0"  />
             <TextBlock  RelativePanel.Below="lblSend" RelativePanel.AlignRightWith="lblSend"
                         TextAlignment="Right" FontStyle="Italic"
-                Text="Nb: Can be mulitline." Margin="20,10,0,0"  />
+                Margin="20,10,0,0"  ><Run Text="Nb: Can be mul"/><Run Text="ti-"/><Run Text="line."/></TextBlock>
             <TextBox x:Name="tbSvcMsgOut" RelativePanel.RightOf="lblSend" RelativePanel.AlignTopWith="lblSend"  
                      AcceptsReturn="True"
                  HorizontalAlignment="Left" Height="84" Margin="20,20,0,0" Text="Msg Out" VerticalAlignment="Top" MinWidth="200" />
 
             <TextBlock x:Name="lblRecv" RelativePanel.RightOf="btnSend" RelativePanel.Below="tbSvcMsgOut" RelativePanel.AlignRightWith="lblSvcTimeout"
-                        TextAlignment="Right"
-                Text="Service-Message In:" Margin="20,20,0,0"  />
+                        TextAlignment="Right" 
+                Text="Service-Message In:" Margin="10,20,0,0"  />
             <TextBox x:Name="tbSvcMsgIn" RelativePanel.RightOf="lblRecv" RelativePanel.AlignTopWith="lblRecv" RelativePanel.AlignLeftWith="tbSvcMsgOut"
                      AcceptsReturn="True"
                      HorizontalAlignment="Left" Height="180" Margin="20,20,0,20" Text="Msg Recv'd" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True"/>
 
         </RelativePanel>
-    
+
 
         <CommandBar  Background="DarkCyan" Margin="0,10,0,10" Height="30" x:Name="DeviceProcessingModeCommands"  Opening="DeviceProcessingModeCommands_Opening">
             <CommandBar.Content >
@@ -323,7 +323,7 @@
                                         <TextBlock Text="{Binding}" HorizontalAlignment="Left"  Margin="10,0,0,0" Padding="0"/>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
-                              
+
                             </ListView>
                             <!--<RadioButton x:Name = "rbRPI" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="RPI Environ" Tag="3" />
                             <RadioButton x:Name = "rbDragonBoard" Margin = "20,0,0,0" Checked = "GroupDeviceAction_Checked" GroupName = "GroupDeviceAction" Content="DB410c Environ" Tag="4" />
@@ -336,18 +336,18 @@
 
         <RelativePanel  >
 
-            <Button x:Name="btnListen" 
-                Content="Start Listening as Device"  Height="120" Width="340" Click="Button_Click_Device"/>
+            <Button x:Name="btnListen" FontWeight="Bold"
+                Content="Start Listening as Device"  Height="120" Width="340" Click="Button_Click_Device" Background="DarkCyan" Foreground="Yellow" />
             <TextBlock x:Name="lblNb" RelativePanel.Below="btnListen" RelativePanel.AlignLeftWith="btnListen" FontStyle="Italic" FontWeight="Bold"
-                Text="Nb: Device only active for one received message if NOT KeepAlive." Margin="20,20,0,0"  />
-            
+                Text="Nb:Device only active for one recvd msg if NOT KeepAlive in Device Streaming mode" Margin="20,20,0,0"   />
+
             <CheckBox x:Name="chKeepDeviceListening" Content="Keep device listening" 
                       RelativePanel.Below="lblNb" Margin="20,10,0,0" Checked="ChKeepDeviceListening_Checked" Unchecked="ChKeepDeviceListening_Checked"
                       />
             <CheckBox x:Name="chkAutoStart" Content="Auto start Device" 
                       RelativePanel.Below="chKeepDeviceListening" Margin="20,10,0,0" Checked="ChAutoStart_Checked" Unchecked="ChAutoStart_Checked"
                       />
-            <TextBlock x:Name="lblDeviceTimeout" RelativePanel.RightOf="btnListen" Width="220" TextAlignment="Right" 
+            <TextBlock x:Name="lblDeviceTimeout" RelativePanel.RightOf="btnListen" Width="210" TextAlignment="Right" 
                 Text="Device-Timeout (ms):" Margin="20,20,0,0"  />
             <TextBox x:Name="tbDeviceTimeout" RelativePanel.RightOf="lblDeviceTimeout" RelativePanel.AlignTopWith="lblDeviceTimeout"
                      HorizontalAlignment="Left" Height="40" Margin="20,20,0,0" Text="10000" VerticalAlignment="Top" Width="100" TextChanged="TbDeviceTimeout_TextChanged"/>
@@ -358,22 +358,25 @@
             <TextBox x:Name="tbDeviceMsgIn"  RelativePanel.RightOf="lblDeviceRecv" RelativePanel.AlignTopWith="lblDeviceRecv"
                      AcceptsReturn="True"
                      HorizontalAlignment="Left" Height="84" Margin="20,20,0,0" Text="Dev In" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True"/>
-            <TextBlock x:Name="lblDeviceSend" RelativePanel.RightOf="btnListen" RelativePanel.Below="tbDeviceMsgIn" RelativePanel.AlignRightWith="lblDeviceTimeout"
+            <TextBlock x:Name="lblDeviceSend" RelativePanel.RightOf="btnListen" RelativePanel.Below="lblNb" RelativePanel.AlignRightWith="lblDeviceTimeout"
                         TextAlignment="Right"
-                Text="Device-Message Returned:" Margin="20,20,0,0"  />
-            <TextBox x:Name="tbDeiceMsgOut" RelativePanel.RightOf="lblDeviceSend" RelativePanel.AlignTopWith="lblDeviceSend" RelativePanel.AlignLeftWith="tbDeviceMsgIn"
+                Text="Device-Message Returned:" Margin="10,20,0,0"  />
+            <TextBlock x:Name="lblDevMode" RelativePanel.RightOf="tbDeviceTimeout"  Margin="20,20,0,0"  FontStyle="Italic"
+                        TextAlignment="Right" Text="Device Mode:" />
+            <TextBox x:Name="tbDevMode" RelativePanel.RightOf="lblDevMode" 
+                        TextAlignment="Right" BorderBrush="Blue"
+                Text="Device-Mode:" Margin="10,20,0,0" FontWeight="Bold" Foreground="Blue" />
+            <TextBox x:Name="tbDeviceMsgOut" RelativePanel.RightOf="lblDeviceSend" RelativePanel.AlignTopWith="lblDeviceSend" RelativePanel.AlignLeftWith="tbDeviceMsgIn"
                      AcceptsReturn="True"
                      Height="84" Margin="20,20,0,20" Text="Dev Out" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True" />
-     
-            <Button x:Name="btnCancelDevice" Content="Cancel Device" RelativePanel.Below="lblNb" RelativePanel.AlignRightWith="btnListen"
-                    Margin="20,10,0,0" Height="104" Width="139" Click="ButtonCanceLDevice_Click"/>
 
-            <Button x:Name="btnTelemDevice" Content="Telemetry" RelativePanel.Below="btnCancelDevice" RelativePanel.AlignRightWith="btnListen"
-                    Margin="20,10,0,0" Height="104" Width="139" Click="BtnTelemDevice_Click"/>
+            <Button x:Name="btnCancelDevice" Content="Cancel Device" RelativePanel.Below="lblNb" RelativePanel.AlignRightWith="btnListen" Height="60" Width="139" Click="ButtonCanceLDevice_Click" Background="Red" Foreground="AntiqueWhite" Margin="0,10,0,0"/>
+
+            <Button x:Name="btnTelemDevice" Content="Send Telemetry to Hub" RelativePanel.Below="lblDeviceSend" RelativePanel.AlignRightWith="lblDeviceSend" Height="60" Width="180" Click="BtnTelemDevice_Click" Margin="0,10,0,0" Background="Blue" Foreground="AntiqueWhite"/>
 
         </RelativePanel>
 
-    
+
 
 
     </StackPanel>
