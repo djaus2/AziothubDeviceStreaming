@@ -284,7 +284,7 @@
                         TextAlignment="Right" 
                 Text="Service-Message In:" Margin="10,20,0,0"  />
             <TextBox x:Name="tbSvcMsgIn" RelativePanel.RightOf="lblRecv" RelativePanel.AlignTopWith="lblRecv" RelativePanel.AlignLeftWith="tbSvcMsgOut"
-                     AcceptsReturn="True"
+                     AcceptsReturn="True" TextWrapping="Wrap"
                      HorizontalAlignment="Left" Height="180" Margin="20,20,0,20" Text="Msg Recv'd" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True"/>
 
         </RelativePanel>
@@ -367,7 +367,7 @@
                         TextAlignment="Right" BorderBrush="Blue"
                 Text="Device-Mode:" Margin="10,20,0,0" FontWeight="Bold" Foreground="Blue" />
             <TextBox x:Name="tbDeviceMsgOut" RelativePanel.RightOf="lblDeviceSend" RelativePanel.AlignTopWith="lblDeviceSend" RelativePanel.AlignLeftWith="tbDeviceMsgIn"
-                     AcceptsReturn="True"
+                     AcceptsReturn="True" TextWrapping="Wrap"
                      Height="84" Margin="20,20,0,20" Text="Dev Out" VerticalAlignment="Top" MinWidth="200" IsReadOnly="True" />
 
             <Button x:Name="btnCancelDevice" Content="Cancel Device" RelativePanel.Below="lblNb" RelativePanel.AlignRightWith="btnListen" Height="60" Width="139" Click="ButtonCanceLDevice_Click" Background="Red" Foreground="AntiqueWhite" Margin="0,10,0,0"/>

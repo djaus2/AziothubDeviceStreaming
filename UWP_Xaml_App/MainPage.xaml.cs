@@ -486,7 +486,13 @@ namespace UWPXamlApp
 
         private async void BtnTelemSvc_Click_1(object sender, RoutedEventArgs e)
         {
-            await read_d2c_messages.ReadDeviceToCloudMessages.Run(AzureConnections.MyConnections.IoTHubConnectionString, null);
+            await Task.Run(async () =>
+            { 
+                await read_d2c_messages.ReadDeviceToCloudMessages.Run(OnSvcRecvText);
+            });
+
+    
+            
         }
 
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e)

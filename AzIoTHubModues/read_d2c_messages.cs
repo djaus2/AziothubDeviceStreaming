@@ -54,6 +54,8 @@ namespace read_d2c_messages
                     System.Diagnostics.Debug.WriteLine("Message received on partition {0}:", partition);
                     System.Diagnostics.Debug.WriteLine("  {0}:", data);
                     System.Diagnostics.Debug.WriteLine("Application properties (set by device):");
+
+
                     foreach (var prop in eventData.Properties)
                     {
                         System.Diagnostics.Debug.WriteLine("  {0}: {1}", prop.Key, prop.Value);
@@ -63,13 +65,15 @@ namespace read_d2c_messages
                     {
                         System.Diagnostics.Debug.WriteLine("  {0}: {1}", prop.Key, prop.Value);
                     }
+
+                    OnDeviceStatusUpdateD?.Invoke(AzIoTHubModules.SyntheticIoTMessage.EventData_ToString(eventData));
                 }
             }
         }
 
         private static ActionReceivedText OnDeviceStatusUpdateD = null;
 
-        public static async Task Run(string s_connectionString, ActionReceivedText onDeviceStatusUpdateD = null)
+        public static async Task Run( ActionReceivedText onDeviceStatusUpdateD = null)
         {
             OnDeviceStatusUpdateD = onDeviceStatusUpdateD;
             
