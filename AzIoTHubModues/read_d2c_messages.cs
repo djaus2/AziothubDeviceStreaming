@@ -15,6 +15,7 @@ namespace read_d2c_messages
 {
     public class ReadDeviceToCloudMessages
     {
+    
         public delegate void ActionReceivedText(string recvTxt);
         // Event Hub-compatible endpoint
         // az iot hub show --query properties.eventHubEndpoints.events.endpoint --name {your IoT Hub name}
@@ -73,6 +74,28 @@ namespace read_d2c_messages
 
         private static ActionReceivedText OnDeviceStatusUpdateD = null;
 
+        public static string GetSasKey(string ioTHubConnectionString)
+        {
+
+            var hubccs = ioTHubConnectionString;
+            string[] split = hubccs.Split(new char[] { ';' });
+            string saskey = "";
+            foreach (var xx in split)
+            {
+                string[] split2 = xx.Split(new char[] { '=' });
+                if (split2[0].ToLower() == "SharedAccessKey".ToLower())
+                {
+                    saskey = split2[1];
+                    //The second split mat have removed = from end of saskey
+                    if (hubccs[hubccs.Length - 1] == '=')
+                        saskey += "=";
+                    break;
+                }
+
+            }
+            return saskey;
+        }
+
         public static async Task Run( ActionReceivedText onDeviceStatusUpdateD = null)
         {
             OnDeviceStatusUpdateD = onDeviceStatusUpdateD;
@@ -85,22 +108,7 @@ namespace read_d2c_messages
 
 
             //Get some of event cs properties from hub cs
-            var hubccs = AzureConnections.MyConnections.IoTHubConnectionString;
-            string[] split = hubccs.Split(new char[] { ';' });
-            string saskey = "";
-            foreach (var xx in split)
-            {
-                string[] split2 = xx.Split(new char[] { '=' });
-                if (split2[0].ToLower() == "SharedAccessKey".ToLower())
-                {
-                    saskey = split2[1];
-                    //The second split mat have removed = from end of saskey
-                    if (hubccs[hubccs.Length - 1] == '=')
-                            saskey += "=";
-                    break;
-                }
 
-            }
             string iotHubSasKeyName  = AzureConnections.MyConnections.IotHubKeyName;
 
 

@@ -94,7 +94,7 @@
             <Button x:Name="InfoWithButtonsOnRightButton_Action"  Grid.Row="0" Grid.Column="5"  FontSize="16"   Click="Button_Click"  Height="38" Width="38"   Margin="0"  Visibility="{Binding Path=Show4thButton}"
                      ToolTipService.ToolTip="Get this info from the other info if possible." >
                 <Viewbox x:Name="InfoWithButtonsOnRightViewBox4"  >
-                    <SymbolIcon x:Name="InfoWithButtonsOnRightSymbol4" Symbol="Download"/>
+                    <SymbolIcon x:Name="InfoWithButtonsOnRightSymbol4" Symbol="ImportAll"/>
                 </Viewbox>
             </Button>
             

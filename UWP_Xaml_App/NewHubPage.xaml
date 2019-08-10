@@ -60,7 +60,7 @@
             </StackPanel>
             <local:NewHubElement DisplayMode="sep" Color="Red"   />
             <local:NewHubElement x:Name="h2" DisplayMode="sectionHeading"   Code="Azure IoT Hub Connection Details" HorizontalAlignment="Left" />
-            <StackPanel x:Name="Info" Visibility="Visible">
+            <StackPanel x:Name="Info" Visibility="Collapsed">
                 <local:NewHubElement DisplayMode="comment"   Code="Enter (or patse) a new or Existing Resource Group Name,IoTHub Name and Device Name.( Nb: Names if new need to be unique.)"/>
                 <local:NewHubElement DisplayMode="comment"  Code="Nb: The Az scripts (that you copy) get auto updated with this info.  Nb: You can also get this info from Azure Portal and paste it in here." />
                 <local:NewHubElement x:Name="NG"  DisplayMode="infoWithButtonsOnRight" InfoValue="Enter new or Existing Resource Group Name" Code="Resource Group Name: " TextInfo="{x:Bind Data1.ResourceGroupName,Mode=TwoWay}" Property="Group"   />
@@ -108,6 +108,11 @@
                     </StackPanel>
             </StackPanel>
             <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement x:Name="h5_1" DisplayMode="sectionHeading"   Code="Get Device Connection Striung if Device Exists:" HorizontalAlignment="Left" />
+            <StackPanel x:Name="DeviceConStringParagraph"  Visibility="Collapsed">
+                <local:NewHubElement x:Name="HubDeviceConStringCode"   DisplayMode="azCodeSnippet"     Code="{x:Bind Data1.deviceconstring,Mode=OneWay}" />
+            </StackPanel>
+            <local:NewHubElement DisplayMode="sep" Color="Green"   />
             <local:NewHubElement x:Name="h5" DisplayMode="sectionHeading"   Code="Create New IoT Hub Device (Optional):" HorizontalAlignment="Left" />
             <StackPanel x:Name="NewHDevice"  Visibility="Collapsed">
                 <local:NewHubElement DisplayMode="heading"   Code="Create New IoT Hub Device (Optional):" />
@@ -140,7 +145,7 @@
                         <local:NewHubElement x:Name="NEHEntityPath"  DisplayMode="infoWithButtonsOnRight" InfoValue="Enter Compat pathe"  Code="EntityPath: "  Property="Hub" TextInfo="{x:Bind Data1.EventHubsCompatiblePath,Mode=TwoWay}"  />
                         <local:NewHubElement x:Name="NEHSharedAcessKeyName"  DisplayMode="infoWithButtonsOnRight" InfoValue="Enter iothubowner or service"  Code="SharedAcessKeyName: "  Property="Device" TextInfo="{x:Bind Data1.IotHubKeyName,Mode=TwoWay}"     />
                         <local:NewHubElement x:Name="NEHPrimaryKey"   DisplayMode="azCodeSnippet"  Code="{x:Bind Data1.EventHubPrimaryKeyCode,Mode=TwoWay}"  />
-                        <local:NewHubElement x:Name="NEHSharedAcessKey"  DisplayMode="infoWithButtonsOnRight" InfoValue="Paste IoT Hub Connection String"  Code="SharedAcessKey(Primary): " TextInfo="{x:Bind Data1.EventHubsSasKey,Mode=TwoWay}"  Property="CSHub" />
+                        <local:NewHubElement x:Name="NEHSharedAcessKey"  DisplayMode="infoWithButtonsOnRight" InfoValue="Paste IoT Hub Connection String"  Code="SharedAcessKey(Primary): " TextInfo="{x:Bind Data1.EventHubsSasKey,Mode=TwoWay}"  Property="CSHub"  Show4thButton="Visible"/>
                     </StackPanel>
                 </StackPanel>
             <local:NewHubElement DisplayMode="sep" Color="Red"   />

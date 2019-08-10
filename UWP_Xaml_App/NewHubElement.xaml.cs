@@ -135,7 +135,7 @@ namespace UWPXamlApp
         }
 
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button)
             {
@@ -144,10 +144,18 @@ namespace UWPXamlApp
                 {
                     switch (name)
                     {
+                        case "AzCliCodeSnippetButton":
+                            var dataPackage1 = new DataPackage();
+                            dataPackage1.SetText(Code);
+                            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage1);
+                            break;
                         case "InfoWithButtonsOnRightButton_Paste":
-                            var dataPackage = new DataPackage();
-                            dataPackage.SetText(Code);
-                            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
+                            var cb = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
+                            string pastedText = await cb.GetTextAsync();
+                            if (!string.IsNullOrEmpty(pastedText))
+                            {
+                                TextInfo = pastedText;
+                            }
                             break;
                         case "InfoWithButtonsOnRightButton_New":
                             CreateNewEntity?.Invoke(Property);

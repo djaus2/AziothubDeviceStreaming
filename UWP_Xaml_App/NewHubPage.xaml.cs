@@ -219,11 +219,17 @@ namespace UWPXamlApp
         }
         public string iotownerconstring
         {
-            get { return string.Format("az iot hub show-connection-string --name {0} --policy-name iothubowner --key primary  --resource-group {1}", IoTHubName, ResourceGroupName); }
+            get { return string.Format("az iot hub show-connection-string --name {0} --policy-name iothubowner --key primary  --resource-group {1} --output table", IoTHubName, ResourceGroupName); }
         }
         public string serviceconstring
         {
-            get { return string.Format("az iot hub show-connection-string --name {0} --policy-name service --key primary  --resource-group {1}", IoTHubName, ResourceGroupName); }
+            get { return string.Format("az iot hub show-connection-string --name {0} --policy-name service --key primary  --resource-group {1} --output table", IoTHubName, ResourceGroupName); }
+        }
+
+        //az iot hub device-identity show-connection-string --hub-name MyNewHub --device-id MyNewDevice--output table
+        public string deviceconstring
+        {
+            get { return string.Format("az iot hub device-identity show-connection-string --hub-name {0} --device-id {1} --output table", IoTHubName, DeviceId); }
         }
 
 
@@ -258,6 +264,7 @@ namespace UWPXamlApp
                         handler(this, new PropertyChangedEventArgs("DeleteHubCode"));
                         handler(this, new PropertyChangedEventArgs("iotownerconstring"));
                         handler(this, new PropertyChangedEventArgs("serviceconstring"));
+                        handler(this, new PropertyChangedEventArgs("deviceconstring"));
                         //handler(this, new PropertyChangedEventArgs("EventHubEnpointhCode"));
                         //handler(this, new PropertyChangedEventArgs("EventHubCompatiblePathCode"));
                         //handler(this, new PropertyChangedEventArgs("EventHubPrimaryKeyCode"));
@@ -266,6 +273,7 @@ namespace UWPXamlApp
                         handler(this, new PropertyChangedEventArgs(propertyName));
                         handler(this, new PropertyChangedEventArgs("iotownerconstring"));
                         handler(this, new PropertyChangedEventArgs("serviceconstring"));
+                        handler(this, new PropertyChangedEventArgs("deviceconstring"));
                         break;
                 }
             }
@@ -413,6 +421,10 @@ namespace UWPXamlApp
             Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
         }
 
+        private void GetSasKey(string property)
+        {
+            Data1.EventHubsSasKey= read_d2c_messages.ReadDeviceToCloudMessages.GetSasKey(Data1.IoTHubConnectionString);
+        }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -421,12 +433,15 @@ namespace UWPXamlApp
             h2.IsExpanded = true;
             h3.SubRegion = this.ConnectingAndGroup;
             h4.SubRegion = this.NewHubRegion;
+            h5_1.SubRegion = this.DeviceConStringParagraph;
             h5.SubRegion = this.NewHDevice;
             h6.SubRegion = this.Cleanup;
             h7.SubRegion = this.Misc;
             h2ev.SubRegion = this.EventHubInfo;
             EventHubMethod1Heading.SubRegion = this.EventHubMethod1;
             EventHubMethod2Heading.SubRegion = this.EventHubMethod2;
+
+            NEHSharedAcessKey.GenerateEntityInfo = this.GetSasKey; 
             //if (!string.IsNullOrEmpty(Cons.IoTHubConnectionString))
             //    NCS1.TextInfo = Cons.IoTHubConnectionString;
             //if (!string.IsNullOrEmpty(Cons.DeviceConnectionString))
