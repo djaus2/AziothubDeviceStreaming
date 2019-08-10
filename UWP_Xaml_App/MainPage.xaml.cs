@@ -486,7 +486,7 @@ namespace UWPXamlApp
             string msg  = await SimulatedDevice_ns.SimulatedDevice.Run();
 
         }
-
+         
         private void TelemMsg(string msg)
         {
             Task.Run(async () => {
