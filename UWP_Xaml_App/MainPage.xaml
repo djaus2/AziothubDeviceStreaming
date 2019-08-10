@@ -31,12 +31,13 @@
             </CommandBar.Content>
 
             <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="Setting"  Label="SET Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="1"/>
+                <!--<AppBarButton Icon="Setting"  Label="SET Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="1"/>
                 <AppBarButton Icon="Permissions"  Label="GET Device Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="2"/>
                 <AppBarButton Icon="Add"  Label="ADD new Device to IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="3"/>
-                <AppBarButton Icon="Delete"  Label="DELETE current Device from IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="4"/>
-                <AppBarSeparator/>
-                <AppBarButton Icon="Setting"  Label="Teelmetry Mode" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="5"/>
+                <AppBarButton Icon="Delete"  Label="DELETE current Device from IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="4"/>-->
+                <!--<AppBarSeparator/>-->
+                <AppBarButton Icon="Setting"  Label="Settings" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="5"/>
+                <AppBarButton Icon="Save"  Label="Save Settings to App Storage" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="6"/>
                 <AppBarSeparator/>
                 <AppBarElementContainer>
                     <Frame x:Name="GrpDevlAutoStart" >
@@ -59,7 +60,7 @@
                 </AppBarElementContainer>
             </CommandBar.SecondaryCommands>
         </CommandBar>
-        <Popup VerticalOffset="10"                x:Name="Popup_SetConnectionDetails" 
+        <!--<Popup VerticalOffset="10"                x:Name="Popup_SetConnectionDetails" 
                HorizontalAlignment="Left" 
                HorizontalOffset="100"
                VerticalAlignment="Top"
@@ -248,7 +249,7 @@
                     <Button x:Name="DoneSetConnectionDetails4" Content="Delete"  Click="DoneSetConnectionDetails_Click"  Width="80" Grid.Row="7" Grid.Column="5"  HorizontalAlignment="Center" Opacity="1" Background="Beige"/>
                 </Grid>
             </Border>
-        </Popup>
+        </Popup>-->
         <RelativePanel >
 
             <Button x:Name="btnSend" 

@@ -95,55 +95,57 @@ namespace UWPXamlApp
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             Control cntrl = (Control)sender;
-            if ("1" == (string)cntrl.Tag)
-            {
-                conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
-                Popup_SetConnectionDetails.DataContext = conDetail;
-                Popup_SetConnectionDetails.IsOpen = false;
-                Popup_SetConnectionDetails.IsOpen = true;
-            }
-            else if ("2" == (string)cntrl.Tag)
-            {
-                conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
-                Popup_GetConnectionDetails.DataContext = conDetail;
-                Popup_GetConnectionDetails.IsOpen = false;
-                Popup_GetConnectionDetails.IsOpen = true;
-            }
-            else if ("3" == (string)cntrl.Tag)
-            {
-                conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
-                Popup_CreateDeviceDetails.DataContext = conDetail;
-                Popup_CreateDeviceDetails.IsOpen = false;
-                Popup_CreateDeviceDetails.IsOpen = true;
-            }
-            else if ("4" == (string)cntrl.Tag)
-            {
-                conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
-                Popup_Delete.DataContext = conDetail;
-                Popup_Delete.IsOpen = false;
-                Popup_Delete.IsOpen = true;
-            }//Popup_NewIoTHub
-            else if ("5" == (string)cntrl.Tag)
+            //if ("1" == (string)cntrl.Tag)
+            //{
+            //    conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+            //    Popup_SetConnectionDetails.DataContext = conDetail;
+            //    Popup_SetConnectionDetails.IsOpen = false;
+            //    Popup_SetConnectionDetails.IsOpen = true;
+            //}
+            //else if ("2" == (string)cntrl.Tag)
+            //{
+            //    conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+            //    Popup_GetConnectionDetails.DataContext = conDetail;
+            //    Popup_GetConnectionDetails.IsOpen = false;
+            //    Popup_GetConnectionDetails.IsOpen = true;
+            //}
+            //else if ("3" == (string)cntrl.Tag)
+            //{
+            //    conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+            //    Popup_CreateDeviceDetails.DataContext = conDetail;
+            //    Popup_CreateDeviceDetails.IsOpen = false;
+            //    Popup_CreateDeviceDetails.IsOpen = true;
+            //}
+            //else if ("4" == (string)cntrl.Tag)
+            //{
+            //    conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+            //    Popup_Delete.DataContext = conDetail;
+            //    Popup_Delete.IsOpen = false;
+            //    Popup_Delete.IsOpen = true;
+            //}//Popup_NewIoTHub
+            //else 
+
+            if ("5" == (string)cntrl.Tag)
             {
                 this.Frame.Navigate(typeof(NewHub), null);
             }
             else if ("6" == (string)cntrl.Tag)
             {
-                this.Frame.Navigate(typeof(NewHub), null);
+                SaveSettingsToAppData();
             }
 
         }
 
         public class ConDetail
         {
-            public string ConString { get; set; }
-            public string DevString { get; set; }
-            public string DevId { get; set; }
+            public string IoTHubConnectionString { get; set; }
+            public string DeviceConnectionString { get; set; }
+            public string DeviceId { get; set; }
             public ConDetail(string a, string b, string c)
             {
-                ConString = a;
-                DevString = b;
-                DevId = c;
+                IoTHubConnectionString = a;
+                DeviceConnectionString = b;
+                DeviceId = c;
             }
 
             public ConDetail()
@@ -160,17 +162,24 @@ namespace UWPXamlApp
             if (localSettings.Values.Keys.Contains("ConDetail"))
             {
                 Windows.Storage.ApplicationDataCompositeValue composite =
-   (Windows.Storage.ApplicationDataCompositeValue)localSettings.Values["ConDetail"];
+                        (Windows.Storage.ApplicationDataCompositeValue)localSettings.Values["ConDetail"];
                 if (composite != null)
                 {
-                    ConDetail details = new ConDetail();
-                    details.ConString = (string)composite["ConString"];
-                    details.DevString = (string)composite["DevString"];
-                    details.DevId = (string)composite["DevId"];
-                    SaveConnectionSettingsToAzureConnections(details);
+                    //Ref: https://stackoverflow.com/questions/9404523/set-property-value-using-property-name
+                    Type type = typeof(IoTHubConnectionDetails); // IoTHubConnectionDetails is static class with public static properties
+                    foreach (var property in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)) //(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic))
+                    {
+                        string propertyName = property.Name;
+                        if (composite.Keys.Contains(propertyName))
+                        {
+                            //Want to implement Cons.propertyName = composite[propertyName];
+                            var propertyInfo = type.GetProperty(propertyName); //, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+                            propertyInfo.SetValue(type, composite[propertyName], null);
+                        }
+                    }
                 }
             }
-            //else use existing.
+
             if (localSettings.Values.Keys.Contains("AutoStartDevice"))
             {
                 chkAutoStart.IsChecked = (bool) localSettings.Values["AutoStartDevice"];
@@ -209,40 +218,40 @@ namespace UWPXamlApp
         private void SaveConnectionSettingsToAzureConnections(ConDetail ccondetail)
         {
             conDetail = ccondetail;
-            AzureConnections.MyConnections.IoTHubConnectionString = ccondetail.ConString;
-            AzureConnections.MyConnections.DeviceConnectionString = ccondetail.DevString;
-            AzureConnections.MyConnections.DeviceId = ccondetail.DevId;
+            AzureConnections.MyConnections.IoTHubConnectionString = ccondetail.IoTHubConnectionString;
+            AzureConnections.MyConnections.DeviceConnectionString = ccondetail.DeviceConnectionString;
+            AzureConnections.MyConnections.DeviceId = ccondetail.DeviceId;
             service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
             device_id = AzureConnections.MyConnections.DeviceId;
             device_cs = AzureConnections.MyConnections.DeviceConnectionString;
         }
-        private void DoneSetConnectionDetails_Click(object sender, RoutedEventArgs e)
-        {
-            if (Popup_SetConnectionDetails.IsOpen)
-            {
-                SaveConnectionSettingsToAzureConnections(conDetail);
-                Popup_SetConnectionDetails.IsOpen = false;
-            }
-            else if (Popup_GetConnectionDetails.IsOpen)
-            {
-                conDetail.DevString = AzureConnections.MyConnections.GetDeviceAsync(conDetail.ConString, conDetail.DevId);
-                Popup_GetConnectionDetails.IsOpen = false;
-            }
-            else if (Popup_CreateDeviceDetails.IsOpen)
-            {
-                conDetail.DevString = AzureConnections.MyConnections.AddDeviceAsync(conDetail.ConString, conDetail.DevId);
-                Popup_CreateDeviceDetails.IsOpen = false;
-            }
-            else if (Popup_Delete.IsOpen)
-            {
-                conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
-                conDetail.DevString = AzureConnections.MyConnections.RemoveDeviceAsync(conDetail.ConString, conDetail.DevId);
-                Popup_Delete.IsOpen = false;
-                conDetail.DevId = "";
-                conDetail.DevString = "";
-            }
-            SaveSettingsToAppData();
-        }
+        //private void DoneSetConnectionDetails_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (Popup_SetConnectionDetails.IsOpen)
+        //    {
+        //        SaveConnectionSettingsToAzureConnections(conDetail);
+        //        Popup_SetConnectionDetails.IsOpen = false;
+        //    }
+        //    else if (Popup_GetConnectionDetails.IsOpen)
+        //    {
+        //        conDetail.DevString = AzureConnections.MyConnections.GetDeviceCSAsync(conDetail.ConString, conDetail.DevId);
+        //        Popup_GetConnectionDetails.IsOpen = false;
+        //    }
+        //    else if (Popup_CreateDeviceDetails.IsOpen)
+        //    {
+        //        conDetail.DevString = AzureConnections.MyConnections.AddDeviceAsync(conDetail.ConString, conDetail.DevId);
+        //        Popup_CreateDeviceDetails.IsOpen = false;
+        //    }
+        //    else if (Popup_Delete.IsOpen)
+        //    {
+        //        conDetail = new ConDetail(AzureConnections.MyConnections.IoTHubConnectionString, AzureConnections.MyConnections.DeviceConnectionString, AzureConnections.MyConnections.DeviceId);
+        //        conDetail.DevString = AzureConnections.MyConnections.RemoveDeviceAsync(conDetail.ConString, conDetail.DevId);
+        //        Popup_Delete.IsOpen = false;
+        //        conDetail.DevId = "";
+        //        conDetail.DevString = "";
+        //    }
+        //    SaveSettingsToAppData();
+        //}
 
         private void SaveSettingsToAppData()
         {
@@ -252,78 +261,87 @@ namespace UWPXamlApp
                 localSettings.Values.Remove("ConDetail");
             }
             Windows.Storage.ApplicationDataCompositeValue composite = new Windows.Storage.ApplicationDataCompositeValue();
-            composite["ConString"] = conDetail.ConString;
-            composite["DevString"] = conDetail.DevString;
-            composite["DevId"] = conDetail.DevId;
-            localSettings.Values.Add("ConDetail", composite);
-        }
 
-        private void CancelSetConnectionDetails_Click(object sender, RoutedEventArgs e)
-        {
-            Popup_SetConnectionDetails.IsOpen = false;
-            Popup_GetConnectionDetails.IsOpen = false;
-            Popup_CreateDeviceDetails.IsOpen = false;
-            Popup_Delete.IsOpen = false;
-        }
-
- 
-
-        private async void Button_RemoveDBLQuotes_Click(object sender, RoutedEventArgs e)
-        {
-            Button butt = (Button)sender;
-            if (butt != null)
-            { 
-                var dataPackageView = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
-                if (dataPackageView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Text))
-                {
-                    string strn = await dataPackageView.GetTextAsync();
-                    if (!string.IsNullOrEmpty(strn))
-                    {
-                        if (strn[0] == '\"')
-                            strn = strn.Substring(1);
-                        if (strn != "")
-                        {
-                            if (strn[strn.Length - 1] == ';')
-                                strn = strn.Substring(0, strn.Length - 1);
-                            if (strn != "")
-                            {
-                                if (strn[strn.Length - 1] == '\"')
-                                    strn = strn.Substring(0, strn.Length - 1);
-                            }
-                        }
-                    }
-                    string tag = (string)butt.Tag;
-                    switch (tag)
-                    {
-                        case "0":
-                            conDetail.ConString = strn;
-                            break;
-                        case "1":
-                            conDetail.DevString = strn;
-                            break;
-                        case "2":
-                            conDetail.DevId = strn;
-                            break;
-                    }
-                   
-                }
-                if (Popup_SetConnectionDetails.IsOpen)
-                {
-                    Popup_SetConnectionDetails.DataContext = null;
-                    Popup_SetConnectionDetails.DataContext = conDetail;
-                }
-                else if (Popup_GetConnectionDetails.IsOpen)
-                {
-                    Popup_GetConnectionDetails.DataContext = null;
-                    Popup_GetConnectionDetails.DataContext = conDetail;
-                }
-                else if (Popup_CreateDeviceDetails.IsOpen)
-                {
-                    Popup_CreateDeviceDetails.DataContext = null;
-                    Popup_CreateDeviceDetails.DataContext = conDetail;
-                }
+            //Ref: https://stackoverflow.com/questions/12480279/iterate-through-properties-of-static-class-to-populate-list
+            Type type = typeof(IoTHubConnectionDetails); // IoTHubConnectionDetails is static class with public static properties
+            foreach (var property in type.GetProperties()) //(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic))
+            {
+                string propertyName = property.Name;
+                var val = property.GetValue(null); // static classes cannot be instanced, so use null...
+            
+                System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}",propertyName,val));
+                composite[propertyName] = val;
             }
+            localSettings.Values.Add("ConDetail", composite);
+
         }
+
+        //private void CancelSetConnectionDetails_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Popup_SetConnectionDetails.IsOpen = false;
+        //    Popup_GetConnectionDetails.IsOpen = false;
+        //    Popup_CreateDeviceDetails.IsOpen = false;
+        //    Popup_Delete.IsOpen = false;
+        //}
+
+
+
+        //private async void Button_RemoveDBLQuotes_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button butt = (Button)sender;
+        //    if (butt != null)
+        //    { 
+        //        var dataPackageView = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
+        //        if (dataPackageView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Text))
+        //        {
+        //            string strn = await dataPackageView.GetTextAsync();
+        //            if (!string.IsNullOrEmpty(strn))
+        //            {
+        //                if (strn[0] == '\"')
+        //                    strn = strn.Substring(1);
+        //                if (strn != "")
+        //                {
+        //                    if (strn[strn.Length - 1] == ';')
+        //                        strn = strn.Substring(0, strn.Length - 1);
+        //                    if (strn != "")
+        //                    {
+        //                        if (strn[strn.Length - 1] == '\"')
+        //                            strn = strn.Substring(0, strn.Length - 1);
+        //                    }
+        //                }
+        //            }
+        //            string tag = (string)butt.Tag;
+        //            switch (tag)
+        //            {
+        //                case "0":
+        //                    conDetail.ConString = strn;
+        //                    break;
+        //                case "1":
+        //                    conDetail.DevString = strn;
+        //                    break;
+        //                case "2":
+        //                    conDetail.DevId = strn;
+        //                    break;
+        //            }
+
+        //        }
+        //        //if (Popup_SetConnectionDetails.IsOpen)
+        //        //{
+        //        //    Popup_SetConnectionDetails.DataContext = null;
+        //        //    Popup_SetConnectionDetails.DataContext = conDetail;
+        //        //}
+        //        //else if (Popup_GetConnectionDetails.IsOpen)
+        //        //{
+        //        //    Popup_GetConnectionDetails.DataContext = null;
+        //        //    Popup_GetConnectionDetails.DataContext = conDetail;
+        //        //}
+        //        //else if (Popup_CreateDeviceDetails.IsOpen)
+        //        //{
+        //        //    Popup_CreateDeviceDetails.DataContext = null;
+        //        //    Popup_CreateDeviceDetails.DataContext = conDetail;
+        //        //}
+        //    }
+        //}
 
         TimeSpan DeviceTimeout { get; set; } = TimeSpan.FromMilliseconds(10000);
         private void TbDeviceTimeout_TextChanged(object sender, TextChangedEventArgs e)
@@ -368,86 +386,86 @@ namespace UWPXamlApp
             }
         }
 
-        private async void PasteAllConnectionDetails_Click(object sender, RoutedEventArgs e)
-        {
-            var dataPackageView = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
-            if (dataPackageView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Text))
-            {
-                string strn = await dataPackageView.GetTextAsync();
-                string[] lines = strn.Split(new char[] { '\r', '\n' });
-                conDetail = new ConDetail();
-                foreach (string _line in lines)
-                {
-                    var line =_line.Trim();
-                    if (!string.IsNullOrEmpty(line))
-                    {
-                        string[] parts = line.Split(new char[] { '=' },2,StringSplitOptions.RemoveEmptyEntries);
-                        if (parts.Length == 2)
-                        {
-                            string propName = parts[0].Trim();
-                            string propValue = parts[1].Trim();
-                            if (propValue == null)
-                                propValue = "";
-                            if (!string.IsNullOrEmpty(propName))
-                            {
-                                if (!string.IsNullOrEmpty(propValue))
-                                {
-                                    if (propValue[0] == '\"')
-                                        propValue = propValue.Substring(1);
-                                    if (propValue != "")
-                                    {
-                                        if (propValue[propValue.Length - 1] == ';')
-                                            propValue = propValue.Substring(0, propValue.Length - 1);
-                                        if (propValue != "")
-                                        {
-                                            if (propValue[propValue.Length - 1] == '\"')
-                                                propValue = propValue.Substring(0, propValue.Length - 1);
-                                        }
-                                    }
+        //private async void PasteAllConnectionDetails_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var dataPackageView = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
+        //    if (dataPackageView.Contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.Text))
+        //    {
+        //        string strn = await dataPackageView.GetTextAsync();
+        //        string[] lines = strn.Split(new char[] { '\r', '\n' });
+        //        conDetail = new ConDetail();
+        //        foreach (string _line in lines)
+        //        {
+        //            var line =_line.Trim();
+        //            if (!string.IsNullOrEmpty(line))
+        //            {
+        //                string[] parts = line.Split(new char[] { '=' },2,StringSplitOptions.RemoveEmptyEntries);
+        //                if (parts.Length == 2)
+        //                {
+        //                    string propName = parts[0].Trim();
+        //                    string propValue = parts[1].Trim();
+        //                    if (propValue == null)
+        //                        propValue = "";
+        //                    if (!string.IsNullOrEmpty(propName))
+        //                    {
+        //                        if (!string.IsNullOrEmpty(propValue))
+        //                        {
+        //                            if (propValue[0] == '\"')
+        //                                propValue = propValue.Substring(1);
+        //                            if (propValue != "")
+        //                            {
+        //                                if (propValue[propValue.Length - 1] == ';')
+        //                                    propValue = propValue.Substring(0, propValue.Length - 1);
+        //                                if (propValue != "")
+        //                                {
+        //                                    if (propValue[propValue.Length - 1] == '\"')
+        //                                        propValue = propValue.Substring(0, propValue.Length - 1);
+        //                                }
+        //                            }
                                     
-                                    switch (propName.ToLower())
-                                    {
-                                        case "iothubconnectionstring":
-                                            conDetail.ConString = propValue;
-                                            break;
-                                        case "deviceconnectionstring":
-                                            conDetail.DevString = propValue;
-                                            break;
-                                        case "deviceid":
-                                            conDetail.DevId = propValue;
-                                            break;
-                                    }
-                                    Popup_SetConnectionDetails.DataContext = null;
-                                    Popup_SetConnectionDetails.DataContext = conDetail;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        //                            switch (propName.ToLower())
+        //                            {
+        //                                case "iothubconnectionstring":
+        //                                    conDetail.ConString = propValue;
+        //                                    break;
+        //                                case "deviceconnectionstring":
+        //                                    conDetail.DevString = propValue;
+        //                                    break;
+        //                                case "deviceid":
+        //                                    conDetail.DevId = propValue;
+        //                                    break;
+        //                            }
+        //                            //Popup_SetConnectionDetails.DataContext = null;
+        //                            //Popup_SetConnectionDetails.DataContext = conDetail;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
 
-        private void ClearSetConnectionDetails_Click(object sender, RoutedEventArgs e)
-        {
+        //private void ClearSetConnectionDetails_Click(object sender, RoutedEventArgs e)
+        //{
            
-            if (Popup_SetConnectionDetails.IsOpen)
-            {
-                tbSvcConString.Text = ""; //This only needs to be Service Connection String
-                tbDeviceConString.Text = "";
-                tbDeviceId.Text = "";
-            }
-            else if (Popup_GetConnectionDetails.IsOpen)
-            {
-                tbIoTHubOwnerConString.Text = "";  //Needs to be Owner Connection string
-                tbDeviceId2.Text = "";
-            }
-            else if (Popup_CreateDeviceDetails.IsOpen)
-            {
-                tbIoTHubOwnerConString3.Text = ""; //Needs to be Owner Connection string.
-                tbDeviceId3.Text = "";
-            }
-        }
+        //    if (Popup_SetConnectionDetails.IsOpen)
+        //    {
+        //        tbSvcConString.Text = ""; //This only needs to be Service Connection String
+        //        tbDeviceConString.Text = "";
+        //        tbDeviceId.Text = "";
+        //    }
+        //    else if (Popup_GetConnectionDetails.IsOpen)
+        //    {
+        //        tbIoTHubOwnerConString.Text = "";  //Needs to be Owner Connection string
+        //        tbDeviceId2.Text = "";
+        //    }
+        //    else if (Popup_CreateDeviceDetails.IsOpen)
+        //    {
+        //        tbIoTHubOwnerConString3.Text = ""; //Needs to be Owner Connection string.
+        //        tbDeviceId3.Text = "";
+        //    }
+        //}
 
         private void DeviceProcessingModeCommands_Opening(object sender, object e)
         {

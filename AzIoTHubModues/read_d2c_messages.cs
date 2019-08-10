@@ -18,15 +18,15 @@ namespace read_d2c_messages
         public delegate void ActionReceivedText(string recvTxt);
         // Event Hub-compatible endpoint
         // az iot hub show --query properties.eventHubEndpoints.events.endpoint --name {your IoT Hub name}
-        private readonly static string s_eventHubsCompatibleEndpoint = "sb://ihsuproddmres016dednamespace.servicebus.windows.net/";
+        //private readonly static string s_eventHubsCompatibleEndpoint = "sb://ihsuproddmres016dednamespace.servicebus.windows.net/";
 
-        // Event Hub-compatible name
-        // az iot hub show --query properties.eventHubEndpoints.events.path --name {your IoT Hub name}
-        private readonly static string s_eventHubsCompatiblePath = "iothub-ehub-mynewhub-1918909-a3ba8a9102";
+        //// Event Hub-compatible name
+        //// az iot hub show --query properties.eventHubEndpoints.events.path --name {your IoT Hub name}
+        //private readonly static string s_eventHubsCompatiblePath = "iothub-ehub-mynewhub-1918909-a3ba8a9102";
 
-        // az iot hub policy show --name service --query primaryKey --hub-name {your IoT Hub name}
-        private readonly static string s_iotHubSasKey = "Ek6Mw8PvsQQV8pdJZj+LxALA0pGB+9f0rorJKDrjfoU=";
-        private readonly static string s_iotHubSasKeyName = "service";
+        //// az iot hub policy show --name service --query primaryKey --hub-name {your IoT Hub name}
+        //private readonly static string s_iotHubSasKey = "Ek6Mw8PvsQQV8pdJZj+LxALA0pGB+9f0rorJKDrjfoU=";
+        //private readonly static string s_iotHubSasKeyName = "service";
         private static EventHubClient s_eventHubClient;
 
         // Asynchronously create a PartitionReceiver for a partition and then start 
@@ -77,17 +77,50 @@ namespace read_d2c_messages
         {
             OnDeviceStatusUpdateD = onDeviceStatusUpdateD;
             
-            System.Diagnostics.Debug.WriteLine("IoT Hub Quickstarts - Read device to cloud messages. Ctrl-C to exit.\n");
+            System.Diagnostics.Debug.WriteLine("IoT Hub Quickstarts - Read device to cloud messages.\n");
 
             // Create an EventHubClient instance to connect to the
             // IoT Hub Event Hubs-compatible endpoint.
-            var connectionString = new EventHubsConnectionStringBuilder(new Uri(s_eventHubsCompatibleEndpoint), s_eventHubsCompatiblePath, s_iotHubSasKeyName, s_iotHubSasKey);
-            s_eventHubClient = EventHubClient.CreateFromConnectionString(connectionString.ToString());
+            //var connectionString1 = new EventHubsConnectionStringBuilder(new Uri(s_eventHubsCompatibleEndpoint), s_eventHubsCompatiblePath, s_iotHubSasKeyName, s_iotHubSasKey);
+
+
+            //Get some of event cs properties from hub cs
+            var hubccs = AzureConnections.MyConnections.IoTHubConnectionString;
+            string[] split = hubccs.Split(new char[] { ';' });
+            string saskey = "";
+            foreach (var xx in split)
+            {
+                string[] split2 = xx.Split(new char[] { '=' });
+                if (split2[0].ToLower() == "SharedAccessKey".ToLower())
+                {
+                    saskey = split2[1];
+                    //The second split mat have removed = from end of saskey
+                    if (hubccs[hubccs.Length - 1] == '=')
+                            saskey += "=";
+                    break;
+                }
+
+            }
+            string iotHubSasKeyName  = AzureConnections.MyConnections.IotHubKeyName;
+
+
+            EventHubsConnectionStringBuilder EventHubConnectionString = null;
+
+            if (AzureConnections.MyConnections.EHMethod1)
+                EventHubConnectionString = new EventHubsConnectionStringBuilder(AzureConnections.MyConnections.EventHubsConnectionString);
+            else
+            EventHubConnectionString = new EventHubsConnectionStringBuilder(
+                new Uri(AzureConnections.MyConnections.EventHubsCompatibleEndpoint),
+                AzureConnections.MyConnections.EventHubsCompatiblePath,
+                AzureConnections.MyConnections.IotHubKeyName,
+                AzureConnections.MyConnections.EventHubsSasKey);
+
+
+            s_eventHubClient = EventHubClient.CreateFromConnectionString(EventHubConnectionString.ToString());
 
             // Create a PartitionReciever for each partition on the hub.
             var runtimeInfo = await s_eventHubClient.GetRuntimeInformationAsync();
             var d2cPartitions = runtimeInfo.PartitionIds;
-
             CancellationTokenSource cts = new CancellationTokenSource();
 
             //System.Diagnostics.Debug.CancelKeyPress += (s, e) =>

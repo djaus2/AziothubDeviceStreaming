@@ -13,7 +13,7 @@ namespace AzureConnections
 {
     public static partial class MyConnections
     {
-
+   
 
         //private static IBuffer GetMD5Hash(string key)
         //{
@@ -212,7 +212,7 @@ namespace AzureConnections
             return "";
         }
 
-        public static string GetDeviceAsync(string IoTHubOwnerconnectionString, string deviceId)
+        public static string GetDeviceCSAsync(string IoTHubOwnerconnectionString, string deviceId)
         {
             RegistryManager registryManager = RegistryManager.CreateFromConnectionString(IoTHubOwnerconnectionString);
             registryManager.OpenAsync().GetAwaiter().GetResult();

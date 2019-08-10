@@ -11,44 +11,94 @@
 
     <Grid Height="40" >
         <Grid.RowDefinitions>
-            <!--<RowDefinition MinHeight="30"  />-->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40" />
-            <ColumnDefinition Width="90" />
+            <ColumnDefinition Width="50" />
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!--<StackPanel x:Name="MultiComment" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"  Margin="0,5,10,5" Orientation="Horizontal" >--><!--
-        <TextBlock x:Name="MultiComment" FontSize="16" FontStyle="Italic"   Foreground="Green"   TextWrapping="NoWrap"  Margin="0" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
-                TextTrimming="WordEllipsis" 
-                 Text="{Binding Path=Code}"  />
-            --><!--<TextBox x:Name="MultiComment2" BorderThickness="0" FontSize="16"  FontStyle="Italic"  IsColorFontEnabled="True" Foreground="Green"   TextWrapping="Wrap"  AcceptsReturn="True" Height="300"
-                 Text="{Binding Path=Code}" Visibility="Visible" Margin="0,0,50,0" />-->
-        <!--</StackPanel>-->
+        <StackPanel x:Name="SectionHeading" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"  Orientation="Horizontal" VerticalAlignment="Center"   >
+            <ToggleButton x:Name="Heading1Toggle"  Checked ="Button_Click_4" Unchecked="Button_Click_4" IsChecked="False" Margin="10,0,10,0"  IsThreeState="False" VerticalAlignment="Center" 
+                  ToolTipService.ToolTip="Toggle Section." >
+                <Viewbox x:Name="Heading1Viewbox" MaxHeight="40" MaxWidth="40" >
+                    <SymbolIcon x:Name="Heading1Icon" Symbol="Library" Foreground="Blue"/>
+                </Viewbox>
+            </ToggleButton>
+            <TextBlock x:Name="SectionHeading1Heading"  Text="{Binding Path=Code}"  FontSize="24" FontWeight="Bold" Foreground="Blue" Margin="10,0,10,0" VerticalAlignment="Center" />
+        </StackPanel>
 
         <TextBlock x:Name="Comment" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"  FontSize="16" Foreground="Green" FontStyle="Italic" Margin="0"/>
-        
-        <Button x:Name="Butt"  Grid.Row="0" Grid.Column="1"  FontSize="16"   Click="Button_Click" Height="40" Width="57"   >
+
+        <Button x:Name="AzCliCodeSnippetButton"  Grid.Row="0" Grid.Column="1"  FontSize="16"   Click="Button_Click" Height="40" Width="57"   
+                 ToolTipService.ToolTip="Copy Az Cli Code Snippet." >
             <Viewbox MaxHeight="40" MaxWidth="40" >
                 <SymbolIcon Symbol="Copy"/>
             </Viewbox>
         </Button>
-        <TextBlock x:Name="Txt" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="3"  FontSize="16"   />
+        <TextBlock x:Name="AzCliCodeSnippet" Grid.Row="0" Grid.Column="3" Text="{Binding Path=Code}" Foreground="Blue"  FontSize="16" Margin="10,0,0,0"  VerticalAlignment="Center" />
+
 
         <Border x:Name="Separator" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"  Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}" Height="4" Margin="0,0,0,5" Padding="0" CornerRadius="0"/>
 
 
         <TextBlock x:Name="Heading" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" FontSize="18"  FontWeight="Bold" FontStyle="Italic" Foreground="Blue"  Margin="0,10,0,0"/>
+        
         <StackPanel x:Name="Link" Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3">
-            <TextBlock Text="{Binding Path=Code}" VerticalAlignment="Center"  FontSize="16" Margin="0" FontStyle="Italic" Foreground="Purple" />
-            <HyperlinkButton x:Name="HyperLink" Content="Install Az CLI." VerticalAlignment="Center" NavigateUri="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest"  FontSize="16" Margin="10,0,0,0"/>
+            <TextBlock x:Name="LinkLabel" Text="{Binding Path=Code}" VerticalAlignment="Center"  FontSize="16" Margin="0" FontStyle="Italic" Foreground="Purple" />
+            <HyperlinkButton x:Name="LinkHyperLink" Content="Install Az CLI." VerticalAlignment="Center" NavigateUri="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest"  FontSize="16" Margin="10,0,0,0"/>
         </StackPanel>
+        
         <StackPanel x:Name="Info"  Orientation="Horizontal" Grid.Row="12" Grid.Column="3" Grid.ColumnSpan="1">
-            <TextBlock Text="{Binding Path=Code}" FontSize="16" FontStyle="Italic" Foreground="Purple"  FontWeight="Bold" Width="300"  TextAlignment="Right" />
-            <TextBox x:Name="InfoVal" PlaceholderText="{Binding Path=InfoValue}" FontSize="16" Width="500" TextChanged="InfoVal_TextChanged"  />
+            <TextBlock x:Name="InfoLabel" Text="{Binding Path=Code}" FontSize="16" FontStyle="Italic" Foreground="Purple"  FontWeight="Bold" Width="300"  TextAlignment="Right" />
+            <TextBox x:Name="InfoVal" Text="{Binding Path=TextInfo}" PlaceholderText="{Binding Path=InfoValue}" FontSize="16" Width="500"   />
         </StackPanel>
+
+        <Grid x:Name="InfoWithButtonsOnRight"   Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Margin="10,0,0,0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="500" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <SolidColorBrush x:Key="brush" Color="Silver"/>
+            </Grid.Resources>
+            <TextBlock x:Name="InfoWithButtonsOnRightLabel" Grid.Row="0" Grid.Column="0"  Text="{Binding Path=Code}" FontSize="16" FontStyle="Italic" Foreground="Purple"  FontWeight="Bold" Width="240"  TextAlignment="Right" Margin="0,10,0,0" />
+            <TextBox x:Name="InfoWithButtonsOnRightVal" Grid.Row="0" Grid.Column="1"  Text="{Binding Path=TextInfo, Mode=TwoWay}" PlaceholderText="{Binding Path=InfoValue}" FontSize="16" Width="500"   />
+            <Button x:Name="InfoWithButtonsOnRightButton_Paste" Grid.Row="0" Grid.Column="2"   FontSize="16"   Click="Button_Click"  Height="38" Width="38" Margin="0"  Visibility="{Binding Path=Show1stButton}" 
+                    ToolTipService.ToolTip="Paste info." >
+                <Viewbox x:Name="InfoWithButtonsOnRightViewBox"  >
+                    <SymbolIcon x:Name="InfoWithButtonsOnRightSymbol" Symbol="Paste"/>
+                </Viewbox>
+            </Button>
+            <Button x:Name="InfoWithButtonsOnRightButton_New"  Grid.Row="0" Grid.Column="3"  FontSize="16"   Click="Button_Click"  Height="38" Width="38"  Margin="2" Visibility="{Binding Path=Show2ndButton}" 
+                    ToolTipService.ToolTip="Create new Entity using this name." 
+                    >
+                <Viewbox x:Name="InfoWithButtonsOnRightViewBox2New"  >
+                    <SymbolIcon x:Name="InfoWithButtonsOnRightSymbol2" Symbol="Add"/>
+                </Viewbox>
+            </Button>
+            <Button x:Name="InfoWithButtonsOnRightButton_Delete"  Grid.Row="0" Grid.Column="4"  FontSize="16"   Click="Button_Click"  Height="38" Width="38"   Margin="0" Visibility="{Binding Path=Show3rdButton}" 
+                    ToolTipService.ToolTip="Delete the named Entity." >
+                <Viewbox x:Name="InfoWithButtonsOnRightViewBox3" >
+                    <SymbolIcon x:Name="InfoWithButtonsOnRightSymbol3" Symbol="Delete"/>
+                </Viewbox>
+            </Button>
+            <Button x:Name="InfoWithButtonsOnRightButton_Action"  Grid.Row="0" Grid.Column="5"  FontSize="16"   Click="Button_Click"  Height="38" Width="38"   Margin="0"  Visibility="{Binding Path=Show4thButton}"
+                     ToolTipService.ToolTip="Get this info from the other info if possible." >
+                <Viewbox x:Name="InfoWithButtonsOnRightViewBox4"  >
+                    <SymbolIcon x:Name="InfoWithButtonsOnRightSymbol4" Symbol="Download"/>
+                </Viewbox>
+            </Button>
+            
+        </Grid>
 
     </Grid>
 </Page>

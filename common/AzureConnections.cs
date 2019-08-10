@@ -17,11 +17,42 @@ namespace AzureConnections
         public delegate void ActionReceivedText(string recvTxt);
         public static ActionReceivedText OnStatusUpdateD { get; set; } = null;
 
-        public static string DeviceId { get; set; } = "MyNewDevice";
+        /// <summary>
+        /// Hub Connections
+        /// </summary>
+        /// 
+        public static bool EHMethod1 { get; set; } 
+
+        public static string AzureGroup { get; set; } = "";
+
+        public static string IoTHubName { get; set; } = "";
+
+        public static string SKU { get; set; } = "";
+
+        public static string DeviceId { get; set; } = "";
 
         public static string IoTHubConnectionString { get; set; } = "";
 
         public static string DeviceConnectionString { get; set; } = "";
+
+        public static string EventHubsConnectionString { get; set; } = "";
+
+        public static string EventHubsCompatibleEndpoint { get; set; } = "";
+
+        // Event Hub-compatible name
+        // az iot hub show --query properties.eventHubEndpoints.events.path --name {your IoT Hub name}
+        public static string EventHubsCompatiblePath { get; set; } = "";
+
+        public static string IotHubKeyName { get; set; }  = "";
+
+        public static string HUbSku { get; set; } = "";
+
+        public static string IoTHubLocation { get; set; } = "";
+
+        public static string EventHubsSasKey { get; set; } = "";
+
+
+        /////////////////////////////////////////////////////////////////////////
 
 
         public static int DeviceAction = 3; //Uppercase. See OnDeviceRecvTextIO() below for options

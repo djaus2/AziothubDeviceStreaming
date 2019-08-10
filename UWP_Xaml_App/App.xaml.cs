@@ -80,6 +80,8 @@ namespace UWPXamlApp
                     AppViewBackButtonVisibility.Collapsed;
             }
 
+            LoadConSettings();
+
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
@@ -92,6 +94,49 @@ namespace UWPXamlApp
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+
+        public class ConDetail
+        {
+            public string ConString { get; set; }
+            public string DevString { get; set; }
+            public string DevId { get; set; }
+            public ConDetail(string a, string b, string c)
+            {
+                ConString = a;
+                DevString = b;
+                DevId = c;
+            }
+
+            public ConDetail()
+            {
+            }
+
+        }
+
+        public void LoadConSettings()
+        {
+            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.Keys.Contains("ConDetail"))
+            {
+                Windows.Storage.ApplicationDataCompositeValue composite =
+   (Windows.Storage.ApplicationDataCompositeValue)localSettings.Values["ConDetail"];
+                if (composite != null)
+                {
+                    ConDetail details = new ConDetail();
+                    details.ConString = (string)composite["ConString"];
+                    details.DevString = (string)composite["DevString"];
+                    details.DevId = (string)composite["DevId"];
+                    SaveConnectionSettingsToAzureConnections(details);
+                }
+            }
+        }
+
+        private void SaveConnectionSettingsToAzureConnections(ConDetail ccondetail)
+        {
+            AzureConnections.MyConnections.IoTHubConnectionString = ccondetail.ConString;
+            AzureConnections.MyConnections.DeviceConnectionString = ccondetail.DevString;
+            AzureConnections.MyConnections.DeviceId = ccondetail.DevId;
         }
 
 

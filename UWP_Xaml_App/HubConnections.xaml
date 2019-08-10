@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="UWPXamlApp.HubConnections"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWPXamlApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <StackPanel>
+            <local:NewHubElement x:Name="NH1"  DisplayMode="code"     Code="az login" />
+            <local:NewHubElement DisplayMode="heading"   Code="Create new Resource Group (Optional)" />
+            <local:NewHubElement x:Name="NGCode"   DisplayMode="code"     Code="az group create --name GroupName --location centralus" />
+            <local:NewHubElement x:Name="NH2"  DisplayMode="info" InfoValue="Enter unique IoTHub Name1"  Code="IoTHubName3: " />
+            <local:NewHubElement x:Name="NH3"  DisplayMode="info" InfoValue="Enter unique IoTHub Name2"  Code="IoTHubName4: " />
+            <local:NewHubElement x:Name="NH4"  DisplayMode="info" InfoValue="Enter unique IoTHub Name"  Code="IoTHubName: " />
+            <local:NewHubElement x:Name="NH5"  DisplayMode="info" InfoValue="Enter unique IoTHub Name"  Code="IoTHubName: " />
+            <local:NewHubElement x:Name="NH6"  DisplayMode="info" InfoValue="Enter unique IoTHub Name"  Code="IoTHubName: " />
+            <local:NewHubElement x:Name="NH7"  DisplayMode="info" InfoValue="Enter unique IoTHub Name"  Code="IoTHubName: " />
+            <local:NewHubElement x:Name="NH8"  DisplayMode="info" InfoValue="Enter unique IoTHub Name"  Code="IoTHubName: " />
+            <local:NewHubElement x:Name="NH9"  DisplayMode="info" InfoValue="Enter unique IoTHub Name"  Code="IoTHubName: " />
+            <local:NewHubElement x:Name="NH10"  DisplayMode="info" InfoValue="Enter unique IoTHub Name"  Code="IoTHubName: " />
+            <!--<local:NewHubElement x:Name="NH11"  DisplayMode="info" InfoValue="Enter unique IoTHub Name"  Code="IoTHubName: " />-->
+        </StackPanel>
+    </ScrollViewer>
+</Page>
