@@ -47,8 +47,9 @@ namespace UWPXamlApp
             else
             {
                 //Last two items are cleared because new Hub has no devices.
-                if (""== AzureConnections.MyConnections.DeviceId+ AzureConnections.MyConnections.DeviceConnectionString)
-                    SaveSettingsToAppData();
+                //if (""== AzureConnections.MyConnections.DeviceId+ AzureConnections.MyConnections.DeviceConnectionString)
+                //Always save in-app version of settings upon return from settings page to app storage
+                SaveSettingsToAppData();
             }
 
             service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
@@ -253,7 +254,7 @@ namespace UWPXamlApp
         //    SaveSettingsToAppData();
         //}
 
-        private void SaveSettingsToAppData()
+        public static void SaveSettingsToAppData()
         {
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             if (localSettings.Values.Keys.Contains("ConDetail"))
@@ -520,6 +521,19 @@ namespace UWPXamlApp
 
             Environment.SetEnvironmentVariable("DEVICE_ID", AzureConnections.MyConnections.DeviceId);
             Environment.SetEnvironmentVariable("IOTHUB_CONN_STRING_CSHARP", AzureConnections.MyConnections.IoTHubConnectionString);
+        }
+
+        private void CommandBar_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            CommandBar cb = (sender is CommandBar) ? (CommandBar)sender : null;
+            if(cb != null)
+            {
+                BtnSettings.IsCompact = !BtnSettings.IsCompact;
+                BtnBasicMode.IsCompact = BtnSettings.IsCompact;
+                BtnFeatureMode.IsCompact = BtnSettings.IsCompact;
+                BtnExtendedMode.IsCompact = BtnSettings.IsCompact;
+            }
+            
         }
     }
 }

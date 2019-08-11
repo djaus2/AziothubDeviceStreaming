@@ -18,11 +18,18 @@
     </Page.Resources>
 
     <StackPanel x:Name="Page" Height="863" VerticalAlignment="Top">
-        <TextBlock Text="Sportronics: UWP Azure IoT Hub Device Streaming" Margin ="100,20,20,20" Foreground="Blue" FontSize="32" FontWeight="Bold"/>
-        <CommandBar x:Name="SvcCommands" Background="Brown" Margin="0" Height="30" Foreground="AntiqueWhite"  >
+        <StackPanel  Orientation="Horizontal" VerticalAlignment="Top">
+            <AppBarButton Icon="Setting"  Label="Settings" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="5" FontSize="30"/>
+            <TextBlock Text="Sportronics: UWP Azure IoT Hub Device Streaming" Margin ="100,20,20,20" Foreground="Blue" FontSize="32" FontWeight="Bold"/>
+        </StackPanel>
+        <CommandBar x:Name="SvcCommands" Background="Brown" Margin="0"  Foreground="AntiqueWhite" >
+
+            <AppBarButton Icon="Setting"  Label="Settings" IsEnabled="True" IsCompact="True"  Click="AppBarButton_Click" Tag="5" Foreground="AntiqueWhite" FontWeight="Bold" ToolTipService.ToolTip="IoT Hub Connection Settings" />
+            <AppBarButton Icon="Setting"  Label="Settings" IsEnabled="True" IsCompact="True"  Click="AppBarButton_Click" Tag="5" Foreground="AntiqueWhite" FontWeight="Bold" ToolTipService.ToolTip="IoT Hub Connection Settings" />
+
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
-                    <RadioButton x:Name = "rbSvcModeBasic" FontSize="12" Foreground="White" Margin = "10,0,0,0"   GroupName = "SvcMode" Content="Basic Mode"  Tag="0" Width="100"  />
+                    <RadioButton x:Name = "rbSvcModeBasic" FontSize="12" Foreground="White" Margin = "10,0,0,0"  IsChecked ="False"  GroupName = "SvcMode" Content="Features Mode" Tag="0" Width="100" />
                     <RadioButton x:Name = "rbSvcModeFeature" FontSize="12" Foreground="White" Margin = "10,0,0,0"  IsChecked ="True"  GroupName = "SvcMode" Content="Features Mode" Tag="1" Width="100" />
                     <RadioButton x:Name = "rbSvcModeExp" Margin = "0" FontSize="12" Foreground="White"   GroupName = "SvcMode" Content="Experimental" Tag="2" Width="100" />
                     <TextBlock Text="Service Status:"  Margin="10,0,0,0" Foreground="Yellow" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic" FontWeight="Bold" />
@@ -59,6 +66,57 @@
                     </Frame>
                 </AppBarElementContainer>
             </CommandBar.SecondaryCommands>
+        </CommandBar>
+        <CommandBar Background="Green" Tapped="CommandBar_Tapped" >
+            <AppBarButton x:Name="BtnSettings" Icon="Setting"  Label="Settings" IsEnabled="True" IsCompact="True"  Click="AppBarButton_Click" Tag="0" Foreground="AntiqueWhite" FontWeight="Bold" ToolTipService.ToolTip="IoT Hub Connection Settings" />
+            <AppBarSeparator/>
+            <!--<TextBlock Text="Mode: " Foreground="Yellow" FontWeight="Bold" FontStyle="Italic" />-->
+            <!--<AppBarToggleButton Icon="Shuffle" Label="Shuffle" Click="AppBarButton_Click"/>-->
+            <!--<AppBarToggleButton Icon="RepeatAll" Label="Repeat" Click="AppBarButton_Click"/>
+            <AppBarSeparator/>-->
+            <AppBarButton x:Name="BtnBasicMode" Icon="Back" Label="Basic Mode" Click="AppBarButton_Click" Tag="1" Foreground="AntiqueWhite" FontWeight="Bold"  ToolTipService.ToolTip="As per SDK Sample"/>
+            <AppBarButton  x:Name="BtnFeatureMode" Icon="AllApps" Label="Features Mode" Click="AppBarButton_Click" Tag="2" Foreground="Yellow" Background="Red" FontWeight="Bold"  ToolTipService.ToolTip="Features as per this apps"/>
+            <AppBarButton x:Name="BtnExtendedMode" Icon="AddFriend" Label="Extended Mode" Click="AppBarButton_Click" Tag="3" Foreground="AntiqueWhite" FontWeight="Bold"  ToolTipService.ToolTip="Extended Features, experimental"/>
+
+
+            <CommandBar.SecondaryCommands>
+                <!--<AppBarButton Icon="Setting"  Label="SET Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="1"/>
+                <AppBarButton Icon="Permissions"  Label="GET Device Connection Details" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="2"/>
+                <AppBarButton Icon="Add"  Label="ADD new Device to IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="3"/>
+                <AppBarButton Icon="Delete"  Label="DELETE current Device from IoTHub" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="4"/>-->
+                    <!--<AppBarSeparator/>-->
+                    <AppBarButton Icon="Setting"  Label="Settings" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="5"/>
+                    <AppBarButton Icon="Save"  Label="Save Settings to App Storage" IsEnabled="True" Foreground="Crimson" Click="AppBarButton_Click" Tag="6"/>
+                    <AppBarSeparator/>
+                    <AppBarElementContainer>
+                        <Frame x:Name="GrpDevlAutoStart2" >
+                            <StackPanel>
+                                <RadioButton x:Name = "rbAutoStart2" Margin = "0" Checked="RbAutoStart_Checked"  GroupName = "DevAutoStart" Content="Send to Device: Auto Start"  Tag="0" />
+                                <RadioButton x:Name = "rbNoAutoStart2" Margin = "0" Checked = "RbAutoStart_Checked" GroupName = "DevAutoStart" Content="Send to Device: No Auto Start" Tag="1"/>
+                                <RadioButton x:Name = "rbNoChangeAutoStart2" Margin = "0" Checked = "RbAutoStart_Checked" IsChecked ="True" GroupName = "DevAutoStart" Content="No change " Tag="2" />
+                            </StackPanel>
+                        </Frame>
+                    </AppBarElementContainer>
+                    <AppBarSeparator/>
+                    <AppBarElementContainer>
+                        <Frame x:Name="GrpDevlisten2"  >
+                            <StackPanel>
+                                <RadioButton x:Name = "rbKeepListening2" Margin = "0" Checked ="RbKeepListening_Checked"  GroupName = "DevKeepListening" Content="Send to Device: Keep Listening" Tag="0"/>
+                                <RadioButton x:Name = "rbUnKeepListening2" Margin = "0" Checked = "RbKeepListening_Checked" GroupName = "DevKeepListening" Content="Send to Device: Stop Keep Listening" Tag="1"/>
+                                <RadioButton x:Name = "rbNoChangeListening2" Margin = "0" Checked = "RbKeepListening_Checked" IsChecked ="True" GroupName = "DevKeepListening" Content="No change " Tag="2"/>
+                            </StackPanel>
+                        </Frame>
+                    </AppBarElementContainer>
+              
+            </CommandBar.SecondaryCommands>
+
+            <CommandBar.Content>
+                <StackPanel Orientation="Horizontal">
+
+                <TextBlock Text="Service Status:"  Margin="10,0,0,0" Foreground="Yellow" HorizontalAlignment="Left" FontSize="16" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Bottom" />
+                <TextBlock x:Name="tbSvcStat" Text="Hello ..." Foreground="AntiqueWhite" HorizontalAlignment="Left" FontSize="16" Margin="20,0,0,0" VerticalAlignment="Bottom"/>
+                </StackPanel>
+            </CommandBar.Content>
         </CommandBar>
         <!--<Popup VerticalOffset="10"                x:Name="Popup_SetConnectionDetails" 
                HorizontalAlignment="Left" 
