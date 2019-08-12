@@ -23,6 +23,7 @@ namespace UWPXamlApp
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     tbSvcMsgIn.Text = recvdMsg;
+                   
                 });
             });
         }
@@ -32,7 +33,7 @@ namespace UWPXamlApp
             Task.Run(async () => {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    tbSvcStatus.Text = msgIn;
+                    tbSvcStat.Text = msgIn;
                 });
             });
         }
@@ -40,6 +41,12 @@ namespace UWPXamlApp
         {
             DeviceStream_Svc.deviceStream_Svc?.Cancel();
         }
+
+        public bool svcCustomClassMode { get; set; } = false;
+        public bool svcBasicMode { get; set; } = false;
+
+        public int DevAutoStart { get; set; } = 2;
+        public int DevKeepListening { get; set; }  = 2;
 
         private async void Button_Click_Svc(object sender, RoutedEventArgs e)
         {
@@ -51,14 +58,14 @@ namespace UWPXamlApp
             //Whereas 
             int devAutoStart = DevAutoStart;
             int devKeepListening = DevKeepListening;
-            rbNoChangeListening.IsChecked = true;
-            rbNoChangeAutoStart.IsChecked = true;
+
+
+            ClearAllToggles();
 
             //These values are passed if true with each connection. If not passed then the device clears them.
             bool keepAlive = (chkKeepAlive.IsChecked == true);
             bool responseExpected = (chkExpectResponse.IsChecked == true);
-            bool svcCustomClassMode = (rbSvcModeExp.IsChecked == true);
-            bool svcBasicMode = (rbSvcModeBasic.IsChecked == true);
+            
 
 
             if (!DeviceStream_Svc.SignalSendMsgOut(msgOut, keepAlive, responseExpected))
@@ -91,33 +98,6 @@ namespace UWPXamlApp
 
             }
         }
-
-        private int DevKeepListening = 2;
-        private void RbKeepListening_Checked(object sender, RoutedEventArgs e)
-        {
-            string dm = Convert.ToString(((RadioButton)sender)?.Tag);
-            if (!string.IsNullOrEmpty(dm))
-            {
-                if (!int.TryParse(dm, out DevKeepListening))
-                    DevKeepListening = 2;
-                SvcCommands.IsOpen = false;
-            }
-
-        }
-
-        private int DevAutoStart = 2;
-        private void RbAutoStart_Checked(object sender, RoutedEventArgs e)
-        {
-            string dm = Convert.ToString(((RadioButton)sender)?.Tag);
-            if (!string.IsNullOrEmpty(dm))
-            {
-                if (!int.TryParse(dm, out DevAutoStart))
-                    DevAutoStart = 2;
-                SvcCommands.IsOpen = false;
-            }
-        }
-
-
 
     }
 }

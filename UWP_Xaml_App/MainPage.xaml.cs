@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using AzIoTHubDeviceStreams;
 using System.Threading.Tasks;
 using Windows.UI.Core;
+using Windows.UI;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -44,14 +45,7 @@ namespace UWPXamlApp
         {
             if (IsFirstTime)
                 LoadConSettings();
-            else
-            {
-                //Last two items are cleared because new Hub has no devices.
-                //if (""== AzureConnections.MyConnections.DeviceId+ AzureConnections.MyConnections.DeviceConnectionString)
-                //Always save in-app version of settings upon return from settings page to app storage
-                SaveSettingsToAppData();
-            }
-
+            
             service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
             device_id = AzureConnections.MyConnections.DeviceId;
             device_cs = AzureConnections.MyConnections.DeviceConnectionString;
@@ -59,6 +53,9 @@ namespace UWPXamlApp
 
             if (IsFirstTime)
             {
+                AppBarButton_Click(BtnFeatureMode, null);
+                AppBarButton_Click(BtnFeatureMode2, null);
+
                 ListviewTransports2.ItemsSource = ListEnum;
                 ListviewTransports2.SelectedItem = AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType;
                 ListviewTransports2.ScrollIntoView(ListviewTransports2.SelectedItem);
@@ -126,64 +123,172 @@ namespace UWPXamlApp
             //}//Popup_NewIoTHub
             //else 
 
-            if ("5" == (string)cntrl.Tag)
+            //if ("5" == (string)cntrl.Tag)
+            //{
+            //    this.Frame.Navigate(typeof(NewHub), null);
+            //}
+            //else if ("6" == (string)cntrl.Tag)
+            //{
+            //    SaveSettingsToAppData();
+            //}
+            bool issvcMode = false;
+            bool isDeviceMode = false;
+            bool isSvc2ndMenu = false;
+            bool isDevice2ndMenu = false;
+            switch((string)cntrl.Tag)
             {
-                this.Frame.Navigate(typeof(NewHub), null);
+                case "0":
+                    this.Frame.Navigate(typeof(NewHub), null);
+                    break;
+                case "1":
+                    this.BtnBasicMode.Foreground = new SolidColorBrush(Colors.Yellow);
+                    this.BtnFeatureMode.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnExtendedMode.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnBasicMode.Background = new SolidColorBrush(Colors.Green);
+                    this.BtnFeatureMode.Background = SvcCommands2.Background;
+                    this.BtnExtendedMode.Background = SvcCommands2.Background;
+                    svcBasicMode = true;
+                    svcCustomClassMode = false;
+                    issvcMode = true;
+                    break;
+                case "2":
+                    this.BtnBasicMode.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnFeatureMode.Foreground = new SolidColorBrush(Colors.Yellow);
+                    this.BtnExtendedMode.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnBasicMode.Background = SvcCommands2.Background;
+                    this.BtnFeatureMode.Background = new SolidColorBrush(Colors.Green);
+                    this.BtnExtendedMode.Background = SvcCommands2.Background;
+                    svcBasicMode = false;
+                    svcCustomClassMode = false;
+                    issvcMode = true;
+                    break;
+                case "3":
+                    this.BtnBasicMode.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnFeatureMode.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnExtendedMode.Foreground = new SolidColorBrush(Colors.Yellow);
+                    this.BtnBasicMode.Background = SvcCommands2.Background;
+                    this.BtnFeatureMode.Background = SvcCommands2.Background;
+                    this.BtnExtendedMode.Background = new SolidColorBrush(Colors.Green);
+                    svcBasicMode = false;
+                    svcCustomClassMode = true;
+                    issvcMode = true;
+                    break;
+                case "11":
+                    this.BtnBasicMode2.Foreground = new SolidColorBrush(Colors.Yellow);
+                    this.BtnFeatureMode2.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnExtendedMode2.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnBasicMode2.Background = new SolidColorBrush(Colors.Red);
+                    this.BtnFeatureMode2.Background = DeviceProcessingModeCommands.Background;
+                    this.BtnExtendedMode2.Background = DeviceProcessingModeCommands.Background;
+                    deviceBasicMode = true;
+                    deviceUseCustomClass = false;
+                    isDeviceMode = true;
+                    break;
+                case "12":
+                    this.BtnBasicMode2.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnFeatureMode2.Foreground = new SolidColorBrush(Colors.Yellow);
+                    this.BtnExtendedMode2.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnBasicMode2.Background = DeviceProcessingModeCommands.Background;
+                    this.BtnFeatureMode2.Background = new SolidColorBrush(Colors.Red);
+                    this.BtnExtendedMode2.Background = DeviceProcessingModeCommands.Background;
+                    deviceBasicMode = false;
+                    deviceUseCustomClass = false;
+                    isDeviceMode = true;
+                    break;
+                case "13":
+                    this.BtnBasicMode2.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnFeatureMode2.Foreground = new SolidColorBrush(Colors.AntiqueWhite);
+                    this.BtnExtendedMode2.Foreground = new SolidColorBrush(Colors.Yellow);
+                    this.BtnBasicMode2.Background = DeviceProcessingModeCommands.Background;
+                    this.BtnFeatureMode2.Background = DeviceProcessingModeCommands.Background;
+                    this.BtnExtendedMode2.Background = new SolidColorBrush(Colors.Red);
+                    deviceBasicMode = false;
+                    deviceUseCustomClass = true;
+                    isDeviceMode = true;
+                    break;
+                case "4":
+
+                    if (AppBarToggle5.IsChecked == true)
+                        AppBarToggle5.IsChecked = false;
+                    break;
+                case "5":
+                    if (AppBarToggle4.IsChecked == true)
+                        AppBarToggle4.IsChecked = false;
+                    break;
+                case "6":
+                    if (AppBarToggle7.IsChecked == true)
+                        AppBarToggle7.IsChecked = false;
+                    break;
+                case "7":
+                    if (AppBarToggle6.IsChecked == true)
+                        AppBarToggle6.IsChecked = false;
+                    break;
+
             }
-            else if ("6" == (string)cntrl.Tag)
+            if (isSvc2ndMenu)
             {
-                SaveSettingsToAppData();
+                if ((AppBarToggle4.IsChecked == true) && !(AppBarToggle5.IsChecked == true))
+                    DevAutoStart = 0;
+                else if ((AppBarToggle5.IsChecked == true) && (!(AppBarToggle4.IsChecked == true)))
+                    DevAutoStart = 1;
+                else
+                    DevAutoStart = 2;
+
+                if ((AppBarToggle5.IsChecked == true) && !(AppBarToggle7.IsChecked == true))
+                    DevKeepListening = 0;
+                else if ((AppBarToggle7.IsChecked == true) && (!(AppBarToggle6.IsChecked == true)))
+                    DevKeepListening = 1;
+                else
+                    DevKeepListening = 2;
+            }
+            else if (isDevice2ndMenu)
+            {
+
             }
 
+            SvcCommands2.IsOpen = false;
         }
 
-        public class ConDetail
+        private void ClearAllToggles()
         {
-            public string IoTHubConnectionString { get; set; }
-            public string DeviceConnectionString { get; set; }
-            public string DeviceId { get; set; }
-            public ConDetail(string a, string b, string c)
-            {
-                IoTHubConnectionString = a;
-                DeviceConnectionString = b;
-                DeviceId = c;
-            }
 
-            public ConDetail()
-            {
-            }
-
+            AppBarToggle5.IsChecked = false;
+            AppBarToggle4.IsChecked = false;
+            AppBarToggle7.IsChecked = false;
+            AppBarToggle6.IsChecked = false;
+            DevAutoStart = 2;
+            DevKeepListening = 2;
+            SvcCommands2.IsOpen = false;
         }
 
-        private ConDetail conDetail =null;
+        //public class ConDetail
+        //{
+        //    public string IoTHubConnectionString { get; set; }
+        //    public string DeviceConnectionString { get; set; }
+        //    public string DeviceId { get; set; }
+        //    public ConDetail(string a, string b, string c)
+        //    {
+        //        IoTHubConnectionString = a;
+        //        DeviceConnectionString = b;
+        //        DeviceId = c;
+        //    }
+
+        //    public ConDetail()
+        //    {
+        //    }
+
+        //}
+
+        //private ConDetail conDetail =null;
 
         private void LoadConSettings()
         {
-            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if (localSettings.Values.Keys.Contains("ConDetail"))
-            {
-                Windows.Storage.ApplicationDataCompositeValue composite =
-                        (Windows.Storage.ApplicationDataCompositeValue)localSettings.Values["ConDetail"];
-                if (composite != null)
-                {
-                    //Ref: https://stackoverflow.com/questions/9404523/set-property-value-using-property-name
-                    Type type = typeof(IoTHubConnectionDetails); // IoTHubConnectionDetails is static class with public static properties
-                    foreach (var property in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)) //(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic))
-                    {
-                        string propertyName = property.Name;
-                        if (composite.Keys.Contains(propertyName))
-                        {
-                            //Want to implement Cons.propertyName = composite[propertyName];
-                            var propertyInfo = type.GetProperty(propertyName); //, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-                            propertyInfo.SetValue(type, composite[propertyName], null);
-                        }
-                    }
-                }
-            }
+            AppSettings.LoadConSettings();
 
+            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             if (localSettings.Values.Keys.Contains("AutoStartDevice"))
             {
-                chkAutoStart.IsChecked = (bool) localSettings.Values["AutoStartDevice"];
+                chkAutoStart.IsChecked = (bool)localSettings.Values["AutoStartDevice"];
             }
             if (localSettings.Values.Keys.Contains("KeepDeviceListening"))
             {
@@ -215,17 +320,73 @@ namespace UWPXamlApp
             else
                 tbSvcTimeout.Text = DeviceStreamingCommon.SvcTimeoutDef.ToString();
         }
+        //    Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        //    if (localSettings.Values.Keys.Contains("ConDetail"))
+        //    {
+        //        Windows.Storage.ApplicationDataCompositeValue composite =
+        //                (Windows.Storage.ApplicationDataCompositeValue)localSettings.Values["ConDetail"];
+        //        if (composite != null)
+        //        {
+        //            //Ref: https://stackoverflow.com/questions/9404523/set-property-value-using-property-name
+        //            Type type = typeof(IoTHubConnectionDetails); // IoTHubConnectionDetails is static class with public static properties
+        //            foreach (var property in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)) //(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic))
+        //            {
+        //                string propertyName = property.Name;
+        //                if (composite.Keys.Contains(propertyName))
+        //                {
+        //                    //Want to implement Cons.propertyName = composite[propertyName];
+        //                    var propertyInfo = type.GetProperty(propertyName); //, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+        //                    propertyInfo.SetValue(type, composite[propertyName], null);
+        //                }
+        //            }
+        //        }
+        //    }
 
-        private void SaveConnectionSettingsToAzureConnections(ConDetail ccondetail)
-        {
-            conDetail = ccondetail;
-            AzureConnections.MyConnections.IoTHubConnectionString = ccondetail.IoTHubConnectionString;
-            AzureConnections.MyConnections.DeviceConnectionString = ccondetail.DeviceConnectionString;
-            AzureConnections.MyConnections.DeviceId = ccondetail.DeviceId;
-            service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
-            device_id = AzureConnections.MyConnections.DeviceId;
-            device_cs = AzureConnections.MyConnections.DeviceConnectionString;
-        }
+        //    if (localSettings.Values.Keys.Contains("AutoStartDevice"))
+        //    {
+        //        chkAutoStart.IsChecked = (bool) localSettings.Values["AutoStartDevice"];
+        //    }
+        //    if (localSettings.Values.Keys.Contains("KeepDeviceListening"))
+        //    {
+        //        chKeepDeviceListening.IsChecked = (bool)localSettings.Values["KeepDeviceListening"];
+        //    }
+
+        //    if (localSettings.Values.Keys.Contains("DeviceTimeout"))
+        //    {
+        //        if (localSettings.Values["DeviceTimeout"] is double)
+        //        {
+        //            double _deviceTimeout = (double)localSettings.Values["DeviceTimeout"];
+        //            tbDeviceTimeout.Text = _deviceTimeout.ToString();
+        //        }
+        //        else
+        //            tbDeviceTimeout.Text = DeviceStreamingCommon.DeviceTimeoutDef.ToString();
+        //    }
+        //    else
+        //        tbDeviceTimeout.Text = DeviceStreamingCommon.DeviceTimeoutDef.ToString();
+        //    if (localSettings.Values.Keys.Contains("SvcTimeout"))
+        //    {
+        //        if (localSettings.Values["SvcTimeout"] is double)
+        //        {
+        //            double _svcTimeout = (double)localSettings.Values["SvcTimeout"];
+        //            tbSvcTimeout.Text = _svcTimeout.ToString();
+        //        }
+        //        else
+        //            tbSvcTimeout.Text = DeviceStreamingCommon.SvcTimeoutDef.ToString();
+        //    }
+        //    else
+        //        tbSvcTimeout.Text = DeviceStreamingCommon.SvcTimeoutDef.ToString();
+        //}
+
+        //private void SaveConnectionSettingsToAzureConnections(ConDetail ccondetail)
+        //{
+        //    conDetail = ccondetail;
+        //    AzureConnections.MyConnections.IoTHubConnectionString = ccondetail.IoTHubConnectionString;
+        //    AzureConnections.MyConnections.DeviceConnectionString = ccondetail.DeviceConnectionString;
+        //    AzureConnections.MyConnections.DeviceId = ccondetail.DeviceId;
+        //    service_cs = AzureConnections.MyConnections.IoTHubConnectionString;
+        //    device_id = AzureConnections.MyConnections.DeviceId;
+        //    device_cs = AzureConnections.MyConnections.DeviceConnectionString;
+        //}
         //private void DoneSetConnectionDetails_Click(object sender, RoutedEventArgs e)
         //{
         //    if (Popup_SetConnectionDetails.IsOpen)
@@ -256,26 +417,28 @@ namespace UWPXamlApp
 
         public static void SaveSettingsToAppData()
         {
-            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if (localSettings.Values.Keys.Contains("ConDetail"))
-            {
-                localSettings.Values.Remove("ConDetail");
-            }
-            Windows.Storage.ApplicationDataCompositeValue composite = new Windows.Storage.ApplicationDataCompositeValue();
-
-            //Ref: https://stackoverflow.com/questions/12480279/iterate-through-properties-of-static-class-to-populate-list
-            Type type = typeof(IoTHubConnectionDetails); // IoTHubConnectionDetails is static class with public static properties
-            foreach (var property in type.GetProperties()) //(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic))
-            {
-                string propertyName = property.Name;
-                var val = property.GetValue(null); // static classes cannot be instanced, so use null...
-            
-                System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}",propertyName,val));
-                composite[propertyName] = val;
-            }
-            localSettings.Values.Add("ConDetail", composite);
-
+            AppSettings.SaveSettingsToAppData();
         }
+        //    Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        //    if (localSettings.Values.Keys.Contains("ConDetail"))
+        //    {
+        //        localSettings.Values.Remove("ConDetail");
+        //    }
+        //    Windows.Storage.ApplicationDataCompositeValue composite = new Windows.Storage.ApplicationDataCompositeValue();
+
+        //    //Ref: https://stackoverflow.com/questions/12480279/iterate-through-properties-of-static-class-to-populate-list
+        //    Type type = typeof(IoTHubConnectionDetails); // IoTHubConnectionDetails is static class with public static properties
+        //    foreach (var property in type.GetProperties()) //(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic))
+        //    {
+        //        string propertyName = property.Name;
+        //        var val = property.GetValue(null); // static classes cannot be instanced, so use null...
+            
+        //        System.Diagnostics.Debug.WriteLine(string.Format("{0} {1}",propertyName,val));
+        //        composite[propertyName] = val;
+        //    }
+        //    localSettings.Values.Add("ConDetail", composite);
+
+        //}
 
         //private void CancelSetConnectionDetails_Click(object sender, RoutedEventArgs e)
         //{
@@ -534,6 +697,13 @@ namespace UWPXamlApp
                 BtnExtendedMode.IsCompact = BtnSettings.IsCompact;
             }
             
+        }
+
+        private void DeviceProcessingModeCommands_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            BtnBasicMode2.IsCompact = !BtnBasicMode2.IsCompact;
+            BtnFeatureMode2.IsCompact = BtnBasicMode2.IsCompact;
+            BtnExtendedMode2.IsCompact = BtnBasicMode2.IsCompact;
         }
     }
 }

@@ -23,7 +23,8 @@ using Windows.UI.Xaml.Navigation;
 
 namespace UWPXamlApp
 {
-    public static class IoTHubConnectionDetails
+
+    public class IoTHubConnectionDetails
     {
 
         public static bool EHMethod1 { get { return MyConnections.EHMethod1; } set { MyConnections.EHMethod1 = value; } }
@@ -116,9 +117,12 @@ namespace UWPXamlApp
                 IoTHubConnectionDetails.EventHubsCompatibleEndpoint = EventHubsCompatibleEndpoint;
             if (!string.IsNullOrEmpty(EventHubsConnectionString))
                 IoTHubConnectionDetails.EventHubsConnectionString = EventHubsConnectionString;
+            if (!string.IsNullOrEmpty(IotHubKeyName))
+                IoTHubConnectionDetails.IotHubKeyName = IotHubKeyName;
             if (!string.IsNullOrEmpty(EventHubsSasKey))
                 IoTHubConnectionDetails.EventHubsSasKey = EventHubsSasKey;
             IoTHubConnectionDetails.EHMethod1 = EHMethod1;
+            AppSettings.SaveSettingsToAppData();
         }
 
         private bool eHMethod1 = true;

@@ -13,6 +13,7 @@ namespace UWPXamlApp
     sealed partial class MainPage : Page
     {
 
+
         private string OnDeviceRecvTextIO(string msgIn, out Microsoft.Azure.Devices.Client.Message message )
         {
             message = null;
@@ -101,11 +102,12 @@ namespace UWPXamlApp
             DeviceStream_Device.deviceStream_Device?.Cancel();
         }
 
+        public bool deviceBasicMode { get; set; } = false;
+        public bool deviceUseCustomClass { get; set; } = false;
+
         private async void Button_Click_Device(object sender, RoutedEventArgs e)
         {
-
-            bool deviceBasicMode = (rbDeviceModeBasic.IsChecked == true);
-            bool deviceUseCustomClass = (rbDeviceModeExp.IsChecked == true);           
+           
             await Task.Run(() =>
             {
                 try
@@ -197,6 +199,7 @@ namespace UWPXamlApp
             {
                 AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType = (Microsoft.Azure.Devices.Client.TransportType)ListviewTransports2.SelectedItem;
                 System.Diagnostics.Debug.WriteLine(string.Format("Device Transport set to: {0}", AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType));
+                tbTransport.Text = string.Format("{0}",AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType);
                 DeviceProcessingModeCommands.IsOpen = false;
                 OnDeviceStatusUpdate(string.Format("Device Transport set to: {0}", AzIoTHubDeviceStreams.DeviceStreamingCommon.device_transportType));
             }

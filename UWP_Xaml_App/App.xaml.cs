@@ -66,6 +66,10 @@ namespace UWPXamlApp
                 {
                     //TODO: Load state from previously suspended application
                 }
+                else if (e.PreviousExecutionState == ApplicationExecutionState.NotRunning)
+                {
+                    AppSettings.LoadConSettings();
+                }
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
@@ -80,7 +84,7 @@ namespace UWPXamlApp
                     AppViewBackButtonVisibility.Collapsed;
             }
 
-            LoadConSettings();
+            
 
             if (e.PrelaunchActivated == false)
             {
@@ -96,48 +100,49 @@ namespace UWPXamlApp
             }
         }
 
-        public class ConDetail
-        {
-            public string ConString { get; set; }
-            public string DevString { get; set; }
-            public string DevId { get; set; }
-            public ConDetail(string a, string b, string c)
-            {
-                ConString = a;
-                DevString = b;
-                DevId = c;
-            }
+        //public class ConDetail
+        //{
+        //    public string ConString { get; set; }
+        //    public string DevString { get; set; }
+        //    public string DevId { get; set; }
+        //    public ConDetail(string a, string b, string c)
+        //    {
+        //        ConString = a;
+        //        DevString = b;
+        //        DevId = c;
+        //    }
 
-            public ConDetail()
-            {
-            }
+        //    public ConDetail()
+        //    {
+        //    }
 
-        }
+        //}
 
-        public void LoadConSettings()
-        {
-            Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if (localSettings.Values.Keys.Contains("ConDetail"))
-            {
-                Windows.Storage.ApplicationDataCompositeValue composite =
-   (Windows.Storage.ApplicationDataCompositeValue)localSettings.Values["ConDetail"];
-                if (composite != null)
-                {
-                    ConDetail details = new ConDetail();
-                    details.ConString = (string)composite["ConString"];
-                    details.DevString = (string)composite["DevString"];
-                    details.DevId = (string)composite["DevId"];
-                    SaveConnectionSettingsToAzureConnections(details);
-                }
-            }
-        }
+        //public void LoadConSettings()
+        //{
+        //    AppSettings.LoadConSettings();
+   //         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+   //         if (localSettings.Values.Keys.Contains("ConDetail"))
+   //         {
+   //             Windows.Storage.ApplicationDataCompositeValue composite =
+   //(Windows.Storage.ApplicationDataCompositeValue)localSettings.Values["ConDetail"];
+   //             if (composite != null)
+   //             {
+   //                 ConDetail details = new ConDetail();
+   //                 details.ConString = (string)composite["ConString"];
+   //                 details.DevString = (string)composite["DevString"];
+   //                 details.DevId = (string)composite["DevId"];
+   //                 SaveConnectionSettingsToAzureConnections(details);
+   //             }
+   //         }
+      //  }
 
-        private void SaveConnectionSettingsToAzureConnections(ConDetail ccondetail)
-        {
-            AzureConnections.MyConnections.IoTHubConnectionString = ccondetail.ConString;
-            AzureConnections.MyConnections.DeviceConnectionString = ccondetail.DevString;
-            AzureConnections.MyConnections.DeviceId = ccondetail.DevId;
-        }
+        //private void SaveConnectionSettingsToAzureConnections(ConDetail ccondetail)
+        //{
+        //    AzureConnections.MyConnections.IoTHubConnectionString = ccondetail.ConString;
+        //    AzureConnections.MyConnections.DeviceConnectionString = ccondetail.DevString;
+        //    AzureConnections.MyConnections.DeviceId = ccondetail.DevId;
+        //}
 
 
         //Ref: https://www.c-sharpcorner.com/UploadFile/909697/everything-about-back-navigation-in-uwp/

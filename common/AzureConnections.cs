@@ -43,11 +43,11 @@ namespace AzureConnections
         // az iot hub show --query properties.eventHubEndpoints.events.path --name {your IoT Hub name}
         public static string EventHubsCompatiblePath { get; set; } = "";
 
-        public static string IotHubKeyName { get; set; }  = "";
+        public static string IotHubKeyName { get; set; }  = "iothubowner";
 
         public static string HUbSku { get; set; } = "";
 
-        public static string IoTHubLocation { get; set; } = "";
+        public static string IoTHubLocation { get; set; } = "centralus";
 
         public static string EventHubsSasKey { get; set; } = "";
 
