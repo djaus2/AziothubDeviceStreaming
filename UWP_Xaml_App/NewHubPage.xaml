@@ -107,7 +107,7 @@
                     </StackPanel>
             </StackPanel>
             <local:NewHubElement DisplayMode="seperator" Color="Red"   />
-            <local:NewHubElement x:Name="h5_1" DisplayMode="sectionHeading"   Code="Get Device Connection Striung if Device Exists:" HorizontalAlignment="Left" />
+            <local:NewHubElement x:Name="h5_1" DisplayMode="sectionHeading"   Code="Get Device Connection String if Device Exists:" HorizontalAlignment="Left" />
             <StackPanel x:Name="DeviceConStringParagraph"  Visibility="Collapsed">
                 <local:NewHubElement x:Name="HubDeviceConStringCode"   DisplayMode="azCodeSnippet"     Code="{x:Bind Data1.deviceconstring,Mode=OneWay}" />
             </StackPanel>
@@ -133,18 +133,19 @@
                     <local:NewHubElement x:Name="EventHubMethod1Heading" DisplayMode="sectionHeading"  Code="Method 1. From Azure Portal"/>
                     <StackPanel x:Name="EventHubMethod1" Visibility="Collapsed">
                         <local:NewHubElement DisplayMode="comment"   Code="Copy &quot;Event Hub-Compatibility-endpoint&quot; from the Azure Portal IoT Hub-->Built-in Event Hubs tab, and paste here:" />
-                        <local:NewHubElement x:Name="NEHEventHubConnectionString"  DisplayMode="infoWithButtonsOnRight" InfoValue="Paste Hub Event Hub Device Connection String from Azure Portal"  Code="* Event Hub Connection String: " TextInfo="{x:Bind Data1.EventHubsConnectionString,Mode=TwoWay}" Property="CSDevice" />
+                        <local:NewHubElement x:Name="NEHEventHubConnectionString"  DisplayMode="infoWithButtonsOnRight" InfoValue="Paste Event Hub-Compatible ENDPOINT from Azure Portal"  Code="* Event Hub Connection String: " TextInfo="{x:Bind Data1.EventHubsConnectionString,Mode=TwoWay}" Property="CSDevice" />
+                        <local:NewHubElement DisplayMode="comment"   Code="* Nb: Not the same as any strings below." />
                     </StackPanel>
                     <local:NewHubElement x:Name="EventHubMethod2Heading" DisplayMode="sectionHeading"  Code="Method 2. Using Azure Cli" />
                     <StackPanel x:Name="EventHubMethod2" Visibility="Collapsed">
                         <local:NewHubElement DisplayMode="comment"   Code="You can get the info in 3 parts using Az Cli." />
                         <local:NewHubElement x:Name="NEHEndpointsCode"   DisplayMode="azCodeSnippet"  Code="{x:Bind Data1.EventHubEnpointhCode,Mode=TwoWay}"  />
-                        <local:NewHubElement x:Name="NEHEndpoint"  DisplayMode="infoWithButtonsOnRight" InfoValue="Enter Event Hub path" Code="Endpoint: " TextInfo="{x:Bind Data1.EventHubsCompatibleEndpoint,Mode=TwoWay}" Property="Group"  />
+                        <local:NewHubElement x:Name="NEHEndpoint"  DisplayMode="infoWithButtonsOnRight" InfoValue="Paste Event Hubs-compatible ENDPOINT" Code="Endpoint: " TextInfo="{x:Bind Data1.EventHubsCompatibleEndpoint,Mode=TwoWay}" Property="Group"  />
                         <local:NewHubElement x:Name="NEHEndpointsPath"   DisplayMode="azCodeSnippet"  Code="{x:Bind Data1.EventHubCompatiblePathCode,Mode=TwoWay}"  />
-                        <local:NewHubElement x:Name="NEHEntityPath"  DisplayMode="infoWithButtonsOnRight" InfoValue="Enter Compat pathe"  Code="EntityPath: "  Property="Hub" TextInfo="{x:Bind Data1.EventHubsCompatiblePath,Mode=TwoWay}"  />
+                        <local:NewHubElement x:Name="NEHEntityPath"  DisplayMode="infoWithButtonsOnRight" InfoValue="Paste Event Hubs-compatible PATH"  Code="EntityPath: "  Property="Hub" TextInfo="{x:Bind Data1.EventHubsCompatiblePath,Mode=TwoWay}"  />
                         <local:NewHubElement x:Name="NEHSharedAcessKeyName"  DisplayMode="infoWithButtonsOnRight" InfoValue="Enter iothubowner or service"  Code="SharedAcessKeyName: "  Property="Device" TextInfo="{x:Bind Data1.IotHubKeyName,Mode=TwoWay}"     />
                         <local:NewHubElement x:Name="NEHPrimaryKey"   DisplayMode="azCodeSnippet"  Code="{x:Bind Data1.EventHubPrimaryKeyCode,Mode=TwoWay}"  />
-                        <local:NewHubElement x:Name="NEHSharedAcessKey"  DisplayMode="infoWithButtonsOnRight" InfoValue="Paste IoT Hub Connection String"  Code="SharedAcessKey(Primary): " TextInfo="{x:Bind Data1.EventHubsSasKey,Mode=TwoWay}"  Property="CSHub"  Show4thButton="Visible"/>
+                        <local:NewHubElement x:Name="NEHSharedAcessKey"  DisplayMode="infoWithButtonsOnRight" InfoValue="Paste iothubowner or service saskey"  Code="SharedAcessKey(Primary): " TextInfo="{x:Bind Data1.EventHubsSasKey,Mode=TwoWay}"  Property="CSHub"  Show4thButton="Visible"/>
                     </StackPanel>
                 </StackPanel>
             <local:NewHubElement DisplayMode="seperator" Color="Red"   />

@@ -197,7 +197,7 @@ namespace UWPXamlApp
         public string EventHubPrimaryKeyCode
         {
             set { }
-            get { return string.Format("string.Format(az iot hub policy show --name {0} --query primaryKey --hub-name {1}", IotHubKeyName, IoTHubName); }
+            get { return string.Format("az iot hub policy show --name {0} --query primaryKey --hub-name {1}", IotHubKeyName, IoTHubName); }
         }
 
         public string LoginCode
