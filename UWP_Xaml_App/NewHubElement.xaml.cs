@@ -60,7 +60,7 @@ namespace UWPXamlApp
 
         //Ref: https://stackoverflow.com/questions/8821961/protected-member-in-sealed-class-warning-a-singleton-class
         private void SetValueDp(DependencyProperty property, object value,
-       [System.Runtime.CompilerServices.CallerMemberName] string p=null)
+       [System.Runtime.CompilerServices.CallerMemberName] string p = null)
         {
             SetValue(property, value);
             PropertyChangedEventHandler handler = PropertyChanged;
@@ -71,10 +71,15 @@ namespace UWPXamlApp
         public static ValueChanged ValueChanged { get; set; } = null;
         public enum Mode
         {
-            azCodeSnippet, heading, link, info, comment, sep, multi,
+            sectionHeading,
+            heading,
+            comment,
+            azCodeSnippet,
+            link,
+            info,
             info2,
             infoWithButtonsOnRight,
-            sectionHeading
+            seperator
         }
         public Mode DisplayMode { get; set; } = NewHubElement.Mode.azCodeSnippet;
 
@@ -96,7 +101,7 @@ namespace UWPXamlApp
         public string InfoValue
         {
             get { return infoValue; }
-            set { infoValue =value; }
+            set { infoValue = value; }
         }
 
 
@@ -139,7 +144,7 @@ namespace UWPXamlApp
         {
             if (sender is Button)
             {
-                string name = ((Button) sender).Name;
+                string name = ((Button)sender).Name;
                 if (!string.IsNullOrEmpty(name))
                 {
                     switch (name)
@@ -179,35 +184,21 @@ namespace UWPXamlApp
         {
             SectionHeading.Visibility = (DisplayMode == Mode.sectionHeading) ? Visibility.Visible : Visibility.Collapsed;
             InfoWithButtonsOnRight.Visibility = (DisplayMode == Mode.infoWithButtonsOnRight) ? Visibility.Visible : Visibility.Collapsed;
-            //Info2.Visibility = (DisplayMode == Mode.info2) ? Visibility.Visible : Visibility.Collapsed;
-            Separator.Visibility = (DisplayMode == Mode.sep) ? Visibility.Visible : Visibility.Collapsed;
+            Separator.Visibility = (DisplayMode == Mode.seperator) ? Visibility.Visible : Visibility.Collapsed;
             Comment.Visibility = (DisplayMode == Mode.comment) ? Visibility.Visible : Visibility.Collapsed;
             AzCliCodeSnippet.Visibility = (DisplayMode == Mode.azCodeSnippet) ? Visibility.Visible : Visibility.Collapsed;
             AzCliCodeSnippetButton.Visibility = AzCliCodeSnippet.Visibility;
             Heading.Visibility = (DisplayMode == Mode.heading) ? Visibility.Visible : Visibility.Collapsed;
             Link.Visibility = (DisplayMode == Mode.link) ? Visibility.Visible : Visibility.Collapsed;
             Info.Visibility = (DisplayMode == Mode.info) ? Visibility.Visible : Visibility.Collapsed;
-            //MultiComment.Visibility = (DisplayMode == Mode.multi) ? Visibility.Visible : Visibility.Collapsed;
-
             if (DisplayMode == Mode.link)
             {
                 LinkHyperLink.NavigateUri = new Uri(Url);
                 LinkHyperLink.Content = UrlText;
             }
-            else if (DisplayMode == Mode.info)
-            {
-                //InfoVal.Text = InfoValue;
-            }
-            else if (DisplayMode == Mode.sep)
+            else if (DisplayMode == Mode.seperator)
             {
                 Separator.Background = new SolidColorBrush(Color);
-            }
-            else if (DisplayMode == Mode.link)
-            {
-                // MultiComment.Text = Code;
-                //MultiComment2.Text = Code;
-                //MultiComment.Visibility = Visibility.Visible;
-                //MultiComment2.Visibility = Visibility.Collapsed;
             }
             this.DataContext = this;
         }

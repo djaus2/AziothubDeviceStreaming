@@ -8,10 +8,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
 
-
     <Grid Height="40" >
         <Grid.RowDefinitions>
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40" />
             <ColumnDefinition Width="50" />
@@ -29,28 +29,35 @@
             <TextBlock x:Name="SectionHeading1Heading"  Text="{Binding Path=Code}"  FontSize="24" FontWeight="Bold" Foreground="Blue" Margin="10,0,10,0" VerticalAlignment="Center" />
         </StackPanel>
 
+        <TextBlock x:Name="Heading" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" FontSize="18"  FontWeight="Bold" FontStyle="Italic" Foreground="Blue"  Margin="0,10,0,0"/>
+
         <TextBlock x:Name="Comment" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"  FontSize="16" Foreground="Green" FontStyle="Italic" Margin="0"/>
 
-        <Button x:Name="AzCliCodeSnippetButton"  Grid.Row="0" Grid.Column="1"  FontSize="16"   Click="Button_Click" Height="40" Width="57"   
+        <Grid x:Name="AzCliCodeSnippet"   Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Margin="10,0,0,0" >
+            <Grid.RowDefinitions>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="AzCliCodeSnippetButton"  Grid.Row="0" Grid.Column="1"  FontSize="16"   Click="Button_Click" Height="40" Width="57"   
                  ToolTipService.ToolTip="Copy Az Cli Code Snippet." >
-            <Viewbox MaxHeight="40" MaxWidth="40" >
-                <SymbolIcon Symbol="Copy"/>
-            </Viewbox>
-        </Button>
-        <TextBlock x:Name="AzCliCodeSnippet" Grid.Row="0" Grid.Column="3" Text="{Binding Path=Code}" Foreground="Blue"  FontSize="16" Margin="10,0,0,0"  VerticalAlignment="Center" />
+                <Viewbox MaxHeight="40" MaxWidth="40" >
+                    <SymbolIcon Symbol="Copy"/>
+                </Viewbox>
+            </Button>
 
-
-        <Border x:Name="Separator" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"  Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}" Height="4" Margin="0,0,0,5" Padding="0" CornerRadius="0"/>
-
-
-        <TextBlock x:Name="Heading" Text="{Binding Path=Code}"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" FontSize="18"  FontWeight="Bold" FontStyle="Italic" Foreground="Blue"  Margin="0,10,0,0"/>
+            <TextBlock  Grid.Row="0" Grid.Column="3" Text="{Binding Path=Code}" Foreground="Blue"  FontSize="16" Margin="10,0,0,0"  VerticalAlignment="Center" />
+        </Grid>
         
         <StackPanel x:Name="Link" Orientation="Horizontal" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3">
             <TextBlock x:Name="LinkLabel" Text="{Binding Path=Code}" VerticalAlignment="Center"  FontSize="16" Margin="0" FontStyle="Italic" Foreground="Purple" />
             <HyperlinkButton x:Name="LinkHyperLink" Content="Install Az CLI." VerticalAlignment="Center" NavigateUri="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest"  FontSize="16" Margin="10,0,0,0"/>
         </StackPanel>
         
-        <StackPanel x:Name="Info"  Orientation="Horizontal" Grid.Row="12" Grid.Column="3" Grid.ColumnSpan="1">
+        <StackPanel x:Name="Info"  Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
             <TextBlock x:Name="InfoLabel" Text="{Binding Path=Code}" FontSize="16" FontStyle="Italic" Foreground="Purple"  FontWeight="Bold" Width="300"  TextAlignment="Right" />
             <TextBox x:Name="InfoVal" Text="{Binding Path=TextInfo}" PlaceholderText="{Binding Path=InfoValue}" FontSize="16" Width="500"   />
         </StackPanel>
@@ -99,6 +106,8 @@
             </Button>
             
         </Grid>
+
+        <Border x:Name="Separator" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"  Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}" Height="4" Margin="0,0,0,5" Padding="0" CornerRadius="0"/>
 
     </Grid>
 </Page>

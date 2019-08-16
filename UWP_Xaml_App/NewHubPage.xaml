@@ -40,7 +40,7 @@
                 <TextBlock   Text="...And this button to collapse a section. Hover mouse over other buttons to see what they do."  FontSize="16"  Foreground="Gray" Margin="10,0,10,0" VerticalAlignment="Center" />
             </StackPanel>
             <TextBlock   Text="Hover mouse over other buttons to see what they do. &quot;Missing&quot; buttons are performed with Az Cli scripts."  FontSize="16"  Foreground="Gray" Margin="10,0,10,0" VerticalAlignment="Center" />
-            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="seperator" Color="Red"   />
             <local:NewHubElement x:Name="h1" DisplayMode="sectionHeading"   Code="Getting Started" HorizontalAlignment="Left" />
                 
                 <StackPanel x:Name="GettingStarted" Visibility="Collapsed">
@@ -58,7 +58,7 @@
                 <local:NewHubElement DisplayMode="link"   Code="Find out more about theese Az Cli commands"
                                  Url="https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-create-using-cli" UrlText="Reference for these commands. (You'll find a link to other methods here)"/>
             </StackPanel>
-            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="seperator" Color="Red"   />
             <local:NewHubElement x:Name="h2" DisplayMode="sectionHeading"   Code="Azure IoT Hub Connection Details" HorizontalAlignment="Left" />
             <StackPanel x:Name="Info" Visibility="Collapsed">
                 <local:NewHubElement DisplayMode="comment"   Code="Enter (or patse) a new or Existing Resource Group Name,IoTHub Name and Device Name.( Nb: Names if new need to be unique.)"/>
@@ -71,9 +71,9 @@
                     <local:NewHubElement x:Name="NCS2"  DisplayMode="infoWithButtonsOnRight" InfoValue="Paste IoT Hub Device Connection String"  Code="* Device Connection String: " TextInfo="{x:Bind Data1.DeviceConnectionString,Mode=TwoWay}" Property="CSDevice" />
                 </StackPanel>
             </StackPanel>
-            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="seperator" Color="Red"   />
             <local:NewHubElement x:Name="h3" DisplayMode="sectionHeading"   Code="Connecting to Azure and Resource Group Creation" HorizontalAlignment="Left" />
-            <StackPanel x:Name="ConnectingAndGroup" Visibility="Visible">
+            <StackPanel x:Name="ConnectingAndGroup" Visibility="Collapsed">
                 <local:NewHubElement DisplayMode="comment"   Code="Open a new PowerShell or Command Shell. Copy each az of the command by pressing its Copy button, paste it into the shell and run it." />
                 <local:NewHubElement DisplayMode="heading"   Code="Log into Azure (If you need to create any resources):" />
                 <local:NewHubElement DisplayMode="comment" Code="The command below will open a browser window." />
@@ -81,7 +81,7 @@
                 <local:NewHubElement DisplayMode="heading"   Code="Create new Resource Group (Optional):" />
                 <local:NewHubElement x:Name="NGCode"   DisplayMode="azCodeSnippet"  Code="{x:Bind Data1.NewGroupCode,Mode=OneWay}"  />
             </StackPanel>
-            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="seperator" Color="Red"   />
             <local:NewHubElement x:Name="h4" DisplayMode="sectionHeading"   Code="Create new IoTHub (Optional):" HorizontalAlignment="Left" />
             <StackPanel x:Name="NewHubRegion"  Visibility="Collapsed">
                 <local:NewHubElement DisplayMode="link"   Code="Hub can be Free (F1) or Standard (S1) but not Basic for DeviceStreaming. You can only have one Free hub per subscription. Use one of F1 or S1."
@@ -99,20 +99,19 @@
                 <local:NewHubElement   DisplayMode="comment"
                 Code = "To create a new Device connection to the Hub you need the iothubowner ConnectionString. To run the DeviceStreaming functionality you only need the Service ConnectionString ..."/>
                 <local:NewHubElement    DisplayMode="comment"
-                Code = "...but can use the iothubowner ConnectionString. To create a new Device, return and choose [ADD New IoT Hub Device ...] from the Service menu."
-            />
+                Code = "...but can use the iothubowner ConnectionString. To create a new Device, return and choose [ADD New IoT Hub Device ...] from the Service menu." />
                 <StackPanel Orientation="Horizontal">
                     <!--<Button Content="Toggle Above" Margin="40,0,0,0" Click="Button_Click_2"/>-->
                     <Button Content="Paste ConnectionString" Margin="40,0,0,0" Click="Button_Click_1"/>
                         <local:NewHubElement DisplayMode="comment"   Code="Nb: Same as first button on right of IoT Hub Connection String TextBox button above." VerticalAlignment="Center"/>
                     </StackPanel>
             </StackPanel>
-            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="seperator" Color="Red"   />
             <local:NewHubElement x:Name="h5_1" DisplayMode="sectionHeading"   Code="Get Device Connection Striung if Device Exists:" HorizontalAlignment="Left" />
             <StackPanel x:Name="DeviceConStringParagraph"  Visibility="Collapsed">
                 <local:NewHubElement x:Name="HubDeviceConStringCode"   DisplayMode="azCodeSnippet"     Code="{x:Bind Data1.deviceconstring,Mode=OneWay}" />
             </StackPanel>
-            <local:NewHubElement DisplayMode="sep" Color="Green"   />
+            <local:NewHubElement DisplayMode="seperator" Color="Green"   />
             <local:NewHubElement x:Name="h5" DisplayMode="sectionHeading"   Code="Create New IoT Hub Device (Optional):" HorizontalAlignment="Left" />
             <StackPanel x:Name="NewHDevice"  Visibility="Collapsed">
                 <local:NewHubElement DisplayMode="heading"   Code="Create New IoT Hub Device (Optional):" />
@@ -122,7 +121,7 @@
                     <local:NewHubElement DisplayMode="comment"   Code="Nb: Same as [+] button above. (Connection details auto generated)." VerticalAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
-            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="seperator" Color="Red"   />
             <local:NewHubElement x:Name="h2ev" DisplayMode="sectionHeading"   Code="Azure IoT Hub Event Hub Connection Details" HorizontalAlignment="Left" />
             <StackPanel x:Name="EventHubInfo" Visibility="Collapsed">
                     <local:NewHubElement DisplayMode="comment"   Code="Telemetry requires the Event Hub's connectivity information. You can get it from the Portal or using Az Cli."/>
@@ -148,7 +147,7 @@
                         <local:NewHubElement x:Name="NEHSharedAcessKey"  DisplayMode="infoWithButtonsOnRight" InfoValue="Paste IoT Hub Connection String"  Code="SharedAcessKey(Primary): " TextInfo="{x:Bind Data1.EventHubsSasKey,Mode=TwoWay}"  Property="CSHub"  Show4thButton="Visible"/>
                     </StackPanel>
                 </StackPanel>
-            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="seperator" Color="Red"   />
             <local:NewHubElement x:Name="h6" DisplayMode="sectionHeading"   Code="Cleanup:" HorizontalAlignment="Left" />
             <StackPanel x:Name="Cleanup" Visibility="Collapsed">
                 <local:NewHubElement DisplayMode="comment" Code="Nb: Deleteing Group deletes IoTHub as well." />
@@ -156,7 +155,7 @@
                 <local:NewHubElement x:Name="DelGrp"   DisplayMode="azCodeSnippet"       Code="{x:Bind Data1.DeleteHubCode,Mode=OneWay}" />
             </StackPanel>
             
-            <local:NewHubElement DisplayMode="sep" Color="Red"   />
+            <local:NewHubElement DisplayMode="seperator" Color="Red"   />
             <local:NewHubElement x:Name="h7" DisplayMode="sectionHeading"   Code="Misc" HorizontalAlignment="Left" />
             <StackPanel x:Name="Misc" Visibility="Collapsed">
                 <local:NewHubElement DisplayMode="heading"   Code="Some Az Cli Footnotes (wrt Gotchas):" />
@@ -169,9 +168,9 @@
                 <local:NewHubElement DisplayMode="link" Code="And to remove the default group, for example:"
                                  Url="https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az-configure " UrlText="Reference"/>
                 <local:NewHubElement DisplayMode="azCodeSnippet"    Code="az configure --defaults group=''"/>
-                <local:NewHubElement DisplayMode="sep" Color="Red"   />
+                <local:NewHubElement DisplayMode="seperator" Color="Red"   />
             </StackPanel>
-                <local:NewHubElement DisplayMode="sep" Color="Red"   />
+                <local:NewHubElement DisplayMode="seperator" Color="Red"   />
             </StackPanel>
     </ScrollViewer>
     </Grid>
