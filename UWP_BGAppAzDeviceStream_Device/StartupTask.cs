@@ -35,6 +35,9 @@ namespace BGAppAzDeviceStream_Device
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
+            basicMode = false;
+            UseCustomClass = false;
+            KeepDeviceListening = true;
 
             System.Diagnostics.Debug.WriteLine("Device starting.\n");
 
@@ -57,6 +60,7 @@ namespace BGAppAzDeviceStream_Device
 
         private string OnDeviceRecvTextIO(string msgIn, out Microsoft.Azure.Devices.Client.Message message)
         {
+            DeviceAction = AzureConnections.MyConnections.DeviceAction;
             message = null;
             //Perform device side processing here. Eg read sensors.
             string msgOut = msgIn;
@@ -91,7 +95,7 @@ namespace BGAppAzDeviceStream_Device
                     message = SimulatedDevice.Message;
                     break;
                 case 4:
-                    msgOut = "Coming. Not yet implemented. This is a pace holder for now.";
+                    msgOut = Sensors.Sensors.ProcessMsgRecvdByDevice(msgIn);
                     break;
             }
 
@@ -163,4 +167,6 @@ namespace BGAppAzDeviceStream_Device
             }        
         }
     }
+
+
 }

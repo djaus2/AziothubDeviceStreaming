@@ -49,7 +49,7 @@ namespace UWPXamlApp
                     message = SimulatedDevice_ns.SimulatedDevice.Message;
                     break;
                 case 4:
-                    msgOut = "Coming. Not yet implemented. This is a pace holder for now.";
+                    msgOut = "Not implemented for desktop.\r\nTry with Win 10 IoT-Core (eg RPI) running UWP_BGAppAzDeviceStream_Device, as in GitHub Repository:\r\nhttps://github.com/djaus2/AziothubDeviceStreaming";
                     break;
             }
            
