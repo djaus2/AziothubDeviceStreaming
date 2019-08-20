@@ -95,7 +95,7 @@ namespace BGAppAzDeviceStream_Device
                     message = SimulatedDevice.Message;
                     break;
                 case 4:
-                    msgOut = Sensors.Sensors.ProcessMsgRecvdByDevice(msgIn);
+                    msgOut = AzSensors.Sensors.ProcessMsgRecvdByDevice(msgIn);
                     break;
             }
 

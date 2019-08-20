@@ -151,9 +151,9 @@
       <Project>{02549731-8979-48bb-bd26-d313828c3aac}</Project>
       <Name>AzureConnections</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sensors\Sensors.csproj">
+    <ProjectReference Include="..\Sensors\AzSensors.csproj">
       <Project>{913bb6b0-6b12-4395-b625-26c972f6c8f6}</Project>
-      <Name>Sensors</Name>
+      <Name>AzSensors</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '15.0' ">

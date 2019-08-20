@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sensors
+namespace AzSensors
 {
     public class Sensors
     {
@@ -16,7 +16,7 @@ namespace Sensors
         {
             string msgOut = "";
             string[] msg = msgIn.Split(new char[] { '-', ' ' });
-            if (msg.Length > 1)
+            if ((msg.Length > 1) || (msg[0].ToLower()=="help"))
             {
                 switch (msg[0].ToLower().Substring(0, 3))
                 {
@@ -29,13 +29,16 @@ namespace Sensors
                     case "get":
                         msgOut = GetVal(msg[1]);
                         break;
+                    case "hel":
+                        msgOut = Help();
+                        break;
                     case "sen":
                         int sensorClassIndex;
                         if (int.TryParse(msg[1], out sensorClassIndex))
                         {
                             msgOut = SetSensorClass(sensorClassIndex);
                         }
-                        {
+                        else {
                             msgOut = SetSensorClass(msg[1]);
                         };
                         break;
@@ -47,9 +50,18 @@ namespace Sensors
             return msgOut;
         }
 
+        public static string Help()
+        {
+            if (CurrentSensor != null)
+            {
+                return CurrentSensor.help();
+            }
+            else return "Help: No sensor selected.";
+        }
+
         public static string GetVal(string sensor)
         {
-            if (!string.IsNullOrEmpty(sensor))
+            if (string.IsNullOrEmpty(sensor))
             {
                 return "GetVal: Invalid Sensor";
             }
@@ -63,7 +75,7 @@ namespace Sensors
         public static string SetVal(string sensor, string strnVal)
         {
             int val;
-            if (!string.IsNullOrEmpty(sensor))
+            if (string.IsNullOrEmpty(sensor))
             {
                 return "SetVal: Invalid Sensor";
             }
@@ -81,7 +93,7 @@ namespace Sensors
         }
         public static string SetVal(string sensor , int val)
         {
-            if (!string.IsNullOrEmpty(sensor))
+            if (string.IsNullOrEmpty(sensor))
             {
                 return "SetVal: Invalid Sensor";
             }
@@ -96,8 +108,8 @@ namespace Sensors
         {
             sensors = new List<string>();
             //It would be nice to use reflection here
-            sensors.Add("Sensor1");
-            sensors.Add("Sensor2");
+            sensors.Add(Sensor1.ClassName.ToLower());
+            sensors.Add(Sensor2.ClassName.ToLower());
         }
 
 
@@ -127,17 +139,21 @@ namespace Sensors
 
         public static string SetSensorClass(string className)
         {
+            if(string.IsNullOrEmpty(className))
+                return "SetSensor: Sensor Class not found";
+
             if (sensors == null)
                 Load();
-            if (sensors.Contains(className))
+            if (sensors.Contains(className.ToLower()))
             {
-                int index = sensors.IndexOf(className);
+                int index = sensors.IndexOf(className.ToLower());
                 return SetSensorClass(index);
             }
 
             return "SetSensor: Sensor Class not found";
         }
 
+        public virtual string help() { return "Not yet implemented"; }
         public virtual string getval(string sensor) { return "Not yet implemented"; }
         public virtual string setval(string sensor, int val) { return "Not yet implemented"; }
     }
@@ -147,6 +163,7 @@ namespace Sensors
     /// </summary>
     public class Sensor1 : Sensors
     {
+        public static string ClassName = "Sensor1";
         //A couple of values that can be set and returned.
         int state = -1;
         bool toggle = false;
@@ -163,7 +180,7 @@ namespace Sensors
         public override string getval(string sensor)
         {
             string msgOut = "Invalid";
-            switch (sensor.Substring(3,3).ToLower())
+            switch (sensor.Substring(0,3).ToLower())
             {
                 case "tem":
                     msgOut = "45 C";
@@ -187,11 +204,16 @@ namespace Sensors
             return msgOut;
         }
 
+        public override string help()
+        {
+            return  "Only first three characters of each word required.\r\nget:temperature,pressure,humidity,state,toggle,help\r\nset:state <int value>,toggle <0|1> (true|false)";
+        }
+
 
         public override string setval(string sensor, int val)
         {
             string msgOut = "Invalid";
-            switch (sensor.Substring(3, 3).ToLower())
+            switch (sensor.Substring(0,3).ToLower())
             {
                 case "sta":
                     state = val;
@@ -199,6 +221,7 @@ namespace Sensors
                     break;
                 case "tog":
                     toggle = val > 0 ? true:false;
+                    msgOut = "setVal: OK";
                     break;
                 default:
                     msgOut = "Invalid request";
@@ -212,6 +235,7 @@ namespace Sensors
 
     public class Sensor2 : Sensors
     {
+        public static string ClassName = "Sensor2";
         public Sensor2()
         {
             //Setup code

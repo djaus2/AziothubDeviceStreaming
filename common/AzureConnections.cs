@@ -21,15 +21,15 @@ namespace AzureConnections
         /// Hub Connections
         /// </summary>
         /// 
-        public static bool EHMethod1 { get; set; } 
+        public static bool EHMethod1 { get; set; }
 
-        public static string AzureGroup { get; set; } = "";
+        public static string AzureGroup { get; set; } = "MyNewGroup";
 
-        public static string IoTHubName { get; set; } = "";
+        public static string IoTHubName { get; set; } = "MyNewHub";
 
         public static string SKU { get; set; } = "";
 
-        public static string DeviceId { get; set; } = "";
+        public static string DeviceId { get; set; } = "MyNewDevice";
 
         public static string IoTHubConnectionString { get; set; } = "";
 
@@ -43,7 +43,7 @@ namespace AzureConnections
         // az iot hub show --query properties.eventHubEndpoints.events.path --name {your IoT Hub name}
         public static string EventHubsCompatiblePath { get; set; } = "";
 
-        public static string IotHubKeyName { get; set; }  = "iothubowner";
+        public static string IotHubKeyName { get; set; } = "iothubowner";
 
         public static string HUbSku { get; set; } = "";
 
@@ -58,14 +58,14 @@ namespace AzureConnections
         public static int DeviceAction = 3; //Uppercase. See OnDeviceRecvTextIO() below for options
 
         public static bool basicMode { get; set; } = false;
-        public  static bool UseCustomClass { get; set; } = false;
-        public  static bool ResponseExpected { get; set; } = true;
-        public  static bool KeepAlive { get; set; } = false;
+        public static bool UseCustomClass { get; set; } = false;
+        public static bool ResponseExpected { get; set; } = true;
+        public static bool KeepAlive { get; set; } = false;
 
-        public static bool KeepDeviceListening { get; set; }  = true;
-        private static bool autoStartDevice  = true;
+        public static bool KeepDeviceListening { get; set; } = true;
+        private static bool autoStartDevice = true;
         public static bool AutoStartDevice { get => autoStartDevice; set { autoStartDevice = value; if (value) KeepDeviceListening = true; } }
 
 
-   }
+    }
 }
