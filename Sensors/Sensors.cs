@@ -75,6 +75,7 @@ namespace AzSensors
         public static string SetVal(string sensor, string strnVal)
         {
             int val;
+            bool bval;
             if (string.IsNullOrEmpty(sensor))
             {
                 return "SetVal: Invalid Sensor";
@@ -86,6 +87,13 @@ namespace AzSensors
                     if (CurrentSensor != null)
                     {
                         return CurrentSensor.setval(sensor, val);
+                    }
+                }
+                else if (bool.TryParse(strnVal, out bval))
+                {
+                    if (CurrentSensor != null)
+                    {
+                        return CurrentSensor.setval(sensor, bval);
                     }
                 }
             }
@@ -100,6 +108,19 @@ namespace AzSensors
             if (CurrentSensor != null)
             {
                 return CurrentSensor.setval(sensor, val);
+            }
+            else return "SetVal: No sensor selected.";
+        }
+
+        public static string SetVal(string sensor, bool bval)
+        {
+            if (string.IsNullOrEmpty(sensor))
+            {
+                return "SetVal: Invalid Sensor";
+            }
+            if (CurrentSensor != null)
+            {
+                return CurrentSensor.setval(sensor, bval);
             }
             else return "SetVal: No sensor selected.";
         }
@@ -156,6 +177,7 @@ namespace AzSensors
         public virtual string help() { return "Not yet implemented"; }
         public virtual string getval(string sensor) { return "Not yet implemented"; }
         public virtual string setval(string sensor, int val) { return "Not yet implemented"; }
+        public virtual string setval(string sensor, bool bval) { return "Not yet implemented"; }
     }
 
     /// <summary>
@@ -179,7 +201,7 @@ namespace AzSensors
         }
         public override string getval(string sensor)
         {
-            string msgOut = "Invalid";
+            string msgOut = "Invalid. Try Help";
             switch (sensor.Substring(0,3).ToLower())
             {
                 case "tem":
@@ -198,7 +220,7 @@ namespace AzSensors
                     msgOut = string.Format("toggle = {0}", toggle);
                     break;
                 default:
-                    msgOut = "Invalid request";
+                    msgOut = "Invalid request. Try Help";
                     break;
             }
             return msgOut;
@@ -224,9 +246,16 @@ namespace AzSensors
                     msgOut = "setVal: OK";
                     break;
                 default:
-                    msgOut = "Invalid request";
+                    msgOut = "Invalid request. Try Help";
                     break;
             }
+            return msgOut;
+        }
+
+        public override string setval(string sensor, bool bval)
+        {
+            toggle = bval;
+            string msgOut = "setVal: OK";
             return msgOut;
         }
 

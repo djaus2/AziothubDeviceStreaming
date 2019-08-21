@@ -12,7 +12,8 @@ namespace UWPXamlApp
 {
     sealed partial class MainPage : Page
     {
-
+        int state = -1;
+        bool toggle = false;
 
         private string OnDeviceRecvTextIO(string msgIn, out Microsoft.Azure.Devices.Client.Message message )
         {
@@ -34,10 +35,38 @@ namespace UWPXamlApp
                         switch (msg[0].ToLower().Substring(0, 3))
                         {
                             case "set":
-                                msgOut = "Not yet implemented. Try Help";
+                                msgOut = "Invalid request. Try Help";
                                 if (msg.Length > 2)
                                 {
-                                    //msgOut = SetVal(msg[1], msg[2]);
+                                    int val;
+                                    bool bval;
+                                    if (int.TryParse(msg[2], out val))
+                                    {
+                                        switch (msg[1].Substring(0, 3).ToLower())
+                                        {
+                                            case "sta":
+                                                state = val;
+                                                msgOut = "setVal: OK";
+                                                break;
+                                            case "tog":
+                                                toggle = val > 0 ? true : false;
+                                                msgOut = "setVal: OK";
+                                                break;
+                                            default:
+                                                msgOut = "Invalid request. Try Help";
+                                                break;
+                                        }
+                                    }
+                                    else if (bool.TryParse(msg[2], out bval))
+                                    {
+                                        switch (msg[1].Substring(0, 3).ToLower())
+                                        {
+                                            case "tog":
+                                                toggle = bval;
+                                                msgOut = "setbVal: OK";
+                                                break;
+                                        }
+                                    }
                                 }
                                 break;
                             case "get":
@@ -52,13 +81,19 @@ namespace UWPXamlApp
                                     case "hum":
                                         msgOut = "67%";
                                         break;
+                                    case "sta":
+                                        msgOut = string.Format("state = {0}", state);
+                                        break;
+                                    case "tog":
+                                        msgOut = string.Format("toggle = {0}", toggle);
+                                        break;
                                     default:
                                         msgOut = "Invalid request. Try Help";
                                         break;
                                 }
                                 break;
                             case "hel":
-                                msgOut =   "Only first three characters of each word required.\r\nget:temperature,pressure,humidity,state,toggle,help\r\nset (Not yet implemented) :state <int value>,toggle <0|1> (true|false)";
+                                msgOut =   "Only first three characters of each word required.\r\nget: temperature,pressure,humidity,state,toggle,help\r\nset :state <int value>,toggle <0|1> (true|false)";
                                 break;
                             default:
                                 msgOut = "Invalid request. Try Help";
