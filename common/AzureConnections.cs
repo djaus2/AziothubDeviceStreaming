@@ -27,13 +27,13 @@ namespace AzureConnections
 
         public static string IoTHubName { get; set; } = "MyNewHub";
 
-        public static string SKU { get; set; } = "";
+        public static string SKU { get; set; } = "F1";
 
         public static string DeviceId { get; set; } = "MyNewDevice";
 
         public static string IoTHubConnectionString { get; set; } = "";
 
-        public static string DeviceConnectionString { get; set; } = "";
+        public static string DeviceConnectionString { get; set; } = "HostName=MyNewHub.azure-devices.net;DeviceId=MyNewDevice;SharedAccessKey=uuEXJ2WfzGE5/otMfsmkMhax/bpPCdN/fdcsz4jAw5k=";
 
         public static string EventHubsConnectionString { get; set; } = "";
 

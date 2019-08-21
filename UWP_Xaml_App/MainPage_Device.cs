@@ -28,6 +28,45 @@ namespace UWPXamlApp
                     msgOut = msgIn.ToUpper();
                     break;
                 case 2:
+                    string[] msg = msgIn.Split(new char[] { '-', ' ' });
+                    if ((msg.Length > 1) || (msg[0].ToLower() == "help"))
+                    {
+                        switch (msg[0].ToLower().Substring(0, 3))
+                        {
+                            case "set":
+                                msgOut = "Not yet implemented. Try Help";
+                                if (msg.Length > 2)
+                                {
+                                    //msgOut = SetVal(msg[1], msg[2]);
+                                }
+                                break;
+                            case "get":
+                                switch (msg[1].ToLower().Substring(0,3))
+                                {
+                                    case "tem":
+                                        msgOut = "45 C";
+                                        break;
+                                    case "pre":
+                                        msgOut = "1034.0 hPa";
+                                        break;
+                                    case "hum":
+                                        msgOut = "67%";
+                                        break;
+                                    default:
+                                        msgOut = "Invalid request. Try Help";
+                                        break;
+                                }
+                                break;
+                            case "hel":
+                                msgOut =   "Only first three characters of each word required.\r\nget:temperature,pressure,humidity,state,toggle,help\r\nset (Not yet implemented) :state <int value>,toggle <0|1> (true|false)";
+                                break;
+                            default:
+                                msgOut = "Invalid request. Try Help";
+                                break;
+                        }
+                    }
+                    break;
+                case 21: //Old 2 case
                     switch (msgIn.Substring(0,3).ToLower())
                     {
                         case "tem":
