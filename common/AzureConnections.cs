@@ -11,7 +11,7 @@ namespace AzureConnections
 {
     public static partial class MyConnections
     {
-        public static string OpenWeatherAppKey { get; set; } = "";//Need this https://openweathermap.org/
+        public static string OpenWeatherAppKey { get; set; } = "df39100f7fe7b297c789818c5f2bb1bd";//Need this https://openweathermap.org/
         public static int WaitAtEndOfConsoleAppSecs { get; set; } = 5; //Secs
         public static int Timeout { get; set; } = 30000; //30 secs
 

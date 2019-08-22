@@ -5,6 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="cities.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="cities.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Devices" Version="1.27.0-preview-003" />
     <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.29.0-preview-002" />
     <PackageReference Include="Microsoft.Azure.EventHubs.Processor" Version="3.0.0" />
@@ -12,12 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AzureConnections\AzureConnections.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="cities.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
