@@ -191,6 +191,9 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="cities.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -241,6 +244,10 @@
     <ProjectReference Include="..\AzureConnections\AzureConnections.csproj">
       <Project>{02549731-8979-48bb-bd26-d313828c3aac}</Project>
       <Name>AzureConnections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sensors\AzSensors.csproj">
+      <Project>{913bb6b0-6b12-4395-b625-26c972f6c8f6}</Project>
+      <Name>AzSensors</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

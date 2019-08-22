@@ -14,4 +14,10 @@
     <ProjectReference Include="..\AzureConnections\AzureConnections.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="cities.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

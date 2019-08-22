@@ -1,0 +1,65 @@
+﻿[
+  {
+    "id": 7839805,
+    "name": "Melbourne",
+    "country": "AU",
+    "coord": {
+      "lon": 144.944214,
+      "lat": -37.813061
+    }
+  },
+  {
+    "id": 6619279,
+    "name": "Sydney",
+    "country": "AU",
+    "coord": {
+      "lon": 151.208435,
+      "lat": -33.867779
+    }
+  },
+  {
+    "id": 5809844,
+    "name": "Seattle",
+    "country": "US",
+    "coord": {
+      "lon": -122.332069,
+      "lat": 47.606209
+    }
+  },
+  {
+    "id": 5128638,
+    "name": "New York",
+    "country": "US",
+    "coord": {
+      "lon": -75.499901,
+      "lat": 43.000351
+    }
+  },
+  {
+    "id": 2643743,
+    "name": "London",
+    "country": "GB",
+    "coord": {
+      "lon": -0.12574,
+      "lat": 51.50853
+    }
+  },
+  {
+    "id": 2038349,
+    "name": "Beijing Shi",
+    "country": "CN",
+    "coord": {
+      "lon": 116.397057,
+      "lat": 39.916908
+    }
+  },
+  {
+    "id": 2193734,
+    "name": "Auckland",
+    "country": "NZ",
+    "coord": {
+      "lon": 174.783325,
+      "lat": -36.849998
+    }
+  }
+]

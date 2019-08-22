@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -258,6 +261,77 @@ namespace AzSensors
             string msgOut = "setVal: OK";
             return msgOut;
         }
+
+    }
+
+    public static class Weather
+    {
+        public static  async Task<string> GetAsync(string uri)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);            
+
+            using (HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return await reader.ReadToEndAsync();
+            }
+        }
+
+        public class TelemetryDataPoint
+        {
+                public int temperature { get; set; }
+                public int pressure { get; set; }
+                public int humidity { get; set; }
+
+            public TelemetryDataPoint()
+            {
+
+            }
+        }
+
+        public static async Task<string> GetWeather()
+        {
+            string url = "http://api.openweathermap.org/data/2.5/weather?id=2158177&appid=df39100f7fe7b297c789818c5f2bb1bd";
+            string weatherjson = await GetAsync(url);
+            var obj = Windows.Data.Json.JsonObject.Parse(weatherjson);
+            var otemperature = ((int)obj["main"].GetObject()["temp"].GetNumber()) - 273;
+            var opressure = (int)obj["main"].GetObject()["pressure"].GetNumber();
+            var ohumidity = (int)obj["main"].GetObject()["humidity"].GetNumber();
+            var telemetryDataPoint = new TelemetryDataPoint()
+            {
+                temperature = otemperature,
+                pressure = opressure,
+                humidity = ohumidity
+            };
+            var stream1 = new MemoryStream();
+            var ser = new DataContractJsonSerializer(typeof(TelemetryDataPoint));
+            ser.WriteObject(stream1, telemetryDataPoint);
+            stream1.Position = 0;
+            var sr = new StreamReader(stream1);
+            string MessageString = sr.ReadToEnd();
+;
+            return MessageString;
+        }
+
+        public static async Task<TelemetryDataPoint> GetWeatherObj()
+        {
+            string url = "http://api.openweathermap.org/data/2.5/weather?id=2158177&appid=df39100f7fe7b297c789818c5f2bb1bd";
+            string weatherjson = await GetAsync(url);
+            var obj = Windows.Data.Json.JsonObject.Parse(weatherjson);
+            var otemperature = ((int)obj["main"].GetObject()["temp"].GetNumber()) - 273;
+            var opressure = (int)obj["main"].GetObject()["pressure"].GetNumber();
+            var ohumidity = (int)obj["main"].GetObject()["humidity"].GetNumber();
+            var telemetryDataPoint = new TelemetryDataPoint()
+            {
+                temperature = otemperature,
+                pressure = opressure,
+                humidity = ohumidity
+            };
+            return telemetryDataPoint;
+        }
+
+
 
     }
 

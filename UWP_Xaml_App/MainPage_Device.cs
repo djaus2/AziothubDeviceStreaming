@@ -17,6 +17,7 @@ namespace UWPXamlApp
 
         private string OnDeviceRecvTextIO(string msgIn, out Microsoft.Azure.Devices.Client.Message message )
         {
+            string res = AzSensors.Weather.GetWeather().GetAwaiter().GetResult();
             message = null;
             //Perform device side processing here. Eg read sensors.
             string msgOut = msgIn;
